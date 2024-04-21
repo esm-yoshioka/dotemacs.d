@@ -48,6 +48,20 @@
 
 ;; Describe own settings below
 ;; =========================================================================================
+(leaf ime
+  :doc "system language, character-code"
+  :config
+  (set-language-environment "Japanese")
+  )
+  
+(leaf Setting
+  :doc "general settins"
+  :config
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  :custom
+  (confirm-kill-emacs . 'y-or-n-p)
+  )
+
 (leaf Files
   :doc "system file"
   :custom
