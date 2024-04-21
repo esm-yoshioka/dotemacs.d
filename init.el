@@ -66,6 +66,17 @@
   (create-lockfiles . nil)
   )
 
+(leaf Looks
+  :doc "app style"
+  :custom
+  (menu-bar-mode . nil)
+  (scroll-bar-mode . nil)
+  (tool-bar-mode . nil)
+  (inhibit-startup-message . t)
+  (initial-scratch-message . "")
+  (show-paren-mode . t)
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
