@@ -48,6 +48,24 @@
 
 ;; Describe own settings below
 ;; =========================================================================================
+(leaf Files
+  :doc "system file"
+  :custom
+  ;; backup file
+  (backup-directory-alist . `((".*" . ,(locate-user-emacs-file "backup"))))
+  (version-control . t)
+  (kept-new-versions . 50)
+  (kept-old-versions . 0)
+  (delete-old-versions . t)
+  ;; auto-save file
+  (auto-save-file-name-transforms . `((".*" ,(locate-user-emacs-file "backup/") t)))
+  (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
+  (auto-save-timeout . 15)
+  (auto-save-interval . 120)
+  ;; lock file
+  (create-lockfiles . nil)
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
