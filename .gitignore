@@ -6,4 +6,6 @@
 *.elc
 auto-save-list
 tramp
+eln-cache
+elpa
 .\#*
