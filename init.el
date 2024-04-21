@@ -79,6 +79,9 @@
   
 (leaf Setting
   :doc "general settings"
+  :setq
+  (default-directory . "~/")
+  (command-line-default-directory . "~/")
   :config
   (set-default-coding-systems 'utf-8-unix)
   (prefer-coding-system 'utf-8)
