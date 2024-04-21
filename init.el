@@ -49,14 +49,39 @@
 ;; Describe own settings below
 ;; =========================================================================================
 (leaf ime
-  :doc "system language, character-code"
   :config
   (set-language-environment "Japanese")
+  (leaf windows
+    :when (eq system-type 'windows-nt)
+    :config
+    (leaf tr-ime
+      :doc "Emulator of IME patch for Windows"
+      :ensure t
+      :config
+      (tr-ime-standard-install)
+      )
+    (set-language-environment "Japanese")
+
+    (setq default-input-method "W32-IME")
+    (setq-default w32-ime-mode-line-state-indicator "[Aa]")
+    (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
+    (w32-ime-initialize)
+    (w32-ime-wrap-function-to-control-ime 'universal-argument)
+    (w32-ime-wrap-function-to-control-ime 'read-string)
+    (w32-ime-wrap-function-to-control-ime 'read-char)
+    (w32-ime-wrap-function-to-control-ime 'read-from-minibuffer)
+    (w32-ime-wrap-function-to-control-ime 'y-or-n-p)
+    (w32-ime-wrap-function-to-control-ime 'yes-or-no-p)
+    (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
+    (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
+    )
   )
   
 (leaf Setting
-  :doc "general settins"
+  :doc "general settings"
   :config
+  (set-default-coding-systems 'utf-8-unix)
+  (prefer-coding-system 'utf-8)
   (defalias 'yes-or-no-p 'y-or-n-p)
   :custom
   (confirm-kill-emacs . 'y-or-n-p)
