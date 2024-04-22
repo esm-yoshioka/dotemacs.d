@@ -48,7 +48,7 @@
 
 ;; Describe own settings below
 ;; =========================================================================================
-(leaf ime
+(leaf Ime
   :config
   (set-language-environment "Japanese")
   (leaf windows
@@ -58,7 +58,7 @@
       :doc "Emulator of IME patch for Windows"
       :ensure t
       :config
-      (tr-ime-standard-install)
+      (tr-ime-advanced-install)
       )
     (set-language-environment "Japanese")
 
