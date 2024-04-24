@@ -66,6 +66,7 @@
     (setq-default w32-ime-mode-line-state-indicator "[Aa]")
     (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
     (w32-ime-initialize)
+    ;; IME disable pattern
     (w32-ime-wrap-function-to-control-ime 'universal-argument)
     (w32-ime-wrap-function-to-control-ime 'read-string)
     (w32-ime-wrap-function-to-control-ime 'read-char)
@@ -80,14 +81,27 @@
 (leaf Setting
   :doc "general settings"
   :setq
+  ;; default directory
   (default-directory . "~/")
   (command-line-default-directory . "~/")
   :config
+  ;; coding-code
   (set-default-coding-systems 'utf-8-unix)
   (prefer-coding-system 'utf-8)
   (defalias 'yes-or-no-p 'y-or-n-p)
   :custom
   (confirm-kill-emacs . 'y-or-n-p)
+  ;; scroll
+  (scroll-conservatively . 1)
+  (scroll-margin . 3)
+  (next-screen-context-lines . 3)
+  (scroll-preserve-screen-position . t)
+  ;; echo Area key-strokes
+  (echo-keystrokes . 0.1)
+  ;; error beep off
+  (ring-bell-function . 'ignore)
+  ;; kepp kill-ring
+  (kill-ring-max . 200)
   )
 
 (leaf Files
@@ -106,6 +120,13 @@
   (auto-save-interval . 120)
   ;; lock file
   (create-lockfiles . nil)
+  )
+
+(leaf autorevert
+  :doc "auto-reload updated files outside emacs"
+  :custom
+  (auto-revert-interval . 1)
+  :global-minor-mode global-auto-revert-mode
   )
 
 (leaf Looks
