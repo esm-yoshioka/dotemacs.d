@@ -102,9 +102,11 @@
   (ring-bell-function . 'ignore)
   ;; kepp kill-ring
   (kill-ring-max . 200)
+  ;; auto-insert last line
+  (require-final-newline . t)
   )
 
-(leaf Files
+(leaf SystemFiles
   :doc "system file"
   :custom
   ;; backup file
@@ -122,11 +124,15 @@
   (create-lockfiles . nil)
   )
 
-(leaf autorevert
+(leaf Autorevert
   :doc "auto-reload updated files outside emacs"
   :custom
   (auto-revert-interval . 1)
   :global-minor-mode global-auto-revert-mode
+  )
+
+(leaf Image
+  :global-minor-mode auto-image-file-mode
   )
 
 (leaf Looks
