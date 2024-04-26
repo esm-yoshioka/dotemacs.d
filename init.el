@@ -88,22 +88,19 @@
   ;; coding-code
   (set-default-coding-systems 'utf-8-unix)
   (prefer-coding-system 'utf-8)
-  (defalias 'yes-or-no-p 'y-or-n-p)
   :custom
-  (confirm-kill-emacs . 'y-or-n-p)
+  (confirm-kill-emacs . 'y-or-n-p)      ; check on exit
+  (use-short-answers . t)               ; y-or-n
   ;; scroll
   (scroll-conservatively . 1)
   (scroll-margin . 3)
   (next-screen-context-lines . 3)
   (scroll-preserve-screen-position . t)
-  ;; echo Area key-strokes
-  (echo-keystrokes . 0.1)
-  ;; error beep off
-  (ring-bell-function . 'ignore)
-  ;; kepp kill-ring
-  (kill-ring-max . 200)
-  ;; auto-insert last line
-  (require-final-newline . t)
+  
+  (echo-keystrokes . 0.1)               ; echo Area key-strokes
+  (ring-bell-function . 'ignore)        ; error beep off
+  (kill-ring-max . 200)                 ; keep kill-ring
+  (require-final-newline . t)           ; auto-insert last line
   )
 
 (leaf SystemFiles
@@ -138,12 +135,12 @@
 (leaf Looks
   :doc "app style"
   :custom
-  (menu-bar-mode . nil)
-  (scroll-bar-mode . nil)
-  (tool-bar-mode . nil)
-  (inhibit-startup-message . t)
-  (initial-scratch-message . "")
-  (show-paren-mode . t)
+  (menu-bar-mode . nil)                 ; non-display menu-bar
+  (scroll-bar-mode . nil)               ; non-display scroll-bar
+  (tool-bar-mode . nil)                 ; non-display tool-bar
+  (inhibit-startup-message . t)         ; non-display startup
+  (initial-scratch-message . "")        ; scratch is null
+  (show-paren-mode . t)                 ; hightlight matching paren
   )
 
 ;; =========================================================================================
