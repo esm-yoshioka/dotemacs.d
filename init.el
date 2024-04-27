@@ -1,7 +1,8 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
-
+;; 
 ;; Author: esm-yoshioka
-;; Version: 29.2
+;; Version: 29.3
+;; 
 
 
 (eval-and-compile
@@ -51,10 +52,15 @@
 (when load-file-name
   (setq user-emacs-directory
         (expand-file-name (file-name-directory load-file-name))))
+
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
 (unless (file-directory-p my:d:vars)
   (make-directory my:d:vars))
+(defconst my:d:backup
+  (expand-file-name "backup/" user-emacs-directory))
+(unless (file-directory-p my:d:backup)
+  (make-directory my:d:backup))
 
 ;; -----------------------------------------------------------------------------------------
 
@@ -117,14 +123,14 @@
   :doc "system file"
   :custom
   ;; backup file
-  (backup-directory-alist . `((".*" . ,(locate-user-emacs-file "backup"))))
+  (backup-directory-alist . `(("." . ,my:d:backup)))
+  (backup-by-copying . t)
   (version-control . t)
   (kept-new-versions . 50)
   (kept-old-versions . 0)
   (delete-old-versions . t)
   ;; auto-save file
-  (auto-save-file-name-transforms . `((".*" ,(locate-user-emacs-file "backup/") t)))
-  (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
+  (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
   (auto-save-interval . 120)
   ;; lock file
@@ -154,6 +160,7 @@
   )
 
 (leaf Image
+  :doc "always display picture"
   :global-minor-mode auto-image-file-mode
   )
 
