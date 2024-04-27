@@ -131,12 +131,23 @@
   (delete-old-versions . t)
   ;; auto-save file
   ;; 下記設定が効いてないのでいったんコメントアウト
+  ;; auto-save-listに仮保存されるのをそのうち対応したい
   ;; (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
   (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
   (auto-save-interval . 120)
   ;; lock file
   (create-lockfiles . nil)
+  )
+
+(leaf Search
+  :custom
+  ;; ignore upper/lower case
+  (case-fold-search . t)
+  (isearch-case-fold-search . t)
+  (completion-ignore-case . t)
+  (read-file-name-completion-ignore-case . t)
+  (read-buffer-completion-ignore-case . t)
   )
 
 (leaf Saveplace
