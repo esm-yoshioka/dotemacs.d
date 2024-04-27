@@ -130,7 +130,10 @@
   (kept-old-versions . 0)
   (delete-old-versions . t)
   ;; auto-save file
-  (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
+  ; 下記設定が効いてないのでいったんコメントアウト
+  ;; (auto-save-file-name-transforms . `((".*" ,(locate-user-emacs-file "backup/") t)))
+  ;; (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
+  ; (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
   (auto-save-interval . 120)
   ;; lock file
