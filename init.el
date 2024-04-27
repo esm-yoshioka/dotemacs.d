@@ -48,6 +48,16 @@
 
 ;; Describe own settings below
 ;; =========================================================================================
+(when load-file-name
+  (setq user-emacs-directory
+        (expand-file-name (file-name-directory load-file-name))))
+(defconst my:d:vars
+  (expand-file-name "vars/" user-emacs-directory))
+(unless (file-directory-p my:d:vars)
+  (make-directory my:d:vars))
+
+;; -----------------------------------------------------------------------------------------
+
 (leaf Ime
   :config
   (set-language-environment "Japanese")
@@ -119,6 +129,21 @@
   (auto-save-interval . 120)
   ;; lock file
   (create-lockfiles . nil)
+  )
+
+(leaf Saveplace
+  :doc "memorise last cursor position"
+  :custom
+  `((save-place . t)
+    (save-place-file
+     . ,(expand-file-name "save-places"  my:d:vars))
+    )
+  :hook (emacs-startup-hook . save-place-mode)
+  :config
+  (setq save-place-ingore-files-regexp
+        (format "\\(%s\\)\\|\\(%s\\)"
+                save-place-ignore-files-regexp
+                tramp-file-name-regexp))
   )
 
 (leaf Autorevert
