@@ -69,10 +69,18 @@
 
 ;; -----------------------------------------------------------------------------------------
 
-(leaf ime
+(leaf languages
+  :doc "language setting"
   :config
   (set-language-environment "Japanese")
-  (leaf windows
+  (set-default-coding-systems 'utf-8-unix)
+  (prefer-coding-system 'utf-8)
+  ;; font
+  ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
+  ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
+  (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
+
+  (leaf windows-ime
     :when (eq system-type 'windows-nt)
     :config
     (leaf tr-ime
@@ -105,10 +113,6 @@
   ;; default directory
   (default-directory . "~/")
   (command-line-default-directory . "~/")
-  :config
-  ;; coding-code
-  (set-default-coding-systems 'utf-8-unix)
-  (prefer-coding-system 'utf-8)
   :custom
   (confirm-kill-emacs . 'y-or-n-p)      ; check on exit
   (use-short-answers . t)               ; y-or-n
@@ -210,7 +214,7 @@
   (set-frame-parameter nil 'fullscreen 'maximized) ; fullscreen
   (set-frame-parameter nil 'cursor-type 'box)      ; cursor type
   (blink-cursor-mode 0)                            ; disable cursor blinking
-  
+
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
   (scroll-bar-mode . nil)               ; non-display scroll-bar
