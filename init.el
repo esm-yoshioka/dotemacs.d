@@ -4,12 +4,12 @@
 ;; Version: 29.3
 ;; 
 
-
 (eval-and-compile
   (when (or load-file-name byte-compile-current-file)
     (setq user-emacs-directory
           (expand-file-name
-           (file-name-directory (or load-file-name byte-compile-current-file))))))
+           (file-name-directory (or load-file-name byte-compile-current-file)))))
+  )
 
 (eval-and-compile
   (customize-set-variable
@@ -31,7 +31,8 @@
 
     :config
     ;; initialize leaf-keywords.el
-    (leaf-keywords-init)))
+    (leaf-keywords-init))
+  )
 
 (leaf leaf
   :config
@@ -39,21 +40,24 @@
   (leaf leaf-tree
     :ensure t
     :custom ((imenu-list-size . 30)
-             (imenu-list-position . 'left))))
+             (imenu-list-position . 'left)))
+  )
 
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
-  :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
+  :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
+  )
 
 
 ;; Describe own settings below
 ;; =========================================================================================
 (when load-file-name
   (setq user-emacs-directory
-        (expand-file-name (file-name-directory load-file-name))))
+        (expand-file-name (file-name-directory load-file-name)))
+  )
 
-;; 定数定義
+;; local-const
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
 (unless (file-directory-p my:d:vars)
@@ -65,7 +69,7 @@
 
 ;; -----------------------------------------------------------------------------------------
 
-(leaf Ime
+(leaf ime
   :config
   (set-language-environment "Japanese")
   (leaf windows
@@ -95,7 +99,7 @@
     )
   )
   
-(leaf Setting
+(leaf setting
   :doc "general settings"
   :setq
   ;; default directory
@@ -119,7 +123,7 @@
   (scroll-preserve-screen-position . t)
   )
 
-(leaf SystemFiles
+(leaf files
   :doc "system file"
   :custom
   ;; backup file
@@ -140,7 +144,7 @@
   (create-lockfiles . nil)
   )
 
-(leaf Search
+(leaf search
   :doc "search settings"
   :custom
   ;; ignore upper/lower case
@@ -151,7 +155,7 @@
   (read-buffer-completion-ignore-case . t)
   )
 
-(leaf Saveplace
+(leaf saveplace
   :doc "memorise last cursor position"
   :custom
   `((save-place . t)
@@ -166,19 +170,19 @@
                 tramp-file-name-regexp))
   )
 
-(leaf Autorevert
+(leaf autorevert
   :doc "auto-reload updated files outside emacs"
   :custom
   (auto-revert-interval . 1)
   :global-minor-mode global-auto-revert-mode
   )
 
-(leaf Image
+(leaf image
   :doc "always display picture"
   :global-minor-mode auto-image-file-mode
   )
 
-(leaf Looks
+(leaf looks
   :doc "app style"
   :config
   (leaf doom-themes
