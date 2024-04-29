@@ -116,6 +116,7 @@
   (ring-bell-function . 'ignore)        ; error beep off
   (kill-ring-max . 200)                 ; keep kill-ring
   (require-final-newline . t)           ; auto-insert last line
+  (use-dialog-box . nil)                ; always using the echo area
   ;; scroll
   (scroll-conservatively . 1)
   (scroll-margin . 3)
@@ -204,6 +205,11 @@
     :custom
     (transient-mark-mode . t)
     )
+
+  (set-frame-parameter nil 'alpha 85)              ; frame transparency
+  (set-frame-parameter nil 'fullscreen 'maximized) ; fullscreen
+  (set-frame-parameter nil 'cursor-type 'box)      ; cursor type
+  (blink-cursor-mode 0)                            ; disable cursor blinking
   
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
