@@ -179,6 +179,27 @@
 
 (leaf Looks
   :doc "app style"
+  :config
+  (leaf doom-themes
+    :ensure t
+    :hook (after-init-hook . (lambda () (load-theme 'doom-vibrant t)))
+    :custom
+    (doom-themes-enable-italic . nil)
+    (doom-themes-enable-bold . nil)
+    )
+
+  (leaf color
+    :config
+    (custom-set-faces
+     '(region ((t (:background "Purple4"))))
+     '(mode-line ((t (:background "Blue Violet"))))
+     '(hl-line ((t (:background "midnightblue"))))
+     )
+    (global-hl-line-mode)
+    :custom
+    (transient-mark-mode . t)
+    )
+  
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
   (scroll-bar-mode . nil)               ; non-display scroll-bar
@@ -186,6 +207,7 @@
   (inhibit-startup-message . t)         ; non-display startup
   (initial-scratch-message . "")        ; scratch is null
   (show-paren-mode . t)                 ; hightlight matching paren
+
   )
 
 ;; =========================================================================================
