@@ -53,6 +53,7 @@
   (setq user-emacs-directory
         (expand-file-name (file-name-directory load-file-name))))
 
+;; 定数定義
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
 (unless (file-directory-p my:d:vars)
@@ -107,16 +108,15 @@
   :custom
   (confirm-kill-emacs . 'y-or-n-p)      ; check on exit
   (use-short-answers . t)               ; y-or-n
+  (echo-keystrokes . 0.1)               ; echo Area key-strokes
+  (ring-bell-function . 'ignore)        ; error beep off
+  (kill-ring-max . 200)                 ; keep kill-ring
+  (require-final-newline . t)           ; auto-insert last line
   ;; scroll
   (scroll-conservatively . 1)
   (scroll-margin . 3)
   (next-screen-context-lines . 3)
   (scroll-preserve-screen-position . t)
-  
-  (echo-keystrokes . 0.1)               ; echo Area key-strokes
-  (ring-bell-function . 'ignore)        ; error beep off
-  (kill-ring-max . 200)                 ; keep kill-ring
-  (require-final-newline . t)           ; auto-insert last line
   )
 
 (leaf SystemFiles
@@ -131,7 +131,7 @@
   (delete-old-versions . t)
   ;; auto-save file
   ;; 下記設定が効いてないのでいったんコメントアウト
-  ;; auto-save-listに仮保存されるのをそのうち対応したい
+  ;; auto-save-listに仮保存されるのでそのうち見直す
   ;; (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
   (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
@@ -141,6 +141,7 @@
   )
 
 (leaf Search
+  :doc "search settings"
   :custom
   ;; ignore upper/lower case
   (case-fold-search . t)
@@ -195,7 +196,7 @@
      '(mode-line ((t (:background "Blue Violet"))))
      '(hl-line ((t (:background "midnightblue"))))
      )
-    (global-hl-line-mode)
+    (global-hl-line-mode t)
     :custom
     (transient-mark-mode . t)
     )
@@ -207,7 +208,6 @@
   (inhibit-startup-message . t)         ; non-display startup
   (initial-scratch-message . "")        ; scratch is null
   (show-paren-mode . t)                 ; hightlight matching paren
-
   )
 
 ;; =========================================================================================
