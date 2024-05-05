@@ -109,10 +109,22 @@
   
 (leaf setting
   :doc "general settings"
+  (leaf autorevert
+    :doc "auto-reload updated files outside emacs"
+    :custom
+    (auto-revert-interval . 1)
+    :global-minor-mode global-auto-revert-mode
+    )
+  (leaf image
+    :doc "always display picture"
+    :global-minor-mode auto-image-file-mode
+    )
+
   :setq
   ;; default directory
   (default-directory . "~/")
   (command-line-default-directory . "~/")
+
   :custom
   (confirm-kill-emacs . 'y-or-n-p)      ; check on exit
   (use-short-answers . t)               ; y-or-n
@@ -133,6 +145,21 @@
 
 (leaf files
   :doc "system file"
+  (leaf saveplace
+    :doc "memorise last cursor position"
+    :custom
+    `((save-place . t)
+      (save-place-file
+       . ,(expand-file-name "save-places"  my:d:vars))
+      )
+    :hook (emacs-startup-hook . save-place-mode)
+    :config
+    (setq save-place-ingore-files-regexp
+          (format "\\(%s\\)\\|\\(%s\\)"
+                  save-place-ignore-files-regexp
+                  tramp-file-name-regexp))
+    )
+
   :custom
   ;; backup file
   (backup-directory-alist . `(("." . ,my:d:backup)))
@@ -163,33 +190,6 @@
   (read-buffer-completion-ignore-case . t)
   )
 
-(leaf saveplace
-  :doc "memorise last cursor position"
-  :custom
-  `((save-place . t)
-    (save-place-file
-     . ,(expand-file-name "save-places"  my:d:vars))
-    )
-  :hook (emacs-startup-hook . save-place-mode)
-  :config
-  (setq save-place-ingore-files-regexp
-        (format "\\(%s\\)\\|\\(%s\\)"
-                save-place-ignore-files-regexp
-                tramp-file-name-regexp))
-  )
-
-(leaf autorevert
-  :doc "auto-reload updated files outside emacs"
-  :custom
-  (auto-revert-interval . 1)
-  :global-minor-mode global-auto-revert-mode
-  )
-
-(leaf image
-  :doc "always display picture"
-  :global-minor-mode auto-image-file-mode
-  )
-
 (leaf looks
   :doc "app style"
   :config
@@ -200,7 +200,6 @@
     (doom-themes-enable-italic . nil)
     (doom-themes-enable-bold . nil)
     )
-
   (leaf color
     :config
     (custom-set-faces
@@ -212,7 +211,6 @@
     :custom
     (transient-mark-mode . t)
     )
-
   (leaf uniquify
     :custom
     ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
