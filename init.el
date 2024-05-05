@@ -213,10 +213,20 @@
     (transient-mark-mode . t)
     )
 
+  (leaf uniquify
+    :custom
+    ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+     (uniquify-min-dir-content . 2))    ; directory hierarchy
+    )
+
+  (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
   (set-frame-parameter nil 'alpha 85)              ; frame transparency
   (set-frame-parameter nil 'fullscreen 'maximized) ; fullscreen
   (set-frame-parameter nil 'cursor-type 'box)      ; cursor type
   (blink-cursor-mode 0)                            ; disable cursor blinking
+  (line-number-mode t)
+  (column-number-mode t)
+  (size-indication-mode t)              ; file size
 
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
