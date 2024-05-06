@@ -237,6 +237,42 @@
   (show-paren-mode . t)                 ; hightlight matching paren
   )
 
+;; -----------------------------------------------------------------------------------------
+
+(leaf migemo
+  :doc "Incremental search in Roman characters for linux"
+  :if (executable-find "cmigemo")
+  :ensure t
+  :require t
+  :custom
+  (migemo-command . "cmigemo")
+  (migemo-options . '("-q" "--emacs"))
+  (migemo-dictionary . "/usr/share/cmigemo/utf-8/migemo-dict")
+  (migemo-user-dictionary . nil)
+  (migemo-regex-dictionary . nil)
+  (migemo-coding-system . 'utf-8-unix)
+  :config
+  (migemo-init)
+  )
+
+(leaf migemo
+  :doc "Incremental search in Roman characters for windows"
+  :when (and
+         (eq system-type 'windows-nt)
+         (file-exists-p "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
+  :ensure t
+  :require t
+  :custom
+  (migemo-command . "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
+  (migemo-options . '("-q" "--emacs"))
+  (migemo-dictionary . "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict")
+  (migemo-user-dictionary . nil)
+  (migemo-regex-dictionary . nil)
+  (migemo-coding-system . 'utf-8-unix)
+  :config
+  (migemo-init)
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
