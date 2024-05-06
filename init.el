@@ -109,6 +109,7 @@
   
 (leaf setting
   :doc "general settings"
+  :config
   (leaf autorevert
     :doc "auto-reload updated files outside emacs"
     :custom
@@ -145,6 +146,7 @@
 
 (leaf files
   :doc "system file"
+  :config
   (leaf saveplace
     :doc "memorise last cursor position"
     :custom
