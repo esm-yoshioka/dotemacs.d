@@ -273,6 +273,22 @@
   (migemo-init)
   )
 
+(leaf vertico
+  :doc "VERTical Interactive COmpletion"
+  :ensure t
+  :custom
+  (vertico-count . 20)                  ; max display num
+  (vertico-cycle . t)
+  (vertico-resize . t)
+  :config
+  (vertico-mode)
+  )
+
+(leaf savehist
+  :custom
+  `((savehist-file . ,(expand-file-name "history" my:d:vars)))
+  :config
+  (savehist-mode t))
 ;; =========================================================================================
 
 (provide 'init)
