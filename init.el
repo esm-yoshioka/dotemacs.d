@@ -289,6 +289,14 @@
   `((savehist-file . ,(expand-file-name "history" my:d:vars)))
   :config
   (savehist-mode t))
+
+(leaf marginalia
+  :doc "Enable richer annotations"
+  :ensure t
+  :config
+  (marginalia-mode)
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
