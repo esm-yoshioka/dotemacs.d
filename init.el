@@ -324,13 +324,12 @@
 								 orderless-migemo)))
   :custom
   (completion-category-overrides .
-        '((command (styles orderless-default-style))
-          (file (styles orderless-migemo-style))
+        '((command (styles orderless-default-style))           ; M-x
+          (file (styles orderless-migemo-style))               ; find-file
           (buffer (styles orderless-migemo-style))
           (symbol (styles orderless-default-style))
-          (consult-location (styles orderless-migemo-style))
-          (consult-multi (styles orderless-migemo-style))
-          (org-roam-node (styles orderless-migemo-style))
+          (consult-location (styles orderless-migemo-style))   ; consult-line etc
+          (consult-multi (styles orderless-migemo-style))      ; consult-buffer etc
           (unicode-name (styles orderless-migemo-style))
           (variable (styles orderless-default-style))))
   )
