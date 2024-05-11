@@ -297,6 +297,44 @@
   (marginalia-mode)
   )
 
+(leaf orderless
+  :doc "fuzzy completion"
+  :ensure t
+  :custom
+  (completion-styles . '(orderless))
+  )
+
+(leaf orderless-migemo
+  :doc "Using migemo with orderless"
+  :after migemo orderless
+  :config
+  (defun orderless-migemo (component)
+    (let ((pattern (migemo-get-pattern component)))
+	  (condition-case nil
+          (progn (string-match-p pattern "") pattern)
+        (invalid-regexp nil))))
+  (orderless-define-completion-style orderless-default-style
+	(orderless-matching-styles '(orderless-initialism
+								 orderless-literal
+								 orderless-regexp)))
+  (orderless-define-completion-style orderless-migemo-style
+	(orderless-matching-styles '(orderless-initialism
+								 orderless-literal
+								 orderless-regexp
+								 orderless-migemo)))
+  :custom
+  (completion-category-overrides .
+        '((command (styles orderless-default-style))
+          (file (styles orderless-migemo-style))
+          (buffer (styles orderless-migemo-style))
+          (symbol (styles orderless-default-style))
+          (consult-location (styles orderless-migemo-style))
+          (consult-multi (styles orderless-migemo-style))
+          (org-roam-node (styles orderless-migemo-style))
+          (unicode-name (styles orderless-migemo-style))
+          (variable (styles orderless-default-style))))
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
