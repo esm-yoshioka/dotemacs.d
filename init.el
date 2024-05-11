@@ -334,6 +334,11 @@
           (variable (styles orderless-default-style))))
   )
 
+(leaf consult
+  :doc "search and navigation commands"
+  :ensure t
+  )
+
 ;; =========================================================================================
 
 (provide 'init)
