@@ -373,6 +373,15 @@
   :ensure t
   )
 
+(leaf rainbow-delimiters
+  :ensure t
+  :hook
+  web-mode-hook
+  prog-mode-hook
+  :config
+  (rainbow-delimiters-mode)
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf global-key
