@@ -165,7 +165,27 @@
     :custom
     `((savehist-file . ,(expand-file-name "history" my:d:vars)))
     :config
-    (savehist-mode t))
+    (savehist-mode t)
+    )
+  (leaf recentf
+    :preface
+    (defmacro with-suppressed-message (&rest body)
+      "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
+      (declare
+       (indent 0))
+      (let ((message-log-max nil))
+        `(with-temp-message (or (current-message) "") ,@body)))
+    :custom
+    `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
+      (recentf-max-saved-items . 2000)
+      (recentf-auto-cleanup . 'never)
+      (recentf-exclude . '("recentf"))
+      )
+    :config
+    (run-with-idle-timer 60 t '(lambda () ; 60s
+                                 (with-suppressed-message (recentf-save-list))))
+    (recentf-mode)
+    )
 
   :custom
   ;; backup file
@@ -340,6 +360,7 @@
   (
    ("C-x b" . consult-buffer)
    ("C-x C-b" . consult-buffer)
+   ("C-x C-o" . consult-recent-file)
    )
   )
 
