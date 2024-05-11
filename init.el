@@ -161,6 +161,11 @@
                   save-place-ignore-files-regexp
                   tramp-file-name-regexp))
     )
+  (leaf savehist
+    :custom
+    `((savehist-file . ,(expand-file-name "history" my:d:vars)))
+    :config
+    (savehist-mode t))
 
   :custom
   ;; backup file
@@ -240,7 +245,7 @@
 ;; -----------------------------------------------------------------------------------------
 
 (leaf migemo
-  :doc "Incremental search in Roman characters for linux"
+  :doc "incremental search in Roman characters for linux"
   :if (executable-find "cmigemo")
   :ensure t
   :require t
@@ -256,7 +261,7 @@
   )
 
 (leaf migemo
-  :doc "Incremental search in Roman characters for windows"
+  :doc "incremental search in Roman characters for windows"
   :when (and
          (eq system-type 'windows-nt)
          (file-exists-p "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
@@ -284,14 +289,8 @@
   (vertico-mode)
   )
 
-(leaf savehist
-  :custom
-  `((savehist-file . ,(expand-file-name "history" my:d:vars)))
-  :config
-  (savehist-mode t))
-
 (leaf marginalia
-  :doc "Enable richer annotations"
+  :doc "enable richer annotations"
   :ensure t
   :config
   (marginalia-mode)
@@ -305,7 +304,7 @@
   )
 
 (leaf orderless-migemo
-  :doc "Using migemo with orderless"
+  :doc "using migemo with orderless"
   :after migemo orderless
   :config
   (defun orderless-migemo (component)
@@ -337,6 +336,23 @@
 (leaf consult
   :doc "search and navigation commands"
   :ensure t
+  :bind
+  (
+   ("C-x b" . consult-buffer)
+   ("C-x C-b" . consult-buffer)
+   )
+  )
+
+;; -----------------------------------------------------------------------------------------
+
+(leaf global-key
+  :doc "global key bind"
+  :bind
+  ("C-t" . other-window)
+  ("C-0" . delete-window)
+  ("C-h" . delete-backward-char)
+  ("M-," . text-scale-decrease)
+  ("M-." . text-scale-increase)
   )
 
 ;; =========================================================================================
