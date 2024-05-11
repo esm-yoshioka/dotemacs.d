@@ -369,17 +369,31 @@
   )
 
 (leaf recentf-ext
-  :doc ""
+  :doc "recentf extension"
   :ensure t
   )
 
 (leaf rainbow-delimiters
+  :doc "highlights parens"
   :ensure t
   :hook
   web-mode-hook
   prog-mode-hook
   :config
   (rainbow-delimiters-mode)
+  )
+
+;; -----------------------------------------------------------------------------------------
+
+(leaf set-alpha
+  :doc "change transparency"
+  :preface
+  (defun set-alpha (alpha-mun)
+    "set frame parameter 'alpha"
+    (interactive "nAlplha: ")
+    (set-frame-parameter nil 'alpha
+                         (cons alpha-mun
+                               '(90))))
   )
 
 ;; -----------------------------------------------------------------------------------------
