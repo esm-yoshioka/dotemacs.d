@@ -107,7 +107,7 @@
     )
   )
   
-(leaf setting
+(leaf settings
   :doc "general settings"
   :config
   (leaf autorevert
@@ -361,7 +361,16 @@
    ("C-x b" . consult-buffer)
    ("C-x C-b" . consult-buffer)
    ("C-x C-o" . consult-recent-file)
+   ("C-," . bs-cycle-previous)
+   ("C-." . bs-cycle-next)
+   ("C-c s" . consult-line)
+   ("C-c m" . consult-line-multi)
    )
+  )
+
+(leaf recentf-ext
+  :doc ""
+  :ensure t
   )
 
 ;; -----------------------------------------------------------------------------------------
