@@ -7,4 +7,5 @@ if [ ! -d $DIR ]; then
 fi
 cp HackGen* $DIR
 
+sudo apt install fontconfig
 fc-cache -vf
