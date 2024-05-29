@@ -1,6 +1,6 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
 ;; 
-;; Author: esm-yoshioka
+;; Author : esm-yoshioka
 ;; Version: 29.3
 ;; 
 
@@ -116,6 +116,7 @@
     (auto-revert-interval . 1)
     :global-minor-mode global-auto-revert-mode
     )
+
   (leaf image
     :doc "always display picture"
     :global-minor-mode auto-image-file-mode
@@ -161,12 +162,14 @@
                   save-place-ignore-files-regexp
                   tramp-file-name-regexp))
     )
+
   (leaf savehist
     :custom
     `((savehist-file . ,(expand-file-name "history" my:d:vars)))
     :config
     (savehist-mode t)
     )
+
   (leaf recentf
     :preface
     (defmacro with-suppressed-message (&rest body)
@@ -189,6 +192,7 @@
 
   :custom
   ;; backup file
+  ;; issue_wsl: wsl上で実行してるとbackup設定が効いてない
   (backup-directory-alist . `(("." . ,my:d:backup)))
   (backup-by-copying . t)
   (version-control . t)
@@ -196,8 +200,7 @@
   (kept-old-versions . 0)
   (delete-old-versions . t)
   ;; auto-save file
-  ;; 下記設定が効いてないのでいったんコメントアウト
-  ;; auto-save-listに仮保存されるのでそのうち見直す
+  ;; issue_com: backupディレクトリに作成されずauto-save-list内のまま
   ;; (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
   (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
@@ -227,6 +230,7 @@
     (doom-themes-enable-italic . nil)
     (doom-themes-enable-bold . nil)
     )
+
   (leaf color
     :config
     (custom-set-faces
@@ -238,6 +242,7 @@
     :custom
     (transient-mark-mode . t)
     )
+
   (leaf uniquify
     :custom
     ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
