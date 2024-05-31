@@ -303,6 +303,18 @@
   (migemo-init)
   )
 
+(leaf anzu
+  :doc "display current count & total match"
+  :ensure t
+  :after migemo
+  :bind ("M-%" . anzu-query-replace)
+  :custom
+  (anzu-use-migemo . t)
+  (anzu-minimum-input-length . 3)       ; count target
+  :config
+  (global-anzu-mode)
+  )
+
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :ensure t
