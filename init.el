@@ -28,7 +28,6 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
-
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init))
@@ -112,8 +111,7 @@
   :config
   (leaf autorevert
     :doc "auto-reload updated files outside emacs"
-    :custom
-    (auto-revert-interval . 1)
+    :custom (auto-revert-interval . 1)
     :global-minor-mode global-auto-revert-mode
     )
 
@@ -167,7 +165,7 @@
     :custom
     `((savehist-file . ,(expand-file-name "history" my:d:vars)))
     :config
-    (savehist-mode t)
+    (savehist-mode)
     )
 
   (leaf recentf
@@ -306,6 +304,7 @@
 (leaf anzu
   :doc "display current count & total match"
   :ensure t
+  :require t
   :after migemo
   :bind ("M-%" . anzu-query-replace)
   :custom
@@ -374,15 +373,13 @@
   :doc "search and navigation commands"
   :ensure t
   :bind
-  (
-   ("C-x b" . consult-buffer)
-   ("C-x C-b" . consult-buffer)
-   ("C-x C-o" . consult-recent-file)
-   ("C-," . bs-cycle-previous)
-   ("C-." . bs-cycle-next)
-   ("C-c s" . consult-line)
-   ("C-c m" . consult-line-multi)
-   )
+  ("C-x b" . consult-buffer)
+  ("C-x C-b" . consult-buffer)
+  ("C-x C-o" . consult-recent-file)
+  ("C-," . bs-cycle-previous)
+  ("C-." . bs-cycle-next)
+  ("C-c s" . consult-line)
+  ("C-c m" . consult-line-multi)
   )
 
 (leaf recentf-ext
