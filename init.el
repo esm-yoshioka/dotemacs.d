@@ -48,9 +48,9 @@
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
   )
 
-
 ;; Describe own settings below
 ;; =========================================================================================
+
 (when load-file-name
   (setq user-emacs-directory
         (expand-file-name (file-name-directory load-file-name)))
@@ -61,10 +61,21 @@
   (expand-file-name "vars/" user-emacs-directory))
 (unless (file-directory-p my:d:vars)
   (make-directory my:d:vars))
+
 (defconst my:d:backup
   (expand-file-name "backup/" user-emacs-directory))
 (unless (file-directory-p my:d:backup)
   (make-directory my:d:backup))
+
+;; issue_wsl：定数化だと反映されない？
+(defconst my:d:lisp
+  (expand-file-name "lisp/" user-emacs-directory))
+(unless (file-directory-p my:d:lisp)
+  (make-directory my:d:lisp))
+(let ((default-directory (expand-file-name my:d:lisp)))
+  (add-to-list 'load-path default-directory)
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+      (normal-top-level-add-subdirs-to-load-path)))
 
 ;; -----------------------------------------------------------------------------------------
 
@@ -105,7 +116,7 @@
     (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
     )
   )
-  
+
 (leaf settings
   :doc "general settings"
   :config
@@ -151,7 +162,7 @@
     :custom
     `((save-place . t)
       (save-place-file
-       . ,(expand-file-name "save-places"  my:d:vars))
+       . ,(expand-file-name "save-places" my:d:vars))
       )
     :hook (emacs-startup-hook . save-place-mode)
     :config
@@ -380,6 +391,52 @@
   ("C-." . bs-cycle-next)
   ("C-c s" . consult-line)
   ("C-c m" . consult-line-multi)
+  )
+
+(leaf corfu
+  :doc "COmpletion in Region FUnction"
+  :ensure t
+  :custom
+  (corfu-auto . t)                      ; corfu on
+  (corfu-cycle . t)
+  (corfu-auto-delay . 0.1)
+  (corfu-auto-prefix . 2)
+  (corfu-popupinfo-delay . 1.0)
+  (corfu-min-width . 30)
+  ;; (tab-always-indent 'complete)
+  ;; (corfu-preview-current . nil)
+  ;; (completion-cycle-threshold . nil)
+  ;; (corfu-quit-at-boundary . 'separator)
+  ;; (corfu-separator . ?\s)
+  ;; (corfu-on-exact-match . nil)
+  ;; (corfu-quit-no-match . t)
+  ;; (corfu-preselect-first . nil)
+  :config
+  (custom-set-faces
+   '(corfu-default ((t (:background "navy"))))
+   )
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  )
+
+;; (leaf corfu-terminal
+;;   :url
+;;   "https://codeberg.org/akib/emacs-corfu-terminal.git"
+;;   "https://codeberg.org/akib/emacs-popon.git"
+;;   :after corfu
+;;   :require t
+;;   :unless (display-graphic-p)
+;;   :config
+;;   (corfu-terminal-mode)
+;;   )
+
+(leaf cape
+  :ensure t
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   )
 
 (leaf recentf-ext
