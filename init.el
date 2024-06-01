@@ -414,6 +414,7 @@
   :config
   (custom-set-faces
    '(corfu-default ((t (:background "navy"))))
+   '(corfu-current ((t (:foreground "orange"))))
    )
   :init
   (global-corfu-mode)
