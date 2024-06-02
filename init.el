@@ -105,19 +105,6 @@
     (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
     (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
     )
-
-  (leaf wsl-ime
-    :when (eq system-type 'gnu/linux)
-    :config
-    (leaf mozc
-      :ensure t)
-    (leaf mozc-im
-      :ensure t)
-    (leaf mozc-popup
-      :ensure t)
-
-    (setq default-input-method "japanese-mozc")
-    )
   )
 
 (leaf settings
@@ -399,7 +386,7 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
-  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上で效かないので変更
+;  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上で效かないので変更
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
