@@ -67,16 +67,6 @@
 (unless (file-directory-p my:d:backup)
   (make-directory my:d:backup))
 
-;; issue_wsl：定数化だと反映されない？
-(defconst my:d:lisp
-  (expand-file-name "lisp/" user-emacs-directory))
-(unless (file-directory-p my:d:lisp)
-  (make-directory my:d:lisp))
-(let ((default-directory (expand-file-name my:d:lisp)))
-  (add-to-list 'load-path default-directory)
-  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-      (normal-top-level-add-subdirs-to-load-path)))
-
 ;; -----------------------------------------------------------------------------------------
 
 (leaf languages
@@ -396,6 +386,7 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
+  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上で效かないので変更
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
@@ -420,17 +411,6 @@
   (global-corfu-mode)
   (corfu-popupinfo-mode)
   )
-
-;; (leaf corfu-terminal
-;;   :url
-;;   "https://codeberg.org/akib/emacs-corfu-terminal.git"
-;;   "https://codeberg.org/akib/emacs-popon.git"
-;;   :after corfu
-;;   :require t
-;;   :unless (display-graphic-p)
-;;   :config
-;;   (corfu-terminal-mode)
-;;   )
 
 (leaf cape
   :ensure t
