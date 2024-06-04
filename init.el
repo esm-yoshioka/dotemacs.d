@@ -111,8 +111,9 @@
     :config
     (set-language-environment "Japanese")
     (leaf mozc
-      :ensure t
-      )
+      :ensure t)
+    (leaf mozc-popup
+      :ensure t)
     (setq default-input-method "japanese-mozc")
     )
   )
