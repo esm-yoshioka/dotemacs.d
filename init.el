@@ -466,6 +466,11 @@
   :ensure t
   )
 
+(leaf csv-mode
+  :doc "Major mode for editing comma/char separated values"
+  :ensure t
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf set-alpha
