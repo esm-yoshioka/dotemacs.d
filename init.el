@@ -456,6 +456,11 @@
   :ensure t
   )
 
+(leaf yaml-mode
+  :doc "Major mode for editing YAML files"
+  :ensure t
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf set-alpha
