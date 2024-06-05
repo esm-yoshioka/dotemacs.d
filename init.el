@@ -451,6 +451,13 @@
 
 ;; -----------------------------------------------------------------------------------------
 
+(leaf powershell
+  :doc "Mode for editing PowerShell scripts"
+  :ensure t
+  )
+
+;; -----------------------------------------------------------------------------------------
+
 (leaf set-alpha
   :doc "change transparency"
   :preface
