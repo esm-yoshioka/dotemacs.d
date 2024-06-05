@@ -109,6 +109,7 @@
     :when (eq system-type 'gnu/linux)
     :config
     (leaf mozc
+      :doc "japanese input method"
       :ensure t)
     (leaf mozc-popup
       :ensure t)
@@ -120,7 +121,7 @@
   :doc "general settings"
   :config
   (leaf autorevert
-    :doc "auto-reload updated files outside emacs"
+    :doc "revert buffers when files on disk change"
     :custom (auto-revert-interval . 1)
     :global-minor-mode global-auto-revert-mode
     )
@@ -157,7 +158,7 @@
   :doc "system file"
   :config
   (leaf saveplace
-    :doc "memorise last cursor position"
+    :doc "automatically save place in files"
     :custom
     `((save-place . t)
       (save-place-file
@@ -172,6 +173,7 @@
     )
 
   (leaf savehist
+    :doc "Save minibuffer history"
     :custom
     `((savehist-file . ,(expand-file-name "history" my:d:vars)))
     :config
@@ -179,6 +181,7 @@
     )
 
   (leaf recentf
+    :doc "keep track of recently opened files"
     :preface
     (defmacro with-suppressed-message (&rest body)
       "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
@@ -196,6 +199,11 @@
     (run-with-idle-timer 60 t '(lambda () ; 60s
                                  (with-suppressed-message (recentf-save-list))))
     (recentf-mode)
+    )
+
+  (leaf recentf-ext
+    :doc "Recentf extensions"
+    :ensure t
     )
 
   :custom
@@ -252,6 +260,7 @@
     )
 
   (leaf uniquify
+    :doc "unique buffer names dependent on file name"
     :custom
     ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
      (uniquify-min-dir-content . 2))    ; directory hierarchy
@@ -380,7 +389,7 @@
   )
 
 (leaf consult
-  :doc "search and navigation commands"
+  :doc "Consulting completing-read"
   :ensure t
   :bind
   ("C-x b" . consult-buffer)
@@ -422,6 +431,7 @@
   )
 
 (leaf cape
+  :doc "Completion At Point Extensions"
   :ensure t
   :config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
@@ -429,13 +439,8 @@
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   )
 
-(leaf recentf-ext
-  :doc "recentf extension"
-  :ensure t
-  )
-
 (leaf rainbow-delimiters
-  :doc "highlights parens"
+  :doc "Highlight brackets according to their depth"
   :ensure t
   :hook
   web-mode-hook
