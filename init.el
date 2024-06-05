@@ -461,6 +461,11 @@
   :ensure t
   )
 
+(leaf typescript-mode
+  :doc "Major mode for editing typescript"
+  :ensure t
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf set-alpha
