@@ -89,7 +89,6 @@
       :config
       (tr-ime-advanced-install)
       )
-    (set-language-environment "Japanese")
 
     (setq default-input-method "W32-IME")
     (setq-default w32-ime-mode-line-state-indicator "[Aa]")
@@ -109,7 +108,6 @@
   (leaf wsl-ime
     :when (eq system-type 'gnu/linux)
     :config
-    (set-language-environment "Japanese")
     (leaf mozc
       :ensure t)
     (leaf mozc-popup
@@ -397,7 +395,7 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
-  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上で效かないので変更
+  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
