@@ -466,6 +466,12 @@
   :ensure t
   )
 
+(leaf vue-mode
+  :doc "Major mode for vue component based on mmm-mode"
+  :ensure t
+  :after mmm-mode vue-html-mode ssass-mode edit-indirect
+  )
+
 (leaf csv-mode
   :doc "Major mode for editing comma/char separated values"
   :ensure t
