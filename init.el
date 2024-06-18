@@ -234,6 +234,7 @@
   (completion-ignore-case . t)
   (read-file-name-completion-ignore-case . t)
   (read-buffer-completion-ignore-case . t)
+
   :config
   (leaf isearch
     :bind (:isearch-mode-map
@@ -456,30 +457,33 @@
 
 ;; -----------------------------------------------------------------------------------------
 
-(leaf powershell
-  :doc "Mode for editing PowerShell scripts"
-  :ensure t
-  )
+(leaf programs
+  :config
+  (leaf powershell
+    :doc "Mode for editing PowerShell scripts"
+    :ensure t
+    )
 
-(leaf yaml-mode
-  :doc "Major mode for editing YAML files"
-  :ensure t
-  )
+  (leaf yaml-mode
+    :doc "Major mode for editing YAML files"
+    :ensure t
+    )
 
-(leaf typescript-mode
-  :doc "Major mode for editing typescript"
-  :ensure t
-  )
+  (leaf typescript-mode
+    :doc "Major mode for editing typescript"
+    :ensure t
+    )
 
-(leaf vue-mode
-  :doc "Major mode for vue component based on mmm-mode"
-  :ensure t
-  :after mmm-mode vue-html-mode ssass-mode edit-indirect
-  )
+  (leaf vue-mode
+    :doc "Major mode for vue component based on mmm-mode"
+    :ensure t
+    :after mmm-mode vue-html-mode ssass-mode edit-indirect
+    )
 
-(leaf csv-mode
-  :doc "Major mode for editing comma/char separated values"
-  :ensure t
+  (leaf csv-mode
+    :doc "Major mode for editing comma/char separated values"
+    :ensure t
+    )
   )
 
 ;; -----------------------------------------------------------------------------------------
