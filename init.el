@@ -234,6 +234,11 @@
   (completion-ignore-case . t)
   (read-file-name-completion-ignore-case . t)
   (read-buffer-completion-ignore-case . t)
+  :config
+  (leaf isearch
+    :bind (:isearch-mode-map
+           ("C-h" . isearch-delete-char))
+    )
   )
 
 (leaf looks
