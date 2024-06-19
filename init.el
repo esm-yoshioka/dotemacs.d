@@ -290,6 +290,42 @@
   (show-paren-mode . t)                 ; hightlight matching paren
   )
 
+(leaf view
+  ;; If not writable, leave in view-mode
+  :preface
+  (defmacro do-not-exit-view-mode-unless-writable-advice (f)
+    `(defadvice ,f (around do-not-exit-view-mode-unless-writable activate)
+       (if (and
+            (buffer-file-name)
+            (not view-mode-force-exit)
+            (not (file-writable-p
+                  (buffer-file-name))))
+           (message "File is unwritable, so stay in view-mode.")
+         ad-do-it)))
+  :setq (view-mode-force-exit)
+  :config
+  (do-not-exit-view-mode-unless-writable-advice view-mode-exit)
+  (do-not-exit-view-mode-unless-writable-advice view-mode-disable)
+
+  :bind (:view-mode-map
+         ("h" . backward-char)
+         ("l" . forward-char)
+         ("j" . next-line)
+         ("k" . previous-line)
+         ("a" . move-beginning-of-line)
+         ("e" . move-end-of-line)
+         ("n" . scroll-up)
+         ("p" . scroll-down)
+         ;; ("s" . isearch-forward)
+         ;; ("r" . isearch-backward)
+         ("c" . consult-line)
+         ("m" . consult-line-multi)
+         )
+  :hook (find-file-hook . view-mode)
+  :custom
+  (view-read-only . t)
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf migemo
