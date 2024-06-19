@@ -288,6 +288,7 @@
   (inhibit-startup-message . t)         ; non-display startup
   (initial-scratch-message . "")        ; scratch is null
   (show-paren-mode . t)                 ; hightlight matching paren
+  (line-spacing . 0.25)                 ; line spacing size
   )
 
 (leaf view
@@ -513,7 +514,7 @@
   (leaf vue-mode
     :doc "Major mode for vue component based on mmm-mode"
     :ensure t
-    :after mmm-mode vue-html-mode ssass-mode edit-indirect
+    ;; :after mmm-mode vue-html-mode ssass-mode edit-indirect
     )
 
   (leaf csv-mode
