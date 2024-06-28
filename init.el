@@ -329,33 +329,30 @@
 
 ;; -----------------------------------------------------------------------------------------
 
-(leaf migemo
-  :doc "incremental search in Roman characters for linux"
-  :if (executable-find "cmigemo")
-  :ensure t
-  :require t
+(leaf migemo-linux
+  :when (and
+         (eq system-type 'gnu/linux)
+         (executable-find "cmigemo"))
   :custom
   (migemo-command . "cmigemo")
-  (migemo-options . '("-q" "--emacs"))
   (migemo-dictionary . "/usr/share/cmigemo/utf-8/migemo-dict")
-  (migemo-user-dictionary . nil)
-  (migemo-regex-dictionary . nil)
-  (migemo-coding-system . 'utf-8-unix)
-  :config
-  (migemo-init)
   )
 
-(leaf migemo
-  :doc "incremental search in Roman characters for windows"
+(leaf migemo-win
   :when (and
          (eq system-type 'windows-nt)
          (file-exists-p "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
+  :custom
+  (migemo-command . "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
+  (migemo-dictionary . "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict")
+  )
+
+(leaf migemo
+  :doc "Japanese incremental search through dynamic pattern expansion"
   :ensure t
   :require t
   :custom
-  (migemo-command . "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
   (migemo-options . '("-q" "--emacs"))
-  (migemo-dictionary . "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict")
   (migemo-user-dictionary . nil)
   (migemo-regex-dictionary . nil)
   (migemo-coding-system . 'utf-8-unix)
@@ -436,7 +433,7 @@
   :ensure t
   :bind
   ("C-x b" . consult-buffer)
-  ("C-x C-b" . consult-buffer)
+  ("C-x C-b" . bs-show)
   ("C-x C-o" . consult-recent-file)
   ("C-," . bs-cycle-previous)
   ("C-." . bs-cycle-next)
@@ -514,7 +511,6 @@
   (leaf vue-mode
     :doc "Major mode for vue component based on mmm-mode"
     :ensure t
-    ;; :after mmm-mode vue-html-mode ssass-mode edit-indirect
     )
 
   (leaf csv-mode
