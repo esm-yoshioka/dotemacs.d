@@ -1,7 +1,7 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
 ;; 
 ;; Author : esm-yoshioka
-;; Version: 29.3
+;; Version: 29.4
 ;; 
 
 (eval-and-compile
@@ -516,6 +516,15 @@
   (leaf csv-mode
     :doc "Major mode for editing comma/char separated values"
     :ensure t
+    )
+
+  (leaf markdown-mode
+    :doc "Major mode for Markdown-formatted text"
+    :ensure t
+    :mode
+    (("\\.markdown\\'" . markdown-mode)
+     ("\\.md\\'" . markdown-mode)
+     ("README\\.md\\'" . gfm-mode))
     )
   )
 
