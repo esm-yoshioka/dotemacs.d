@@ -6,7 +6,7 @@
 - C-x C-c : emacsの終了
 - C-x C-z : emacsを最小化
 - C-g : 実行中の処理をキャンセル
-- <F1> : ヘルプ
+- "F1" : ヘルプ
 
 ### Move
 - C-f : 1文字後（次の文字）へ移動
@@ -45,8 +45,8 @@
 - C-x C-o : 最近使ったファイルの一覧を開く
 
 ### Cut & Paste
-- C-<SPC> : カーソル位置からmarkする
-- C-x <SPC> : カーソル位置から矩形でmarkする
+- C-"SPC" : カーソル位置からmarkする
+- C-x "SPC" : カーソル位置から矩形でmarkする
 - C-x h : バッファ全体をmarkする
 - C-w : 切り取り（regionをkill-ringに追加する）
 - M-w : コピー（regionをコピーしてkill-ringに追加する）
@@ -65,8 +65,8 @@
 - C-c m : 開いている全バッファから検索
 - M-% (Shift + 5) : カーソルから下を置換
   - ! (Shift + 1) : 以降を一括置換
-  - <SPC> :: 置換して次の候補
-  - <DEL> :: 置換せずに次の候補
+  - "SPC" : 置換して次の候補
+  - "DEL" : 置換せずに次の候補
 
 ### Display
 - C-l : カーソルのある行を画面中央に表示
@@ -76,8 +76,8 @@
 ### Command
 - C-u [num] [command] : [num]回分、[command]を繰り返す
 - C-x C-q : バッファのReadOnlyのOn/Off切り替え
-- <F3> : マクロの記録開始
-- <F4> : マクロの記録を終了 / マクロの実行開始
+- "F3" : マクロの記録開始
+- "F4" : マクロの記録を終了 / マクロの実行開始
 - C-x d : diredを開く
 - M-x [command] : [command]を実行する
   - eval-buffer : カレントバッファの内容を評価
