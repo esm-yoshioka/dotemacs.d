@@ -545,11 +545,12 @@
 
 (leaf global-key
   :doc "global key bind"
-  :bind
+  :bind*
   ("C-:" . undo-redo)
   ("C-t" . other-window)
   ("C-0" . delete-window)
   ("C-h" . delete-backward-char)
+  ("C-x C-d" . dired)
   ("M-," . text-scale-decrease)
   ("M-." . text-scale-increase)
   )
