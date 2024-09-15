@@ -111,6 +111,7 @@
   - s : stageに追加（git add）
   - u : unstageに戻す（git restore）
   - v : 変更を破棄（unstaged状態時のみ）
+  - i : gitignoreに対象ファイルを追加（untrackedの場合のみ）
   - "tab" : インライン展開
     - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
     - k : unstaged状態で謳歌すると編集前の状態に戻る
@@ -119,6 +120,7 @@
   - l l : commit logを確認（git log）
     - "ENTER" : 各行でEnter押下するとcommitの詳細を表示
   - P u : push（git push）
+  - F u : pull（git pull）
 
 <!---
 * dired
