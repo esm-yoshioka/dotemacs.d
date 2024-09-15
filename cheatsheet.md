@@ -87,6 +87,7 @@
   - toggle-truncate-lines : 長い行の折り返し表示を切り替える
   - untabify : Region内のTABを空白に置き換える
   - set-alpha : 透過度を変更
+  - describe-key : 入力したキーのコマンド内容を表示
 <!---
     - rg :: ripgrep
     - sgml-pretty-print :: XMLファイルの整形
@@ -102,7 +103,7 @@
 - q : package listを閉じる
 
 ## magit
-- C-x g : statusを表示
+- C-x g : magit バッファを開く
   - n : 次の行（１つ下）へ移動
   - p : 前の行（１つ上）へ移動
   - g : 表示内容の更新
@@ -111,6 +112,11 @@
   - v : 変更を履き（unstaged状態時のみ）
   - "tab" : インライン展開
     - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
+  - c c : comitメッセージの入力画面を開く
+    - C-c C-c : commit（git commit）
+  - l l : commit logを確認（git log）
+    - "ENTER" : 各行でEnter押下するとcommitの詳細を表示
+  - P u : push（git push）
 
 <!---
 * dired

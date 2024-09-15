@@ -496,8 +496,6 @@
   (rainbow-delimiters-mode)
   )
 
-;; -----------------------------------------------------------------------------------------
-
 (leaf programs
   :config
   (leaf powershell
