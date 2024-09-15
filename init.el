@@ -560,6 +560,10 @@
   ("C-x C-d" . dired)
   ("M-," . text-scale-decrease)
   ("M-." . text-scale-increase)
+  ("M-<up>" . balance-windows)
+  ("M-<down>" . enlarge-window)
+  ("M-<left>" . shrink-window-horizontally)
+  ("M-<right>" . enlarge-window-horizontally)
   )
 
 ;; =========================================================================================
