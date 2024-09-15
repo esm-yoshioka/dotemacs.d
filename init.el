@@ -482,7 +482,9 @@
 ;; -----------------------------------------------------------------------------------------
 
 (leaf magit
-  :when (eq system-type 'gnu/linux)
+  :when (and
+         (eq system-type 'gnu/linux)
+         (executable-find "git"))
   :ensure t
   )
 
