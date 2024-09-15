@@ -106,12 +106,14 @@
 - C-x g : magit バッファを開く
   - n : 次の行（１つ下）へ移動
   - p : 前の行（１つ上）へ移動
+  - q : キャンセル（画面を閉じる）
   - g : 表示内容の更新
   - s : stageに追加（git add）
   - u : unstageに戻す（git restore）
-  - v : 変更を履き（unstaged状態時のみ）
+  - v : 変更を破棄（unstaged状態時のみ）
   - "tab" : インライン展開
     - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
+    - k : unstaged状態で謳歌すると編集前の状態に戻る
   - c c : comitメッセージの入力画面を開く
     - C-c C-c : commit（git commit）
   - l l : commit logを確認（git log）
