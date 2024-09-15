@@ -101,6 +101,17 @@
 - r : 一覧の更新
 - q : package listを閉じる
 
+## magit
+- C-x g : statusを表示
+  - n : 次の行（１つ下）へ移動
+  - p : 前の行（１つ上）へ移動
+  - g : 表示内容の更新
+  - s : stageに追加（git add）
+  - u : unstageに戻す（git restore）
+  - v : 変更を履き（unstaged状態時のみ）
+  - "tab" : インライン展開
+    - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
+
 <!---
 * dired
 - n :: 次のディレクトリへ移動

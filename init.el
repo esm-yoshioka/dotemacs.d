@@ -479,6 +479,13 @@
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   )
 
+;; -----------------------------------------------------------------------------------------
+
+(leaf magit
+  :when (eq system-type 'gnu/linux)
+  :ensure t
+  )
+
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth"
   :ensure t
