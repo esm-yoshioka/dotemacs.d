@@ -452,6 +452,7 @@
   (corfu-auto-prefix . 2)
   (corfu-popupinfo-delay . 1.0)
   (corfu-min-width . 30)
+  (corfu-preselect . 'prompt)
   ;; (tab-always-indent 'complete)
   ;; (corfu-preview-current . nil)
   ;; (completion-cycle-threshold . nil)
@@ -459,7 +460,6 @@
   ;; (corfu-separator . ?\s)
   ;; (corfu-on-exact-match . nil)
   ;; (corfu-quit-no-match . t)
-  ;; (corfu-preselect-first . nil)
   :config
   (custom-set-faces
    '(corfu-default ((t (:background "navy"))))
