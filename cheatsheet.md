@@ -71,6 +71,7 @@
   - ! (Shift + 1) : 以降を一括置換
   - "SPC" : 置換して次の候補
   - "DEL" : 置換せずに次の候補
+- C-j : mark（C-"SPC"）した箇所にジャンプ
 
 ### Display
 - C-l : カーソルのある行を画面中央に表示
@@ -114,7 +115,8 @@
   - g : 表示内容の更新
   - s : stageに追加（git add）
   - u : unstageに戻す（git restore）
-  - v : 変更を破棄（unstaged状態時のみ）
+  - k : 変更を破棄（git checkout .）
+  - v : commitを破棄（git revert）
   - i : gitignoreに対象ファイルを追加（untrackedの場合のみ）
   - "tab" : インライン展開
     - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能

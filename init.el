@@ -439,6 +439,8 @@
   ("C-." . bs-cycle-next)
   ("C-c s" . consult-line)
   ("C-c m" . consult-line-multi)
+  ("M-y" . consult-yank-from-kill-ring)
+  ("C-j" . consult-mark)
   )
 
 (leaf corfu
