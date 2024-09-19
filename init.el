@@ -144,6 +144,7 @@
   (kill-ring-max . 200)                 ; keep kill-ring
   (require-final-newline . t)           ; auto-insert last line
   (use-dialog-box . nil)                ; always using the echo area
+  (mark-ring-max . 50)
   ;; tab
   (indent-tabs-mode . nil)
   (tab-width . 4)
