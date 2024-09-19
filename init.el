@@ -551,6 +551,18 @@
                                '(90))))
   )
 
+(leaf open-cheat
+  :doc "open cheatsheet other windows"
+  :preface
+  (defun open-cheat ()
+    (interactive)
+    ;; 選択中の次のWindowにチートシートを表示する
+    (split-window-horizontally)
+    (next-window-any-frame)
+    (find-file-read-only "~/.emacs.d/cheatsheet.md")
+    )
+  )
+
 ;; -----------------------------------------------------------------------------------------
 
 (leaf global-key
@@ -567,6 +579,7 @@
   ("M-<down>" . enlarge-window)
   ("M-<left>" . shrink-window-horizontally)
   ("M-<right>" . enlarge-window-horizontally)
+  ("C-<f1>" . open-cheat)
   )
 
 ;; =========================================================================================
