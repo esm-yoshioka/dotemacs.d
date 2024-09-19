@@ -320,8 +320,6 @@
          ("p" . scroll-down)
          ;; ("s" . isearch-forward)
          ;; ("r" . isearch-backward)
-         ("c" . consult-line)
-         ("m" . consult-line-multi)
          )
   :hook (find-file-hook . view-mode)
   :custom
@@ -440,8 +438,10 @@
   ("C-." . bs-cycle-next)
   ("C-c s" . consult-line)
   ("C-c m" . consult-line-multi)
+  ("C-c j" . consult-mark)
+  ("C-c f" . consult-find)
+  ("C-c r" . consult-ripgrep)
   ("M-y" . consult-yank-from-kill-ring)
-  ("C-j" . consult-mark)
   )
 
 (leaf corfu

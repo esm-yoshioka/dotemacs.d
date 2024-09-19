@@ -71,7 +71,11 @@
   - ! (Shift + 1) : 以降を一括置換
   - "SPC" : 置換して次の候補
   - "DEL" : 置換せずに次の候補
-- C-j : mark（C-"SPC"）した箇所にジャンプ
+- C-c j : mark（C-"SPC"）した箇所にジャンプ
+- C-c r : ripgrep
+  - C-u C-c r : 検索するルートディレクトリを指定してripgrep
+- C-c f : ファイル名検索（find）
+  - C-u C-c f : 検索するルートディレクトリを指定してfind
 
 ### Display
 - C-l : カーソルのある行を画面中央に表示
