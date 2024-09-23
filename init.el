@@ -254,6 +254,21 @@
     (doom-themes-enable-bold . nil)
     )
 
+  (leaf dashboard
+    :doc "A startup screen extracted from Spacemacs"
+    :ensure t
+    :setq
+    (dashboard-startup-banner . 'logo)
+    (dashboard-center-content . t)
+    (dashboard-vertically-center-content . t)
+    (dashboard-items . '((recents . 10)
+                         (projects . 10)
+                         ))
+    :config
+    (setq dashboard-banner-logo-title (concat "GNU/Emacs " emacs-version))
+    (dashboard-setup-startup-hook)
+    )
+
   (leaf color
     :config
     (custom-set-faces
