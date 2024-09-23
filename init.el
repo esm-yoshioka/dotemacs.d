@@ -217,11 +217,11 @@
   (kept-old-versions . 0)
   (delete-old-versions . t)
   ;; auto-save file
-  ;; issue_com: backupディレクトリに作成されずauto-save-list内のまま
-  ;; (auto-save-list-file-prefix . ,`(locate-user-emacs-file "backup/.saves-"))
+  ;; issue_wsl: backupファイルがうまく作成されない
   (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
   (auto-save-interval . 120)
+  (auto-save-list-file-prefix . nil)
   ;; lock file
   (create-lockfiles . nil)
   )
