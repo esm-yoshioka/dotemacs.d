@@ -44,7 +44,6 @@
 
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
-  :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
   )
 
@@ -105,14 +104,11 @@
     (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
     )
 
-  (leaf wsl-ime
+  (leaf linux-ime
     :when (eq system-type 'gnu/linux)
     :config
-    (leaf mozc
-      :doc "japanese input method"
-      :ensure t)
-    (leaf mozc-popup
-      :ensure t)
+    (leaf mozc :ensure t)
+    (leaf mozc-popup :ensure t)
     (setq default-input-method "japanese-mozc")
     )
   )
@@ -142,9 +138,9 @@
   (echo-keystrokes . 0.1)               ; echo Area key-strokes
   (ring-bell-function . 'ignore)        ; error beep off
   (kill-ring-max . 200)                 ; keep kill-ring
+  (mark-ring-max . 50)                  ; keep mark-ring
   (require-final-newline . t)           ; auto-insert last line
   (use-dialog-box . nil)                ; always using the echo area
-  (mark-ring-max . 50)
   ;; tab
   (indent-tabs-mode . nil)
   (tab-width . 4)
@@ -175,8 +171,7 @@
 
   (leaf savehist
     :doc "Save minibuffer history"
-    :custom
-    `((savehist-file . ,(expand-file-name "history" my:d:vars)))
+    :custom `((savehist-file . ,(expand-file-name "history" my:d:vars)))
     :config
     (savehist-mode)
     )
@@ -202,10 +197,7 @@
     (recentf-mode)
     )
 
-  (leaf recentf-ext
-    :doc "Recentf extensions"
-    :ensure t
-    )
+  (leaf recentf-ext :ensure t)
 
   :custom
   ;; backup file
@@ -255,7 +247,6 @@
     )
 
   (leaf dashboard
-    :doc "A startup screen extracted from Spacemacs"
     :ensure t
     :setq
     (dashboard-startup-banner . 'logo)
@@ -320,8 +311,7 @@
            (message "File is unwritable, so stay in view-mode.")
          ad-do-it)))
   :require view
-  :setq
-  (view-mode-force-exit)
+  :setq (view-mode-force-exit)
   :config
   (defvar exclude-list
     (list
@@ -525,7 +515,6 @@
   )
 
 (leaf rainbow-delimiters
-  :doc "Highlight brackets according to their depth"
   :ensure t
   :hook
   web-mode-hook
@@ -536,33 +525,12 @@
 
 (leaf programs
   :config
-  (leaf powershell
-    :doc "Mode for editing PowerShell scripts"
-    :ensure t
-    )
-
-  (leaf yaml-mode
-    :doc "Major mode for editing YAML files"
-    :ensure t
-    )
-
-  (leaf typescript-mode
-    :doc "Major mode for editing typescript"
-    :ensure t
-    )
-
-  (leaf vue-mode
-    :doc "Major mode for vue component based on mmm-mode"
-    :ensure t
-    )
-
-  (leaf csv-mode
-    :doc "Major mode for editing comma/char separated values"
-    :ensure t
-    )
-
+  (leaf powershell :ensure t)
+  (leaf yaml-mode :ensure t)
+  (leaf typescript-mode :ensure t)
+  (leaf vue-mode :ensure t)
+  (leaf csv-mode :ensure t)
   (leaf markdown-mode
-    :doc "Major mode for Markdown-formatted text"
     :ensure t
     :mode
     (("\\.markdown\\'" . markdown-mode)
@@ -585,7 +553,7 @@
   )
 
 (leaf open-cheat
-  :doc "open cheatsheet other windows"
+  :doc "open my-cheatsheet other windows"
   :preface
   (defun open-cheat ()
     (interactive)
