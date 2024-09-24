@@ -319,12 +319,33 @@
                   (buffer-file-name))))
            (message "File is unwritable, so stay in view-mode.")
          ad-do-it)))
-  :setq (view-mode-force-exit)
+  :require view
+  :setq
+  (view-mode-force-exit)
   :config
+  (defvar exclude-list
+    (list
+     "~/.emacs.d/"
+     "~/work/"
+     )
+    "Directory List of not open for view-mode")
+  (add-hook 'find-file-hook
+            '(lambda nil
+               (when (listp exclude-list)
+                 (let ((inhibit-ptn (concat "^\\("
+                                            (mapconcat
+                                             '(lambda (str)
+                                                (regexp-quote
+                                                 (expand-file-name str)))
+                                             exclude-list "\\|")
+                                            "\\)")))
+                   (unless (string-match inhibit-ptn buffer-file-name)
+                     (when (file-exists-p buffer-file-name)
+                       (read-only-mode t)
+                       (view-mode t)))))))
   (do-not-exit-view-mode-unless-writable-advice view-mode-exit)
   (do-not-exit-view-mode-unless-writable-advice view-mode-disable)
-
-  :bind (:view-mode-map
+  :bind(:view-mode-map
          ("h" . backward-char)
          ("l" . forward-char)
          ("j" . next-line)
@@ -336,9 +357,6 @@
          ;; ("s" . isearch-forward)
          ;; ("r" . isearch-backward)
          )
-  :hook (find-file-hook . view-mode)
-  :custom
-  (view-read-only . t)
   )
 
 ;; -----------------------------------------------------------------------------------------
