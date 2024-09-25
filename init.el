@@ -406,6 +406,17 @@
   (vertico-mode)
   )
 
+(leaf extensions/vertico-directory
+  :ensure nil
+  :config
+  (with-eval-after-load 'vertico
+    (unless (fboundp 'vertico-directory-up)
+      (autoload #'vertico-directory-up "extensions/vertico-directory" nil t))
+    (bind-keys :package extensions/vertico-directory
+               :map vertico-map
+               ("C-l" . vertico-directory-up)))
+  )
+
 (leaf marginalia
   :doc "enable richer annotations"
   :ensure t
