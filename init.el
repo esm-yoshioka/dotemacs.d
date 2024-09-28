@@ -252,8 +252,7 @@
     (dashboard-startup-banner . 'logo)
     (dashboard-center-content . t)
     (dashboard-vertically-center-content . t)
-    (dashboard-items . '((recents . 10)
-                         (projects . 10)
+    (dashboard-items . '((recents . 20)
                          ))
     :config
     (setq dashboard-banner-logo-title (concat "GNU/Emacs " emacs-version))
@@ -437,7 +436,7 @@
   :config
   (defun orderless-migemo (component)
     (let ((pattern (migemo-get-pattern component)))
-	  (condition-case nil
+      (condition-case nil
           (progn (string-match-p pattern "") pattern)
         (invalid-regexp nil))))
   (orderless-define-completion-style orderless-default-style
