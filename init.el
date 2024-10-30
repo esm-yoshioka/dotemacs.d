@@ -410,7 +410,7 @@
   :config
   (with-eval-after-load 'vertico
     (unless (fboundp 'vertico-directory-up)
-      (autoload #'vertico-directory-up "extensions/vertico-directory" nil t))
+      (autoload 'vertico-directory-up "extensions/vertico-directory" nil t))
     (bind-keys :package extensions/vertico-directory
                :map vertico-map
                ("C-l" . vertico-directory-up)))
@@ -480,7 +480,7 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
-  :bind ("S-SPC" . #'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
+  :bind ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
@@ -510,9 +510,9 @@
   :doc "Completion At Point Extensions"
   :ensure t
   :config
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions 'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions 'cape-file)
+  (add-to-list 'completion-at-point-functions 'cape-elisp-block)
   )
 
 ;; -----------------------------------------------------------------------------------------
