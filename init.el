@@ -524,29 +524,43 @@
   :ensure t
   )
 
-(leaf rainbow-delimiters
-  :ensure t
-  :hook
-  web-mode-hook
-  prog-mode-hook
-  :config
-  (rainbow-delimiters-mode)
-  )
-
 (leaf programs
   :config
   (leaf powershell :ensure t)
-  (leaf yaml-mode :ensure t)
-  (leaf typescript-mode :ensure t)
-  (leaf vue-mode :ensure t)
-  (leaf csv-mode :ensure t)
+  (leaf yaml-mode
+    :ensure t
+    :mode
+    ("\\.ya?ml$" . yaml-mode)
+    )
   (leaf markdown-mode
     :ensure t
     :mode
-    (("\\.markdown\\'" . markdown-mode)
-     ("\\.md\\'" . markdown-mode)
-     ("README\\.md\\'" . gfm-mode))
+    ("\\.md\\'" . gfm-mode)
     )
+  (leaf sql-mode
+    :custom
+    (sql-product . 'postgres)
+    )
+  (leaf indent-bars
+    :ensure t
+    :hook
+    prog-mode-hook
+    web-mode-hook
+    yaml-mode-hook
+    )
+  ;; (leaf typescript-mode :ensure t)
+  ;; (leaf vue-mode :ensure t)
+  ;; (leaf csv-mode :ensure t)
+  )
+
+(leaf rainbow-delimiters
+  :ensure t
+  :hook
+  prog-mode-hook
+  web-mode-hook
+  markdown-mode-hook
+  :config
+  (rainbow-delimiters-mode)
   )
 
 ;; -----------------------------------------------------------------------------------------
