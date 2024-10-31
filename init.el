@@ -527,6 +527,7 @@
 (leaf programs
   :config
   (leaf powershell :ensure t)
+  (leaf csv-mode :ensure t)
   (leaf yaml-mode
     :ensure t
     :mode
@@ -550,7 +551,6 @@
     )
   ;; (leaf typescript-mode :ensure t)
   ;; (leaf vue-mode :ensure t)
-  ;; (leaf csv-mode :ensure t)
   )
 
 (leaf rainbow-delimiters

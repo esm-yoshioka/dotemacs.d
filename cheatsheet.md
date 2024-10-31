@@ -104,7 +104,9 @@
     - sgml-pretty-print :: XMLファイルの整形
 -->
 
-## package list
+## mode
+
+### package list
 - i : インストール対象としてマーク
 - d : 削除対象としてマーク
 - u : マークを解除
@@ -113,26 +115,35 @@
 - r : 一覧の更新
 - q : package listを閉じる
 
-## magit
+### magit
 - C-x g : magit バッファを開く
-  - n : 次の行（１つ下）へ移動
-  - p : 前の行（１つ上）へ移動
-  - q : キャンセル（画面を閉じる）
-  - g : 表示内容の更新
-  - s : stageに追加（git add）
-  - u : unstageに戻す（git restore）
-  - k : 変更を破棄（git checkout .）
-  - v : commitを破棄（git revert）
-  - i : gitignoreに対象ファイルを追加（untrackedの場合のみ）
-  - "tab" : インライン展開
-    - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
-    - k : unstaged状態で謳歌すると編集前の状態に戻る
-  - c c : comitメッセージの入力画面を開く
-    - C-c C-c : commit（git commit）
-  - l l : commit logを確認（git log）
-    - "ENTER" : 各行でEnter押下するとcommitの詳細を表示
-  - P u : push（git push）
-  - F u : pull（git pull）
+- n : 次の行（１つ下）へ移動
+- p : 前の行（１つ上）へ移動
+- q : キャンセル（画面を閉じる）
+- g : 表示内容の更新
+- s : stageに追加（git add）
+- u : unstageに戻す（git restore）
+- k : 変更を破棄（git checkout .）
+- v : commitを破棄（git revert）
+- i : gitignoreに対象ファイルを追加（untrackedの場合のみ）
+- "TAB" : インライン展開
+  - インライン展開された変更箇所（hunk）内でs, u, vの操作が可能
+  - k : unstaged状態で謳歌すると編集前の状態に戻る
+- c c : comitメッセージの入力画面を開く
+  - C-c C-c : commit（git commit）
+- l l : commit logを確認（git log）
+  - "ENTER" : 各行でEnter押下するとcommitの詳細を表示
+- P u : push（git push）
+- F u : pull（git pull）
+
+### csv
+- C-c C-a : テーブル形式で表示（整形）
+- C-c C-u : 元のCSVレイアウトに戻す
+- C-c C-k : 指定した列を切り取り（数字で列指定）
+- C-c C-y : 貼り付け（数字で列指定）
+- C-c C-s : ソート（数字で列指定）
+- "TAB" : 次の列へ移動
+
 
 <!---
 * dired
