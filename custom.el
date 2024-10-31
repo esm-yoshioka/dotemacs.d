@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode csv-mode vue-mode typescript-mode yaml-mode powershell rainbow-delimiters magit cape corfu consult orderless marginalia vertico anzu migemo dashboard doom-themes recentf-ext mozc-popup mozc leaf-tree leaf-convert blackout el-get hydra leaf-keywords leaf)))
+   '(indent-bars rainbow-delimiters magit cape corfu consult orderless marginalia vertico anzu migemo dashboard doom-themes recentf-ext mozc-popup mozc leaf-tree leaf-convert blackout el-get hydra leaf-keywords leaf)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

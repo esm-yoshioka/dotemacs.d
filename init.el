@@ -239,6 +239,7 @@
   :doc "app style"
   :config
   (leaf doom-themes
+    :doc "Modern color-themes"
     :ensure t
     :hook (after-init-hook . (lambda () (load-theme 'doom-vibrant t)))
     :custom
@@ -247,6 +248,7 @@
     )
 
   (leaf dashboard
+    :doc "A startup screen extracted from Spacemacs."
     :ensure t
     :setq
     (dashboard-startup-banner . 'logo)
@@ -343,8 +345,6 @@
          ("e" . move-end-of-line)
          ("n" . scroll-up)
          ("p" . scroll-down)
-         ;; ("s" . isearch-forward)
-         ;; ("r" . isearch-backward)
          )
   )
 
@@ -489,13 +489,6 @@
   (corfu-popupinfo-delay . 1.0)
   (corfu-min-width . 30)
   (corfu-preselect . 'prompt)
-  ;; (tab-always-indent 'complete)
-  ;; (corfu-preview-current . nil)
-  ;; (completion-cycle-threshold . nil)
-  ;; (corfu-quit-at-boundary . 'separator)
-  ;; (corfu-separator . ?\s)
-  ;; (corfu-on-exact-match . nil)
-  ;; (corfu-quit-no-match . t)
   :config
   (custom-set-faces
    '(corfu-default ((t (:background "navy"))))
@@ -518,6 +511,7 @@
 ;; -----------------------------------------------------------------------------------------
 
 (leaf magit
+  :doc "A Git porcelain inside Emacs."
   :when (and
          (eq system-type 'gnu/linux)
          (executable-find "git"))
@@ -543,14 +537,13 @@
     (sql-product . 'postgres)
     )
   (leaf indent-bars
+    :doc "Highlight indentation with bars"
     :ensure t
     :hook
     prog-mode-hook
     web-mode-hook
     yaml-mode-hook
     )
-  ;; (leaf typescript-mode :ensure t)
-  ;; (leaf vue-mode :ensure t)
   )
 
 (leaf rainbow-delimiters
