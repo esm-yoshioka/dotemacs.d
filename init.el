@@ -153,8 +153,6 @@
 
 (leaf files
   :doc "system file"
-  :setq
-  (auto-save-file-name-transforms '((".*" "~/.emacs.d/backup/" t)))
   :config
   (leaf saveplace
     :doc "automatically save place in files"
