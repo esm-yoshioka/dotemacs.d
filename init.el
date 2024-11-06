@@ -199,6 +199,12 @@
     (recentf-mode)
     )
 
+  (leaf winner
+    :global-minor-mode t
+    :bind
+    ("C-z" . winner-undo)
+    )
+
   (leaf recentf-ext :ensure t)
 
   ;; backupファイルを集約
