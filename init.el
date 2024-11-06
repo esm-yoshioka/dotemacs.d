@@ -153,6 +153,8 @@
 
 (leaf files
   :doc "system file"
+  :setq
+  (auto-save-file-name-transforms '((".*" "~/.emacs.d/backup/" t)))
   :config
   (leaf saveplace
     :doc "automatically save place in files"
@@ -199,18 +201,25 @@
 
   (leaf recentf-ext :ensure t)
 
+  ;; backupファイルを集約
+  (setq backup-directory-alist (cons
+                                (cons ".*"
+                                      (expand-file-name my:d:backup))
+                                backup-directory-alist)
+        )
+  ;; auto-saveファイルを集約
+  (setq auto-save-file-name-transforms `((".*" ,(expand-file-name my:d:backup)
+                                          t))
+        )
+
   :custom
   ;; backup file
-  ;; issue_wsl: wsl上で実行してるとbackup設定が効いてない
-  (backup-directory-alist . `(("." . ,my:d:backup)))
   (backup-by-copying . t)
   (version-control . t)
   (kept-new-versions . 50)
   (kept-old-versions . 0)
   (delete-old-versions . t)
   ;; auto-save file
-  ;; issue_wsl: backupファイルがうまく作成されない
-  (auto-save-file-name-transforms . `((".*" ,my:d:backup t)))
   (auto-save-timeout . 15)
   (auto-save-interval . 120)
   (auto-save-list-file-prefix . nil)
