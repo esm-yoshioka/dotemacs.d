@@ -11,3 +11,4 @@ eln-cache
 elpa
 .\#*
 transient/
+/cmigemo-default-win64/
