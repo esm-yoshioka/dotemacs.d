@@ -525,9 +525,14 @@
 
 (leaf magit
   :doc "A Git porcelain inside Emacs."
-  :when (and
-         (eq system-type 'gnu/linux)
-         (executable-find "git"))
+  :if (cond
+        ((eq system-type 'windows-nt)
+         (let ((git-path "C:/Program Files/Git/bin/git.exe"))
+           (when (file-executable-p git-path)
+             (setq magit-git-executable git-path)
+             t)))
+        ((eq system-type 'gnu/linux)
+         (executable-find "git")))
   :ensure t
   )
 
