@@ -1,7 +1,7 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
 ;; 
 ;; Author : esm-yoshioka
-;; Version: 29.4
+;; Version: 30.1
 ;; 
 
 (eval-and-compile
@@ -33,13 +33,11 @@
     (leaf-keywords-init))
   )
 
-(leaf leaf
-  :config
-  (leaf leaf-convert :ensure t)
-  (leaf leaf-tree
-    :ensure t
-    :custom ((imenu-list-size . 30)
-             (imenu-list-position . 'left)))
+(leaf leaf-convert :ensure t)
+(leaf leaf-tree
+  :ensure t
+  :custom ((imenu-list-size . 30)
+           (imenu-list-position . 'left))
   )
 
 (leaf cus-edit
@@ -206,15 +204,8 @@
   (leaf recentf-ext :ensure t)
 
   ;; backupファイルを集約
-  (setq backup-directory-alist (cons
-                                (cons ".*"
-                                      (expand-file-name my:d:backup))
-                                backup-directory-alist)
-        )
-  ;; auto-saveファイルを集約
-  (setq auto-save-file-name-transforms `((".*" ,(expand-file-name my:d:backup)
-                                          t))
-        )
+  (setq backup-directory-alist `((".*" . ,(expand-file-name my:d:backup))))
+  (setq auto-save-file-name-transforms `((".*" ,(expand-file-name my:d:backup) t)))
 
   :custom
   ;; backup file
