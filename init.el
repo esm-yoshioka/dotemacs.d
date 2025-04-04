@@ -13,8 +13,7 @@
 
 (eval-and-compile
   (customize-set-variable
-   'package-archives '(("org"   . "https://orgmode.org/elpa/")
-                       ("melpa" . "https://melpa.org/packages/")
+   'package-archives '(("melpa" . "https://melpa.org/packages/")
                        ("gnu"   . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless (package-installed-p 'leaf)
@@ -33,12 +32,12 @@
     (leaf-keywords-init))
   )
 
-(leaf leaf-convert :ensure t)
 (leaf leaf-tree
   :ensure t
   :custom ((imenu-list-size . 30)
            (imenu-list-position . 'left))
   )
+(leaf leaf-convert :ensure t)
 
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
@@ -47,11 +46,6 @@
 
 ;; Describe own settings below
 ;; =========================================================================================
-
-(when load-file-name
-  (setq user-emacs-directory
-        (expand-file-name (file-name-directory load-file-name)))
-  )
 
 ;; local-const
 (defconst my:d:vars
