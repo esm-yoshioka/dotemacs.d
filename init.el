@@ -286,6 +286,8 @@
   (line-number-mode t)
   (column-number-mode t)
   (size-indication-mode t)              ; file size
+  (global-display-line-numbers-mode t)
+  (custom-set-variables '(display-line-numbers-width-start t))
 
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
@@ -519,6 +521,16 @@
         ((eq system-type 'gnu/linux)
          (executable-find "git")))
   :ensure t
+  )
+
+(leaf git-gutter
+  :doc "Port of Sublime Text plugin GitGutter."
+  :ensure t
+  :global-minor-mode global-git-gutter-mode
+  :custom
+  ((git-gutter:added-sign . "++")
+   (git-gutter:deleted-sign . "--")
+   (git-gutter:modified-sign . "=="))
   )
 
 (leaf programs
