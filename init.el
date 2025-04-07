@@ -13,31 +13,23 @@
 
 (eval-and-compile
   (customize-set-variable
-   'package-archives '(("melpa" . "https://melpa.org/packages/")
-                       ("gnu"   . "https://elpa.gnu.org/packages/")))
+   'package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                       ("melpa" . "https://melpa.org/packages/")))
   (package-initialize)
-  (unless (package-installed-p 'leaf)
-    (package-refresh-contents)
-    (package-install 'leaf))
+  (use-package leaf :ensure t)
 
   (leaf leaf-keywords
     :ensure t
     :init
-    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
     (leaf blackout :ensure t)
     :config
-    ;; initialize leaf-keywords.el
     (leaf-keywords-init))
   )
 
-(leaf leaf-tree
+(leaf leaf-convert
+  :doc "Convert many format to leaf format"
   :ensure t
-  :custom ((imenu-list-size . 30)
-           (imenu-list-position . 'left))
   )
-(leaf leaf-convert :ensure t)
 
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
@@ -47,7 +39,8 @@
 ;; Describe own settings below
 ;; =========================================================================================
 
-;; local-const
+;; local-const -----------------------------------------------------------------------------
+
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
 (unless (file-directory-p my:d:vars)
@@ -58,10 +51,9 @@
 (unless (file-directory-p my:d:backup)
   (make-directory my:d:backup))
 
-;; -----------------------------------------------------------------------------------------
+;; language --------------------------------------------------------------------------------
 
 (leaf languages
-  :doc "language setting"
   :config
   (set-language-environment "Japanese")
   (set-default-coding-systems 'utf-8-unix)
@@ -70,55 +62,44 @@
   ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
   ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
   (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
-
-  (leaf windows-ime
-    :when (eq system-type 'windows-nt)
-    :config
-    (leaf tr-ime
-      :doc "Emulator of IME patch for Windows"
-      :ensure t
-      :config
-      (tr-ime-advanced-install)
-      )
-
-    (setq default-input-method "W32-IME")
-    (setq-default w32-ime-mode-line-state-indicator "[Aa]")
-    (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
-    (w32-ime-initialize)
-    ;; IME disable pattern
-    (w32-ime-wrap-function-to-control-ime 'universal-argument)
-    (w32-ime-wrap-function-to-control-ime 'read-string)
-    (w32-ime-wrap-function-to-control-ime 'read-char)
-    (w32-ime-wrap-function-to-control-ime 'read-from-minibuffer)
-    (w32-ime-wrap-function-to-control-ime 'y-or-n-p)
-    (w32-ime-wrap-function-to-control-ime 'yes-or-no-p)
-    (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
-    (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
-    )
-
-  (leaf linux-ime
-    :when (eq system-type 'gnu/linux)
-    :config
-    (leaf mozc :ensure t)
-    (leaf mozc-popup :ensure t)
-    (setq default-input-method "japanese-mozc")
-    )
   )
 
-(leaf settings
-  :doc "general settings"
+(leaf windows-ime
+  :when (eq system-type 'windows-nt)
   :config
-  (leaf autorevert
-    :doc "revert buffers when files on disk change"
-    :custom (auto-revert-interval . 1)
-    :global-minor-mode global-auto-revert-mode
+  (leaf tr-ime
+    :doc "Emulator of IME patch for Windows"
+    :ensure t
+    :config
+    (tr-ime-advanced-install)
     )
 
-  (leaf image
-    :doc "always display picture"
-    :global-minor-mode auto-image-file-mode
-    )
+  (setq default-input-method "W32-IME")
+  (setq-default w32-ime-mode-line-state-indicator "[Aa]")
+  (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
+  (w32-ime-initialize)
+  ;; IME disable pattern
+  (w32-ime-wrap-function-to-control-ime 'universal-argument)
+  (w32-ime-wrap-function-to-control-ime 'read-string)
+  (w32-ime-wrap-function-to-control-ime 'read-char)
+  (w32-ime-wrap-function-to-control-ime 'read-from-minibuffer)
+  (w32-ime-wrap-function-to-control-ime 'y-or-n-p)
+  (w32-ime-wrap-function-to-control-ime 'yes-or-no-p)
+  (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
+  (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
+  )
 
+(leaf linux-ime
+  :when (eq system-type 'gnu/linux)
+  :config
+  (leaf mozc :ensure t)
+  (leaf mozc-popup :ensure t)
+  (setq default-input-method "japanese-mozc")
+  )
+
+;; general-setting -------------------------------------------------------------------------
+
+(leaf settings
   :setq
   ;; default directory
   (default-directory . "~/")
@@ -143,60 +124,40 @@
   (scroll-preserve-screen-position . t)
   )
 
+(leaf autorevert
+  :doc "revert buffers when files on disk change"
+  :custom (auto-revert-interval . 1)
+  :global-minor-mode global-auto-revert-mode
+  )
+
+(leaf image
+  :doc "always display picture"
+  :global-minor-mode auto-image-file-mode
+  )
+
+(leaf winner
+  :doc "Restore old window configurations"
+  :global-minor-mode winner-mode
+  :bind
+  ("C-z" . winner-undo)
+  )
+
+(leaf isearch
+  :doc "incremental search minor mode"
+  :bind (:isearch-mode-map
+         ("C-h" . isearch-delete-char))
+  :custom
+  (case-fold-search . t)
+  (isearch-case-fold-search . t)
+  (completion-ignore-case . t)
+  (read-file-name-completion-ignore-case . t)
+  (read-buffer-completion-ignore-case . t)
+  )
+
+;; file ------------------------------------------------------------------------------------
+
 (leaf files
-  :doc "system file"
   :config
-  (leaf saveplace
-    :doc "automatically save place in files"
-    :custom
-    `((save-place . t)
-      (save-place-file
-       . ,(expand-file-name "save-places" my:d:vars))
-      )
-    :hook (emacs-startup-hook . save-place-mode)
-    :config
-    (setq save-place-ingore-files-regexp
-          (format "\\(%s\\)\\|\\(%s\\)"
-                  save-place-ignore-files-regexp
-                  tramp-file-name-regexp))
-    )
-
-  (leaf savehist
-    :doc "Save minibuffer history"
-    :custom `((savehist-file . ,(expand-file-name "history" my:d:vars)))
-    :config
-    (savehist-mode)
-    )
-
-  (leaf recentf
-    :doc "keep track of recently opened files"
-    :preface
-    (defmacro with-suppressed-message (&rest body)
-      "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
-      (declare
-       (indent 0))
-      (let ((message-log-max nil))
-        `(with-temp-message (or (current-message) "") ,@body)))
-    :custom
-    `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
-      (recentf-max-saved-items . 2000)
-      (recentf-auto-cleanup . 'never)
-      (recentf-exclude . '("recentf"))
-      )
-    :config
-    (run-with-idle-timer 60 t '(lambda () ; 60s
-                                 (with-suppressed-message (recentf-save-list))))
-    (recentf-mode)
-    )
-
-  (leaf winner
-    :global-minor-mode t
-    :bind
-    ("C-z" . winner-undo)
-    )
-
-  (leaf recentf-ext :ensure t)
-
   ;; backupファイルを集約
   (setq backup-directory-alist `((".*" . ,(expand-file-name my:d:backup))))
   (setq auto-save-file-name-transforms `((".*" ,(expand-file-name my:d:backup) t)))
@@ -216,68 +177,49 @@
   (create-lockfiles . nil)
   )
 
-(leaf search
-  :doc "search settings"
-  :custom
-  ;; ignore upper/lower case
-  (case-fold-search . t)
-  (isearch-case-fold-search . t)
-  (completion-ignore-case . t)
-  (read-file-name-completion-ignore-case . t)
-  (read-buffer-completion-ignore-case . t)
-
-  :config
-  (leaf isearch
-    :bind (:isearch-mode-map
-           ("C-h" . isearch-delete-char))
-    )
+(leaf savehist
+  :doc "Save minibuffer history"
+  :global-minor-mode savehist-mode
+  :custom `((savehist-file . ,(expand-file-name "history" my:d:vars)))
   )
 
-(leaf looks
-  :doc "app style"
+(leaf recentf
+  :doc "keep track of recently opened files"
+  :preface
+  (defmacro with-suppressed-message (&rest body)
+    "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
+    (declare
+     (indent 0))
+    (let ((message-log-max nil))
+      `(with-temp-message (or (current-message) "") ,@body)))
+  :custom
+  `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
+    (recentf-max-saved-items . 2000)
+    (recentf-auto-cleanup . 'never)
+    (recentf-exclude . '("recentf"))
+    )
   :config
-  (leaf doom-themes
-    :doc "Modern color-themes"
-    :ensure t
-    :hook (after-init-hook . (lambda () (load-theme 'doom-vibrant t)))
-    :custom
-    (doom-themes-enable-italic . nil)
-    (doom-themes-enable-bold . nil)
-    )
+  (run-with-idle-timer 60 t '(lambda () ; 60s
+                               (with-suppressed-message (recentf-save-list))))
+  (recentf-mode)
+  )
 
-  (leaf dashboard
-    :doc "A startup screen extracted from Spacemacs."
-    :ensure t
-    :setq
-    (dashboard-startup-banner . 'logo)
-    (dashboard-center-content . t)
-    (dashboard-vertically-center-content . t)
-    (dashboard-items . '((recents . 20)
-                         ))
-    :config
-    (setq dashboard-banner-logo-title (concat "GNU/Emacs " emacs-version))
-    (dashboard-setup-startup-hook)
-    )
+(leaf recentf-ext
+  :doc "Recentf extensions"
+  :ensure t
+  )
 
-  (leaf color
-    :config
-    (custom-set-faces
-     '(region ((t (:background "Purple4"))))
-     '(mode-line ((t (:background "Blue Violet"))))
-     '(hl-line ((t (:background "midnightblue"))))
-     )
-    (global-hl-line-mode t)
-    :custom
-    (transient-mark-mode . t)
-    )
+(leaf saveplace
+  :doc "automatically save place in files"
+  :custom `((save-place-file . ,(expand-file-name "save-places" my:d:vars)))
+  :config
+  (save-place-mode 1)
+  )
 
-  (leaf uniquify
-    :doc "unique buffer names dependent on file name"
-    :custom
-    ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-     (uniquify-min-dir-content . 2))    ; directory hierarchy
-    )
+;; looks -----------------------------------------------------------------------------------
 
+(leaf style
+  :config
   (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
   (set-frame-parameter nil 'alpha 85)              ; frame transparency
   (set-frame-parameter nil 'fullscreen 'maximized) ; fullscreen
@@ -288,6 +230,10 @@
   (size-indication-mode t)              ; file size
   (global-display-line-numbers-mode t)
   (custom-set-variables '(display-line-numbers-width-start t))
+  (setq show-paren-style 'expression)
+  (custom-set-faces
+   '(show-paren-match ((t (:foreground "cyan"))))
+   )
 
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
@@ -295,9 +241,53 @@
   (tool-bar-mode . nil)                 ; non-display tool-bar
   (inhibit-startup-message . t)         ; non-display startup
   (initial-scratch-message . "")        ; scratch is null
-  (show-paren-mode . t)                 ; hightlight matching paren
   (line-spacing . 0.25)                 ; line spacing size
+  (show-paren-mode . t)                 ; hightlight matching paren
   )
+
+(leaf doom-themes
+  :doc "Modern color-themes"
+  :ensure t
+  :hook (after-init-hook . (lambda () (load-theme 'doom-vibrant t)))
+  :custom
+  (doom-themes-enable-italic . nil)
+  (doom-themes-enable-bold . nil)
+  )
+
+(leaf dashboard
+  :doc "A startup screen extracted from Spacemacs."
+  :ensure t
+  :setq
+  (dashboard-startup-banner . 'logo)
+  (dashboard-center-content . t)
+  (dashboard-vertically-center-content . t)
+  (dashboard-items . '((recents . 20)
+                       ))
+  :config
+  (setq dashboard-banner-logo-title (concat "GNU/Emacs " emacs-version))
+  (dashboard-setup-startup-hook)
+  )
+
+(leaf color
+  :config
+  (custom-set-faces
+   '(region ((t (:background "Purple4"))))
+   '(mode-line ((t (:background "Blue Violet"))))
+   '(hl-line ((t (:background "midnightblue"))))
+   )
+  (global-hl-line-mode t)
+  :custom
+  (transient-mark-mode . t)
+  )
+
+(leaf uniquify
+  :doc "unique buffer names dependent on file name"
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content . 2))    ; directory hierarchy
+  )
+
+;; view ------------------------------------------------------------------------------------
 
 (leaf view
   ;; If not writable, leave in view-mode
@@ -348,7 +338,7 @@
          )
   )
 
-;; -----------------------------------------------------------------------------------------
+;; package ---------------------------------------------------------------------------------
 
 (leaf migemo-linux
   :when (and
@@ -508,7 +498,7 @@
   (add-to-list 'completion-at-point-functions 'cape-elisp-block)
   )
 
-;; -----------------------------------------------------------------------------------------
+;; program ---------------------------------------------------------------------------------
 
 (leaf magit
   :doc "A Git porcelain inside Emacs."
@@ -533,35 +523,46 @@
    (git-gutter:modified-sign . "=="))
   )
 
-(leaf programs
-  :config
-  (leaf powershell :ensure t)
-  (leaf csv-mode :ensure t)
-  (leaf yaml-mode
-    :ensure t
-    :mode
-    ("\\.ya?ml$" . yaml-mode)
-    )
-  (leaf markdown-mode
-    :ensure t
-    :mode
-    ("\\.md\\'" . gfm-mode)
-    )
-  (leaf sql-mode
-    :custom
-    (sql-product . 'postgres)
-    )
-  (leaf indent-bars
-    :doc "Highlight indentation with bars"
-    :ensure t
-    :hook
-    prog-mode-hook
-    web-mode-hook
-    yaml-mode-hook
-    )
+(leaf powershell
+  :doc "Mode for editing PowerShell scripts"
+  :ensure t
+  )
+
+(leaf csv-mode
+  :doc "Major mode for editing comma/char separated values"
+  :ensure t
+  )
+
+(leaf yaml-mode
+  :doc "Major mode for editing YAML files"
+  :ensure t
+  :mode
+  ("\\.ya?ml$" . yaml-mode)
+  )
+
+(leaf markdown-mode
+  :doc "Major mode for Markdown-formatted text"
+  :ensure t
+  :mode
+  ("\\.md\\'" . gfm-mode)
+  )
+
+(leaf sql-mode
+  :custom
+  (sql-product . 'postgres)
+  )
+
+(leaf indent-bars
+  :doc "Highlight indentation with bars"
+  :ensure t
+  :hook
+  prog-mode-hook
+  web-mode-hook
+  yaml-mode-hook
   )
 
 (leaf rainbow-delimiters
+  :doc "Highlight brackets according to their depth."
   :ensure t
   :hook
   prog-mode-hook
@@ -571,7 +572,7 @@
   (rainbow-delimiters-mode)
   )
 
-;; -----------------------------------------------------------------------------------------
+;; original --------------------------------------------------------------------------------
 
 (leaf set-alpha
   :doc "change transparency"
@@ -589,14 +590,13 @@
   :preface
   (defun open-cheat ()
     (interactive)
-    ;; 選択中の次のWindowにチートシートを表示する
     (split-window-horizontally)
     (next-window-any-frame)
     (find-file-read-only "~/.emacs.d/cheatsheet.md")
     )
   )
 
-;; -----------------------------------------------------------------------------------------
+;; key-bind --------------------------------------------------------------------------------
 
 (leaf global-key
   :doc "global key bind"
