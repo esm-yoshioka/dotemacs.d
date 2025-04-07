@@ -4,11 +4,11 @@
 /.emacs.desktop
 /.emacs.desktop.lock
 *.elc
+custom.el
 auto-save-list
 vars
 tramp
 eln-cache
-elpa
-.\#*
-transient/
+/elpa/
+/transient/
 /cmigemo-default-win64/
