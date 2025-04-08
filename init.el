@@ -154,6 +154,16 @@
   (read-buffer-completion-ignore-case . t)
   )
 
+(leaf tab-bar
+  :doc "frame-local tabs with named persistent window configurations"
+  :config
+  (tab-bar-mode t)
+  (custom-set-faces
+   '(tab-bar-tab ((t (:foreground "orange"))))
+   '(tab-bar-tab-inactive ((t (:foreground "dark grey"))))
+   )
+  )
+
 ;; file ------------------------------------------------------------------------------------
 
 (leaf files
