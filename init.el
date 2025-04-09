@@ -159,8 +159,8 @@
   :config
   (tab-bar-mode t)
   (custom-set-faces
-   '(tab-bar-tab ((t (:foreground "orange"))))
-   '(tab-bar-tab-inactive ((t (:foreground "dark grey"))))
+   '(tab-bar-tab ((t (:foreground "chocolate"))))
+   '(tab-bar-tab-inactive ((t (:foreground "DarkGrey"))))
    )
   )
 
@@ -242,7 +242,7 @@
   (custom-set-variables '(display-line-numbers-width-start t))
   (setq show-paren-style 'expression)
   (custom-set-faces
-   '(show-paren-match ((t (:foreground "cyan"))))
+   '(show-paren-match ((t (:foreground "DeepSkyBlue"))))
    )
 
   :custom
@@ -282,7 +282,7 @@
   :config
   (custom-set-faces
    '(region ((t (:background "Purple4"))))
-   '(mode-line ((t (:background "Blue Violet"))))
+   '(mode-line ((t (:background "DarkOrchid4"))))
    '(hl-line ((t (:background "midnightblue"))))
    )
   (global-hl-line-mode t)
@@ -486,12 +486,12 @@
   (corfu-cycle . t)
   (corfu-auto-delay . 0.1)
   (corfu-auto-prefix . 2)
-  (corfu-popupinfo-delay . 1.0)
+  (corfu-popupinfo-delay . 0.5)
   (corfu-min-width . 30)
   (corfu-preselect . 'prompt)
   :config
   (custom-set-faces
-   '(corfu-default ((t (:background "navy"))))
+   '(corfu-default ((t (:background "midnightblue"))))
    '(corfu-current ((t (:foreground "orange"))))
    )
   :init
