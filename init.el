@@ -300,42 +300,23 @@
 ;; view ------------------------------------------------------------------------------------
 
 (leaf view
-  ;; If not writable, leave in view-mode
-  :preface
-  (defmacro do-not-exit-view-mode-unless-writable-advice (f)
-    `(defadvice ,f (around do-not-exit-view-mode-unless-writable activate)
-       (if (and
-            (buffer-file-name)
-            (not view-mode-force-exit)
-            (not (file-writable-p
-                  (buffer-file-name))))
-           (message "File is unwritable, so stay in view-mode.")
-         ad-do-it)))
-  :require view
-  :setq (view-mode-force-exit)
+  :hook
+  (find-file-hook . exclude-view-list-mode)
   :config
-  (defvar exclude-list
-    (list
-     "~/.emacs.d/"
-     "~/work/"
-     )
-    "Directory List of not open for view-mode")
-  (add-hook 'find-file-hook
-            '(lambda nil
-               (when (listp exclude-list)
-                 (let ((inhibit-ptn (concat "^\\("
-                                            (mapconcat
-                                             '(lambda (str)
-                                                (regexp-quote
-                                                 (expand-file-name str)))
-                                             exclude-list "\\|")
-                                            "\\)")))
-                   (unless (string-match inhibit-ptn buffer-file-name)
-                     (when (file-exists-p buffer-file-name)
-                       (read-only-mode t)
-                       (view-mode t)))))))
-  (do-not-exit-view-mode-unless-writable-advice view-mode-exit)
-  (do-not-exit-view-mode-unless-writable-advice view-mode-disable)
+  (defvar exclude-view-list
+    '("COMMIT" "MERGE" "TAG" "PULLREQ" "REBASE"))
+
+  (defun exclude-view-list-mode ()
+    (let* ((filename (buffer-file-name))
+           (basename (and filename (file-name-nondirectory filename)))
+           (exclude-list-related-file-p
+            (and basename
+                 (cl-some (lambda (keyword)
+                            (string-match-p (regexp-quote keyword) basename))
+                          exclude-view-list)))
+           (new-file-p (and filename (not (file-exists-p filename)))))
+      (unless (or exclude-list-related-file-p new-file-p)
+        (view-mode 1))))
   :bind(:view-mode-map
          ("h" . backward-char)
          ("l" . forward-char)
