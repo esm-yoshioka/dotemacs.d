@@ -427,7 +427,8 @@
   :doc "fuzzy completion"
   :ensure t
   :custom
-  (completion-styles . '(orderless))
+  (completion-styles . '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion))))
   )
 
 (leaf orderless-migemo
@@ -489,6 +490,7 @@
   (corfu-popupinfo-delay . 0.5)
   (corfu-min-width . 30)
   (corfu-preselect . 'prompt)
+  (text-mode-ispell-word-completion . nil)
   :config
   (custom-set-faces
    '(corfu-default ((t (:background "midnightblue"))))
