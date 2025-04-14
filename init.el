@@ -373,7 +373,7 @@
   :ensure t
   :require t
   :custom
-  (migemo-options . '("-q" "--emacs"))
+  (migemo-options . '("-q" "--emacs" "--nonewline"))
   (migemo-user-dictionary . nil)
   (migemo-regex-dictionary . nil)
   (migemo-coding-system . 'utf-8-unix)
@@ -476,6 +476,47 @@
   ("C-c f" . consult-find)
   ("C-c r" . consult-ripgrep)
   ("M-y" . consult-yank-from-kill-ring)
+  )
+
+;; ----- consult-ripgrep default function -----
+;; (defun consult--default-regexp-compiler (input type ignore-case)
+;;   (setq input
+;;         (consult--split-escaped input))
+;;   (cons (mapcar (lambda (x) (consult--convert-regexp x type))
+;;                 input)
+;;         (when-let (regexps (seq-filter #'consult--valid-regexp-p
+;;                                        input))
+;;           (apply-partially #'consult--highlight-regexps regexps ignore-case)))
+;;   )
+;;
+;; --- migemo対応 ---
+;; (defvar consult--migemo-regexp "")
+;; (defun consult--migemo-regexp-compiler (input type ignore-case)
+;;   (setq consult--migemo-regexp
+;;         (mapcar #'migemo-get-pattern (consult--split-escaped input)))
+;;   (cons (mapcar (lambda (x) (consult--convert-regexp x type))
+;;                 consult--migemo-regexp)
+;;         (when-let (regexps (seq-filter #'consult--valid-regexp-p
+;;                                        consult--migemo-regexp))
+;;           (apply-partially #'consult--highlight-regexps regexps ignore-case)))
+;;   )
+;; (setq consult--regexp-compiler #'consult--migemo-regexp-compiler)
+(leaf consult-ripgrep-migemo
+  :preface
+  (defun consult--migemo-regexp-compiler (input type ignore-case)
+    (setq consult--migemo-regexp (mapcar #'migemo-get-pattern
+                                         (consult--split-escaped input)))
+    (cons
+     (mapcar
+      (lambda (x)
+        (consult--convert-regexp x type))
+      consult--migemo-regexp)
+     (when-let (regexps
+                (seq-filter #'consult--valid-regexp-p consult--migemo-regexp))
+       (apply-partially #'consult--highlight-regexps regexps ignore-case))))
+
+  :setq ((consult--migemo-regexp . "")
+         (consult--regexp-compiler function consult--migemo-regexp-compiler))
   )
 
 (leaf corfu
