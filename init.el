@@ -278,6 +278,35 @@
   (dashboard-setup-startup-hook)
   )
 
+(leaf nerd-icons
+  :doc "Emacs Nerd Font Icons Library. Installing fonts with [M-x nerd-icons-install-fonts]"
+  :ensure t
+  )
+
+(leaf nerd-icons-completion
+  :doc "Add icons to completion candidates"
+  :ensure t
+  :after marginalia
+  :hook ((marginalia-mode-hook . nerd-icons-completion-marginalia-setup))
+  :config
+  (nerd-icons-completion-mode)
+  )
+
+(leaf nerd-icons-dired
+  :doc "Shows icons for each file in dired mode"
+  :ensure t
+  :after nerd-icons
+  :hook ((dired-mode-hook . nerd-icons-dired-mode))
+  )
+
+(leaf nerd-icons-corfu
+  :doc "Icons for Corfu via nerd-icons"
+  :ensure t
+  :after corfu nerd-icons
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+  )
+
 (leaf color
   :config
   (custom-set-faces
