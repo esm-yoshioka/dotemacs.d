@@ -620,6 +620,13 @@
   (sql-product . 'postgres)
   )
 
+(leaf sql-indent
+  :doc "Support for indenting code in SQL files."
+  :ensure t
+  :setq
+  (sql-indent-offset . 2)
+  )
+
 (leaf indent-bars
   :doc "Highlight indentation with bars"
   :ensure t
