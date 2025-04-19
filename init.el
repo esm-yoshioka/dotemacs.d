@@ -273,6 +273,10 @@
   (dashboard-vertically-center-content . t)
   (dashboard-items . '((recents . 20)
                        ))
+  (dashboard-display-icons-p . t)
+  (dashboard-icon-type . 'nerd-icons)
+  (dashboard-set-heading-icons . t)
+  (dashboard-set-file-icons . t)
   :config
   (setq dashboard-banner-logo-title (concat "GNU/Emacs " emacs-version))
   (dashboard-setup-startup-hook)
