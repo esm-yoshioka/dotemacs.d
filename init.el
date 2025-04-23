@@ -14,7 +14,8 @@
 (eval-and-compile
   (customize-set-variable
    'package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                       ("melpa" . "https://melpa.org/packages/")))
+                       ("melpa" . "https://melpa.org/packages/")
+                       ))
   (package-initialize)
   (use-package leaf :ensure t)
 
@@ -405,6 +406,7 @@
   :custom
   (anzu-use-migemo . t)
   (anzu-minimum-input-length . 3)       ; count target
+  (anzu-replace-to-string-separator . " => ")
   :config
   (global-anzu-mode)
   )
