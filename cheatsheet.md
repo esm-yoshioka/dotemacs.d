@@ -143,6 +143,10 @@
   - "ENTER" : 各行でEnter押下するとcommitの詳細を表示
 - P u : push（git push）
 - F u : pull（git pull）
+- C-x v p : 前の変更箇所に移動
+- C-x v n : 次の変更箇所に移動
+- C-x v r : 変更点の取り消し
+- C-x v "SPC" : 変更内容を表示
 
 ### csv
 - C-c C-a : テーブル形式で表示（整形）

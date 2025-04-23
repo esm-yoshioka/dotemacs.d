@@ -596,6 +596,12 @@
   :doc "Port of Sublime Text plugin GitGutter."
   :ensure t
   :global-minor-mode global-git-gutter-mode
+  :bind (
+        ("C-x v p" . git-gutter:previous-hunk)
+        ("C-x v n" . git-gutter:next-hunk)
+        ("C-x v r" . git-gutter:revert-hunk)
+        ("C-x v SPC" . git-gutter:popup-hunk)
+        )
   :custom
   ((git-gutter:added-sign . "++")
    (git-gutter:deleted-sign . "--")
