@@ -146,7 +146,8 @@
 (leaf isearch
   :doc "incremental search minor mode"
   :bind (:isearch-mode-map
-         ("C-h" . isearch-delete-char))
+         ("C-h" . isearch-delete-char)
+         )
   :custom
   (case-fold-search . t)
   (isearch-case-fold-search . t)
@@ -352,7 +353,7 @@
            (new-file-p (and filename (not (file-exists-p filename)))))
       (unless (or exclude-list-related-file-p new-file-p)
         (view-mode 1))))
-  :bind(:view-mode-map
+  :bind (:view-mode-map
          ("h" . backward-char)
          ("l" . forward-char)
          ("j" . next-line)
@@ -402,7 +403,8 @@
   :ensure t
   :require t
   :after migemo
-  :bind ("M-%" . anzu-query-replace)
+  :bind
+  ("M-%" . anzu-query-replace)
   :custom
   (anzu-use-migemo . t)
   (anzu-minimum-input-length . 3)       ; count target
@@ -430,7 +432,8 @@
       (autoload 'vertico-directory-up "extensions/vertico-directory" nil t))
     (bind-keys :package extensions/vertico-directory
                :map vertico-map
-               ("C-l" . vertico-directory-up)))
+               ("C-l" . vertico-directory-up))
+    )
   )
 
 (leaf marginalia
@@ -547,7 +550,8 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
-  :bind ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
+  :bind
+  ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
@@ -595,12 +599,11 @@
   :doc "Port of Sublime Text plugin GitGutter."
   :ensure t
   :global-minor-mode global-git-gutter-mode
-  :bind (
-        ("C-x v p" . git-gutter:previous-hunk)
-        ("C-x v n" . git-gutter:next-hunk)
-        ("C-x v r" . git-gutter:revert-hunk)
-        ("C-x v SPC" . git-gutter:popup-hunk)
-        )
+  :bind
+  ("C-x v p" . git-gutter:previous-hunk)
+  ("C-x v n" . git-gutter:next-hunk)
+  ("C-x v r" . git-gutter:revert-hunk)
+  ("C-x v SPC" . git-gutter:popup-hunk)
   :custom
   ((git-gutter:added-sign . "++")
    (git-gutter:deleted-sign . "--")
