@@ -498,7 +498,6 @@
 (leaf consult-dir
   :doc "Insert paths into the minibuffer prompt"
   :ensure t
-  :after consult
   :bind (("C-x C-d" . consult-dir)
          (vertico-map
           ("C-x C-d" . consult-dir)))
