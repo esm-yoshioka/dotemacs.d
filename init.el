@@ -495,6 +495,15 @@
   ("M-y" . consult-yank-from-kill-ring)
   )
 
+(leaf consult-dir
+  :doc "Insert paths into the minibuffer prompt"
+  :ensure t
+  :after consult
+  :bind (("C-x C-d" . consult-dir)
+         (vertico-map
+          ("C-x C-d" . consult-dir)))
+  )
+
 ;; ----- consult-ripgrep default function -----
 ;; (defun consult--default-regexp-compiler (input type ignore-case)
 ;;   (setq input
@@ -682,7 +691,6 @@
   ("C-t" . other-window)
   ("C-0" . delete-window)
   ("C-h" . delete-backward-char)
-  ("C-x C-d" . dired)
   ("M-," . text-scale-decrease)
   ("M-." . text-scale-increase)
   ("M-<up>" . balance-windows)
