@@ -42,15 +42,17 @@
 
 ;; local-const -----------------------------------------------------------------------------
 
+(defun my:ensure-dir (dir)
+  (unless (file-directory-p dir)
+  (make-directory dir t)))
+
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
-(unless (file-directory-p my:d:vars)
-  (make-directory my:d:vars))
-
 (defconst my:d:backup
   (expand-file-name "backup/" user-emacs-directory))
-(unless (file-directory-p my:d:backup)
-  (make-directory my:d:backup))
+
+(my:ensure-dir my:d:vars)
+(my:ensure-dir my:d:backup)
 
 ;; language --------------------------------------------------------------------------------
 
