@@ -160,12 +160,11 @@
 
 (leaf tab-bar
   :doc "frame-local tabs with named persistent window configurations"
+  :custom-face
+  (tab-bar-tab . '((t (:foreground "chocolate"))))
+  (tab-bar-tab-inactive . '((t (:foreground "DarkGrey"))))
   :config
   (tab-bar-mode t)
-  (custom-set-faces
-   '(tab-bar-tab ((t (:foreground "chocolate"))))
-   '(tab-bar-tab-inactive ((t (:foreground "DarkGrey"))))
-   )
   )
 
 ;; file ------------------------------------------------------------------------------------
@@ -233,6 +232,8 @@
 ;; looks -----------------------------------------------------------------------------------
 
 (leaf style
+  :custom-face
+  (show-paren-match . '((t (:foreground "DeepSkyBlue"))))
   :config
   (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
   (set-frame-parameter nil 'alpha 85)              ; frame transparency
@@ -245,9 +246,6 @@
   (global-display-line-numbers-mode t)
   (custom-set-variables '(display-line-numbers-width-start t))
   (setq show-paren-style 'expression)
-  (custom-set-faces
-   '(show-paren-match ((t (:foreground "DeepSkyBlue"))))
-   )
 
   :custom
   (menu-bar-mode . nil)                 ; non-display menu-bar
@@ -316,12 +314,11 @@
   )
 
 (leaf color
+  :custom-face
+  (region . '((t (:background "Purple4"))))
+  (mode-line . '((t (:background "DarkOrchid4"))))
+  (hl-line . '((t (:background "midnightblue"))))  
   :config
-  (custom-set-faces
-   '(region ((t (:background "Purple4"))))
-   '(mode-line ((t (:background "DarkOrchid4"))))
-   '(hl-line ((t (:background "midnightblue"))))
-   )
   (global-hl-line-mode t)
   :custom
   (transient-mark-mode . t)
@@ -554,6 +551,9 @@
   :ensure t
   :bind
   ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
+  :custom-face
+  (corfu-default . '((t (:background "midnightblue"))))
+  (corfu-current . '((t (:foreground "orange"))))
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
@@ -563,11 +563,6 @@
   (corfu-min-width . 30)
   (corfu-preselect . 'prompt)
   (text-mode-ispell-word-completion . nil)
-  :config
-  (custom-set-faces
-   '(corfu-default ((t (:background "midnightblue"))))
-   '(corfu-current ((t (:foreground "orange"))))
-   )
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
