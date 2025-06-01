@@ -244,7 +244,7 @@
   (column-number-mode t)
   (size-indication-mode t)              ; file size
   (global-display-line-numbers-mode t)
-  (custom-set-variables '(display-line-numbers-width-start t))
+;  (custom-set-variables '(display-line-numbers-width-start t))
   (setq show-paren-style 'expression)
 
   :custom
@@ -255,6 +255,7 @@
   (initial-scratch-message . "")        ; scratch is null
   (line-spacing . 0.25)                 ; line spacing size
   (show-paren-mode . t)                 ; hightlight matching paren
+  (display-line-numbers-width-start . t) ; display line-number
   )
 
 (leaf doom-themes
