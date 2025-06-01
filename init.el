@@ -659,8 +659,6 @@
   prog-mode-hook
   web-mode-hook
   markdown-mode-hook
-  :config
-  (rainbow-delimiters-mode)
   )
 
 ;; original --------------------------------------------------------------------------------
