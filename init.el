@@ -335,7 +335,7 @@
 ;; view ------------------------------------------------------------------------------------
 
 (leaf view
-  :doc "Open new file or  non-specified file in view-mode"
+  :doc "Open new file or non-specified file in view-mode"
   :hook
   (find-file-hook . exclude-view-list-mode)
   :config
