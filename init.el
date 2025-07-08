@@ -581,6 +581,7 @@
 ;; program ---------------------------------------------------------------------------------
 
 (leaf vterm
+  :when (eq system-type 'gnu/linux)
   :ensure t
   :custom
   (vterm-max-scrollback . 10000)
@@ -591,6 +592,7 @@
   )
 
 (leaf vterm-toggle
+  :when (eq system-type 'gnu/linux)
   :ensure t
   :bind
   ("<f2>" . vterm-toggle)
