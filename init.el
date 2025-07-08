@@ -488,8 +488,8 @@
   ("C-x b" . consult-buffer)
   ("C-x C-b" . bs-show)
   ("C-x C-o" . consult-recent-file)
-  ("C-," . bs-cycle-previous)
   ("C-." . bs-cycle-next)
+  ("C-," . bs-cycle-previous)
   ("C-c s" . consult-line)
   ("C-c m" . consult-line-multi)
   ("C-c j" . consult-mark)
@@ -690,7 +690,7 @@
 
 (leaf global-key
   :doc "global key bind"
-  :bind*
+  :bind
   ("C-:" . undo-redo)
   ("C-t" . other-window)
   ("C-0" . delete-window)
