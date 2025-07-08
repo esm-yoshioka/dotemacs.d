@@ -580,6 +580,45 @@
 
 ;; program ---------------------------------------------------------------------------------
 
+(leaf vterm
+  :ensure t
+  :custom
+  (vterm-max-scrollback . 10000)
+  (vterm-buffer-name-string . "vterm: %s")
+  ;; delete "C-h", add <f1>, <f2>
+  (vterm-keymap-exceptions
+    . '("<f1>" "<f2>" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
+  )
+
+(leaf vterm-toggle
+  :ensure t
+  :bind
+  ("<f2>" . vterm-toggle)
+  (vterm-mode-map
+   ("C-<f2>" . my/vterm-new-buffer-in-current-window)
+   ("C-." . vterm-toggle-forward)
+   ("C-," . vterm-toggle-backward)
+   )
+  :custom
+  (vterm-toggle-scope . 'project)
+  :config
+  ;; Show vterm buffer in the window located at bottom
+  (add-to-list 'display-buffer-alist
+               '((lambda (bufname _)
+                   ;; vterm-toggle のバッファ名は通常 "*vterm" または "vterm:" で始まるのでチェック
+                   (or (string-prefix-p "*vterm" bufname)
+                       (string-prefix-p "vterm:" bufname)))
+                 (display-buffer-reuse-window display-buffer-in-direction)
+                 (direction . bottom)
+                 (reusable-frames . visible)
+                 (window-height . 0.4)))
+  ;; Above display config affects all vterm command, not only vterm-toggle
+  (defun my/vterm-new-buffer-in-current-window()
+    (interactive)
+    (let ((display-buffer-alist nil))
+            (vterm)))
+  )
+
 (leaf magit
   :doc "A Git porcelain inside Emacs."
   :if (cond

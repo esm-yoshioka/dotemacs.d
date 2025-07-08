@@ -95,6 +95,10 @@
 ### Command
 - C-u [num] [command] : [num]回分、[command]を繰り返す
 - C-x C-q : バッファのReadOnlyのOn/Off切り替え
+- "F2" : vtermを開く / 閉じる
+  - C-"F2" : 新しくvtermバッファを作成する
+  - C-. : 次のvtermバッファを開く
+  - C-, : 前のvtermバッファを開く
 - "F3" : マクロの記録開始
 - "F4" : マクロの記録を終了 / マクロの実行開始
 - C-x d : diredを開く
