@@ -95,10 +95,6 @@
 ### Command
 - C-u [num] [command] : [num]回分、[command]を繰り返す
 - C-x C-q : バッファのReadOnlyのOn/Off切り替え
-- "F2" : vtermを開く / 閉じる
-  - C-"F2" : 新しくvtermバッファを作成する
-  - C-. : 次のvtermバッファを開く
-  - C-, : 前のvtermバッファを開く
 - "F3" : マクロの記録開始
 - "F4" : マクロの記録を終了 / マクロの実行開始
 - C-x d : diredを開く
@@ -151,6 +147,13 @@
 - C-x v n : 次の変更箇所に移動
 - C-x v r : 変更点の取り消し
 - C-x v "SPC" : 変更内容を表示
+
+### vterm
+- "F2" : vtermを開く / 閉じる
+  - C-"F2" : 新しくvtermバッファを作成する
+- C-. : 次のvtermバッファを開く
+- C-, : 前のvtermバッファを開く
+- C-c C-t : vterm-copy-mode
 
 ### csv
 - C-c C-a : テーブル形式で表示（整形）
