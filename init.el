@@ -13,17 +13,18 @@
 
 (eval-and-compile
   (customize-set-variable
-   'package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+   'package-archives '(("org" . "https://orgmode.org/elpa/")
                        ("melpa" . "https://melpa.org/packages/")
-                       ))
+                       ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
-  (use-package leaf :ensure t)
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
 
   (leaf leaf-keywords
     :ensure t
-    :init
-    (leaf blackout :ensure t)
     :config
+    ;; initialize leaf-keywords.el
     (leaf-keywords-init))
   )
 
