@@ -229,6 +229,14 @@
   (save-place-mode 1)
   )
 
+(leaf vundo
+  :doc "Visual undo tree"
+  :ensure t
+  :bind(("C-;" . vundo)
+        ("C-/" . undo-only)
+        ("C-:" . undo-redo))
+  )
+
 ;; looks -----------------------------------------------------------------------------------
 
 (leaf style
@@ -734,7 +742,6 @@
   :bind
   ("C-h" . delete-backward-char)
   :bind*
-  ("C-:" . undo-redo)
   ("C-t" . other-window)
   ("C-0" . delete-window)
   ("M-," . text-scale-decrease)

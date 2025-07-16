@@ -58,6 +58,12 @@
 - C-x C-w : ファイルを指定ファイルに保存する（別名保存）
 - C-x C-o : 最近使ったファイルの一覧を開く
 
+### Undo/Redo
+- C-/ : undo
+- C-: : redo
+- C-; : vundo
+  - f/b/n/p : 履歴を移動
+
 ### Cut & Paste
 - C-"SPC" : カーソル位置からmarkする
 - C-x "SPC" : カーソル位置から矩形でmarkする
@@ -69,8 +75,6 @@
 - C-k : カーソル位置から行末まで切り取ってkill-ringに追加する
 - C-d : カーソル位置の１文字を削除
 - C-h : カーソル位置の１文字前を削除（BackSpace）
-- C-/ : UNDO
-- C-: : REDO
 
 ### Search / Replace
 - C-s : カーソルから下を検索（前方検索）
