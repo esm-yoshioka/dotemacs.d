@@ -347,7 +347,7 @@
   :hook
   (find-file-hook . exclude-view-list-mode)
   :config
-  (defvar exclude-view-list
+  (defconst exclude-view-list
     '("COMMIT" "MERGE" "TAG" "PULLREQ" "REBASE"))
 
   (defun exclude-view-list-mode ()
