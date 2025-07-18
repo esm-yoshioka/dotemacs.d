@@ -242,7 +242,7 @@
 
 (leaf style
   :custom-face
-  (show-paren-match . '((t (:foreground "DeepSkyBlue"))))
+  (show-paren-match . '((t (:foreground "DeepSkyBlue" :background "DarkSlateGray" :weight bold))))
   :config
   (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
   (set-frame-parameter nil 'alpha 85)              ; frame transparency
@@ -326,8 +326,8 @@
 (leaf color
   :custom-face
   (region . '((t (:background "Purple4"))))
-  (mode-line . '((t (:background "DarkOrchid4"))))
-  (hl-line . '((t (:background "midnightblue"))))  
+  (mode-line . '((t (:background "MediumPurple4"))))
+  (hl-line . '((t (:background "MidnightBlue"))))
   :config
   (global-hl-line-mode t)
   :custom
@@ -562,8 +562,8 @@
   :bind
   ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
   :custom-face
-  (corfu-default . '((t (:background "midnightblue"))))
-  (corfu-current . '((t (:foreground "orange"))))
+  (corfu-default . '((t (:background "MidnightBlue"))))
+  (corfu-current . '((t (:foreground "orange" :background "SlateBlue4"))))
   :custom
   (corfu-auto . t)                      ; corfu on
   (corfu-cycle . t)
