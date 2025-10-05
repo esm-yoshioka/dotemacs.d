@@ -645,17 +645,6 @@
 ;; ------------------------------------------------------
 ;;    Original
 ;; ------------------------------------------------------
-(leaf set-alpha
-  :doc "change transparency"
-  :preface
-  (defun set-alpha (alpha-mun)
-    "set frame parameter 'alpha"
-    (interactive "nAlplha: ")
-    (set-frame-parameter nil 'alpha
-                         (cons alpha-mun
-                               '(90))))
-  )
-
 (leaf open-cheat
   :doc "open my-cheatsheet other windows"
   :preface
