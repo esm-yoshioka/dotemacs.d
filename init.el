@@ -197,7 +197,6 @@
   (column-number-mode t)
   (size-indication-mode t)              ; file size
   (global-display-line-numbers-mode t)
-;  (custom-set-variables '(display-line-numbers-width-start t))
   (setq show-paren-style 'expression)
 
   :custom
