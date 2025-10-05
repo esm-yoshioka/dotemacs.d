@@ -109,7 +109,6 @@
   - revert-buffer-with-coding-system : 文字コードを指定して、カレントバッファを開き直す
   - toggle-truncate-lines : 長い行の折り返し表示を切り替える
   - untabify : Region内のTABを空白に置き換える
-  - set-alpha : 透過度を変更
   - describe-key : 入力したキーのコマンド内容を表示
 <!---
     - rg :: ripgrep
