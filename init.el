@@ -1,68 +1,35 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
 ;; 
-;; Author : esm-yoshioka
-;; Version: 30.1
-;; 
+;;   Author : esm-yoshioka
+;;   Version: 30.2
+;;
 
-(eval-and-compile
-  (when (or load-file-name byte-compile-current-file)
-    (setq user-emacs-directory
-          (expand-file-name
-           (file-name-directory (or load-file-name byte-compile-current-file)))))
+;; ------------------------------------------------------
+;;    leaf
+;; ------------------------------------------------------
+(package-initialize)
+(unless (package-installed-p 'leaf)
+  (package-refresh-contents)
+  (package-install 'leaf)
   )
 
-(eval-and-compile
-  (customize-set-variable
-   'package-archives '(("org" . "https://orgmode.org/elpa/")
-                       ("melpa" . "https://melpa.org/packages/")
-                       ("gnu" . "https://elpa.gnu.org/packages/")))
-  (package-initialize)
-  (unless (package-installed-p 'leaf)
-    (package-refresh-contents)
-    (package-install 'leaf))
-
-  (leaf leaf-keywords
-    :ensure t
-    :config
-    ;; initialize leaf-keywords.el
-    (leaf-keywords-init))
+(leaf leaf-keywords
+  :ensure t
+  :config
+  ;; initialize leaf-keywords.el
+  (leaf-keywords-init)
   )
 
 (leaf leaf-convert
-  :doc "Convert many format to leaf format"
   :ensure t
   )
 
-(leaf cus-edit
-  :doc "tools for customizing Emacs and Lisp packages"
-  :custom `((custom-file . ,(locate-user-emacs-file "custom.el")))
-  )
 
-;; Describe own settings below
-;; =========================================================================================
-
-;; local-const -----------------------------------------------------------------------------
-
-(defun my:ensure-dir (dir)
-  (unless (file-directory-p dir)
-  (make-directory dir t)))
-
-(defconst my:d:vars
-  (expand-file-name "vars/" user-emacs-directory))
-(defconst my:d:backup
-  (expand-file-name "backup/" user-emacs-directory))
-
-(my:ensure-dir my:d:vars)
-(my:ensure-dir my:d:backup)
-
-;; language --------------------------------------------------------------------------------
-
-(leaf languages
+;; ------------------------------------------------------
+;;    Language
+;; ------------------------------------------------------
+(leaf fonts
   :config
-  (set-language-environment "Japanese")
-  (set-default-coding-systems 'utf-8-unix)
-  (prefer-coding-system 'utf-8)
-  ;; font
   ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
   ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
   (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
@@ -101,37 +68,14 @@
   (setq default-input-method "japanese-mozc")
   )
 
-;; general-setting -------------------------------------------------------------------------
 
-(leaf settings
-  :setq
-  ;; default directory
-  (default-directory . "~/")
-  (command-line-default-directory . "~/")
-
-  :custom
-  (confirm-kill-emacs . 'y-or-n-p)      ; check on exit
-  (use-short-answers . t)               ; y-or-n
-  (echo-keystrokes . 0.1)               ; echo Area key-strokes
-  (ring-bell-function . 'ignore)        ; error beep off
-  (kill-ring-max . 200)                 ; keep kill-ring
-  (mark-ring-max . 50)                  ; keep mark-ring
-  (require-final-newline . t)           ; auto-insert last line
-  (use-dialog-box . nil)                ; always using the echo area
-  ;; tab
-  (indent-tabs-mode . nil)
-  (tab-width . 4)
-  ;; scroll
-  (scroll-conservatively . 1)
-  (scroll-margin . 3)
-  (next-screen-context-lines . 3)
-  (scroll-preserve-screen-position . t)
-  )
-
+;; ------------------------------------------------------
+;;    Operation
+;; ------------------------------------------------------
 (leaf autorevert
   :doc "revert buffers when files on disk change"
-  :custom (auto-revert-interval . 1)
   :global-minor-mode global-auto-revert-mode
+  :custom (auto-revert-interval . 1)
   )
 
 (leaf image
@@ -168,29 +112,40 @@
   (tab-bar-mode t)
   )
 
-;; file ------------------------------------------------------------------------------------
-
-(leaf files
-  :config
-  ;; backupファイルを集約
-  (setq backup-directory-alist `((".*" . ,(expand-file-name my:d:backup))))
-  (setq auto-save-file-name-transforms `((".*" ,(expand-file-name my:d:backup) t)))
-
+(leaf uniquify
+  :doc "unique buffer names dependent on file name"
   :custom
-  ;; backup file
-  (backup-by-copying . t)
-  (version-control . t)
-  (kept-new-versions . 50)
-  (kept-old-versions . 0)
-  (delete-old-versions . t)
-  ;; auto-save file
-  (auto-save-timeout . 15)
-  (auto-save-interval . 120)
-  (auto-save-list-file-prefix . nil)
-  ;; lock file
-  (create-lockfiles . nil)
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content . 2))    ; directory hierarchy
   )
 
+(leaf vundo
+  :doc "Visual undo tree"
+  :ensure t
+  :bind(("C-;" . vundo)
+        ("C-/" . undo-only)
+        ("C-:" . undo-redo))
+  )
+
+(leaf anzu
+  :doc "display current count & total match"
+  :ensure t
+  :require t
+  :after migemo
+  :bind
+  ("M-%" . anzu-query-replace)
+  :custom
+  (anzu-use-migemo . t)
+  (anzu-minimum-input-length . 3)       ; count target
+  (anzu-replace-to-string-separator . " => ")
+  :config
+  (global-anzu-mode)
+  )
+
+
+;; ------------------------------------------------------
+;;    File
+;; ------------------------------------------------------
 (leaf savehist
   :doc "Save minibuffer history"
   :global-minor-mode savehist-mode
@@ -230,25 +185,14 @@
   (save-place-mode 1)
   )
 
-(leaf vundo
-  :doc "Visual undo tree"
-  :ensure t
-  :bind(("C-;" . vundo)
-        ("C-/" . undo-only)
-        ("C-:" . undo-redo))
-  )
 
-;; looks -----------------------------------------------------------------------------------
-
+;; ------------------------------------------------------
+;;    User Interface
+;; ------------------------------------------------------
 (leaf style
   :custom-face
   (show-paren-match . '((t (:foreground "DeepSkyBlue" :background "DarkSlateGray" :weight bold))))
   :config
-  (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
-  (set-frame-parameter nil 'alpha 85)              ; frame transparency
-  (set-frame-parameter nil 'fullscreen 'maximized) ; fullscreen
-  (set-frame-parameter nil 'cursor-type 'box)      ; cursor type
-  (blink-cursor-mode 0)                            ; disable cursor blinking
   (line-number-mode t)
   (column-number-mode t)
   (size-indication-mode t)              ; file size
@@ -257,13 +201,7 @@
   (setq show-paren-style 'expression)
 
   :custom
-  (menu-bar-mode . nil)                 ; non-display menu-bar
-  (scroll-bar-mode . nil)               ; non-display scroll-bar
-  (tool-bar-mode . nil)                 ; non-display tool-bar
-  (inhibit-startup-message . t)         ; non-display startup
-  (initial-scratch-message . "")        ; scratch is null
-  (line-spacing . 0.25)                 ; line spacing size
-  (show-paren-mode . t)                 ; hightlight matching paren
+  (show-paren-mode . t)                  ; hightlight matching paren
   (display-line-numbers-width-start . t) ; display line-number
   )
 
@@ -334,15 +272,10 @@
   (transient-mark-mode . t)
   )
 
-(leaf uniquify
-  :doc "unique buffer names dependent on file name"
-  :custom
-  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
-   (uniquify-min-dir-content . 2))    ; directory hierarchy
-  )
 
-;; view ------------------------------------------------------------------------------------
-
+;; ------------------------------------------------------
+;;    View
+;; ------------------------------------------------------
 (leaf view
   :doc "Open new file or non-specified file in view-mode"
   :hook
@@ -374,8 +307,10 @@
          )
   )
 
-;; package ---------------------------------------------------------------------------------
 
+;; ------------------------------------------------------
+;;    Japanese Search
+;; ------------------------------------------------------
 (leaf migemo-linux
   :when (and
          (eq system-type 'gnu/linux)
@@ -407,21 +342,10 @@
   (migemo-init)
   )
 
-(leaf anzu
-  :doc "display current count & total match"
-  :ensure t
-  :require t
-  :after migemo
-  :bind
-  ("M-%" . anzu-query-replace)
-  :custom
-  (anzu-use-migemo . t)
-  (anzu-minimum-input-length . 3)       ; count target
-  (anzu-replace-to-string-separator . " => ")
-  :config
-  (global-anzu-mode)
-  )
 
+;; ------------------------------------------------------
+;;    Completion
+;; ------------------------------------------------------
 (leaf vertico
   :doc "VERTical Interactive COmpletion"
   :ensure t
@@ -494,8 +418,8 @@
   :doc "Consulting completing-read"
   :ensure t
   :bind
-  ("C-x b" . consult-buffer)
-  ("C-x C-b" . bs-show)
+  ("C-x C-b" . consult-buffer)
+  ("C-x b" . bs-show)
   ("C-x C-o" . consult-recent-file)
   ("C-." . bs-cycle-next)
   ("C-," . bs-cycle-previous)
@@ -587,8 +511,10 @@
   (add-to-list 'completion-at-point-functions 'cape-elisp-block)
   )
 
-;; program ---------------------------------------------------------------------------------
 
+;; ------------------------------------------------------
+;;    Terminal
+;; ------------------------------------------------------
 (leaf vterm
   :when (eq system-type 'gnu/linux)
   :ensure t
@@ -630,6 +556,10 @@
             (vterm)))
   )
 
+
+;; ------------------------------------------------------
+;;    Git
+;; ------------------------------------------------------
 (leaf magit
   :doc "A Git porcelain inside Emacs."
   :if (cond
@@ -658,11 +588,10 @@
    (git-gutter:modified-sign . "=="))
   )
 
-(leaf powershell
-  :doc "Mode for editing PowerShell scripts"
-  :ensure t
-  )
 
+;; ------------------------------------------------------
+;;    Program
+;; ------------------------------------------------------
 (leaf csv-mode
   :doc "Major mode for editing comma/char separated values"
   :ensure t
@@ -712,8 +641,10 @@
   markdown-mode-hook
   )
 
-;; original --------------------------------------------------------------------------------
 
+;; ------------------------------------------------------
+;;    Original
+;; ------------------------------------------------------
 (leaf set-alpha
   :doc "change transparency"
   :preface
@@ -736,8 +667,10 @@
     )
   )
 
-;; key-bind --------------------------------------------------------------------------------
 
+;; ------------------------------------------------------
+;;    Key Bind
+;; ------------------------------------------------------
 (leaf global-key
   :doc "global key bind"
   :bind
@@ -754,12 +687,5 @@
   ("C-<f1>" . open-cheat)
   )
 
-;; =========================================================================================
 
-(provide 'init)
-
-;; Local Variables:
-;; indent-tabs-mode: nil
-;; End:
-
-;;; init.el ends here
+;;; init.el ends her
