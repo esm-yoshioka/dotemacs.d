@@ -35,37 +35,66 @@
 ;;   (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
 ;;   )
 
-(leaf font
+(leaf font-smart
   :config
   (setq frame-resize-pixelwise t
         window-resize-pixelwise t)
-
   (defvar my/default-font "HackGen Console NF")
+
+  (defun my/is-wsl ()
+    (and (eq system-type 'gnu/linux)
+         (string-match-p "Microsoft"
+                         (with-temp-buffer
+                           (call-process "uname" nil t nil "-r")
+                           (buffer-string)))))
 
   (defun my/frame-dpi (&optional frame)
     (let* ((attrs (frame-monitor-attributes frame))
            (geom  (assoc 'geometry attrs))
            (mm    (assoc 'mm-size attrs)))
       (when (and geom mm)
-        (let* ((px-width (nth 3 geom))
-               (mm-width (nth 1 mm)))
+        (let ((px-width (nth 3 geom))
+              (mm-width (nth 1 mm)))
           (/ px-width (/ mm-width 25.4))))))
 
-  (defun my/set-font-by-dpi (&optional frame)
-    (let ((dpi (my/frame-dpi frame)))
-      (when dpi
-        (set-face-attribute
-         'default frame
-         :family my/default-font
-         :height
-         (cond
-          ((< dpi 110) 120)
-          ((< dpi 140) 140)
-          (t            160))))))
+  (defun my/set-font-smart (&optional frame)
+    (let ((frame (or frame (selected-frame))))
+      (set-face-attribute
+       'default frame
+       :family my/default-font
+       :weight 'regular)
 
-  (add-hook 'after-make-frame-functions #'my/set-font-by-dpi)
+      (cond
+       ;; wsl2
+       ((my/is-wsl)
+        (let ((w (frame-pixel-width frame))
+              (h (frame-pixel-height frame)))
+          (set-face-attribute
+           'default frame :height
+           (cond
+            ;; モニタA: 2880x1800
+            ((and (>= w 2800) (>= h 1700)) 160)
+            ;; モニタB: 1920x1080
+            ((and (>= w 1900) (>= h 1000)) 130)
+            ;; fallback
+            (t 140)))))
+
+       ;; windows/linux
+       (t
+        (let ((dpi (my/frame-dpi frame)))
+          (when dpi
+            (set-face-attribute
+             'default frame :height
+             (cond
+              ((< dpi 110) 100)
+              ((< dpi 140) 120)
+              (t            140)))))))))
+
+
+  (add-hook 'after-make-frame-functions #'my/set-font-smart)
   (add-hook 'window-size-change-functions
-            (lambda (_frame) (my/set-font-by-dpi))))
+            (lambda (_frame)
+              (my/set-font-smart))))
 
 (leaf windows-ime
   :when (eq system-type 'windows-nt)
