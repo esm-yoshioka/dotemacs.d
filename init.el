@@ -28,12 +28,44 @@
 ;; ------------------------------------------------------
 ;;    Language
 ;; ------------------------------------------------------
-(leaf fonts
+;; (leaf fonts
+;;   :config
+;;   ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
+;;   ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
+;;   (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
+;;   )
+
+(leaf font
   :config
-  ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
-  ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
-  (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
-  )
+  (setq frame-resize-pixelwise t
+        window-resize-pixelwise t)
+
+  (defvar my/default-font "HackGen Console NF")
+
+  (defun my/frame-dpi (&optional frame)
+    (let* ((attrs (frame-monitor-attributes frame))
+           (geom  (assoc 'geometry attrs))
+           (mm    (assoc 'mm-size attrs)))
+      (when (and geom mm)
+        (let* ((px-width (nth 3 geom))
+               (mm-width (nth 1 mm)))
+          (/ px-width (/ mm-width 25.4))))))
+
+  (defun my/set-font-by-dpi (&optional frame)
+    (let ((dpi (my/frame-dpi frame)))
+      (when dpi
+        (set-face-attribute
+         'default frame
+         :family my/default-font
+         :height
+         (cond
+          ((< dpi 110) 120)
+          ((< dpi 140) 140)
+          (t            160))))))
+
+  (add-hook 'after-make-frame-functions #'my/set-font-by-dpi)
+  (add-hook 'window-size-change-functions
+            (lambda (_frame) (my/set-font-by-dpi))))
 
 (leaf windows-ime
   :when (eq system-type 'windows-nt)
