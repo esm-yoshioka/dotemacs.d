@@ -28,73 +28,27 @@
 ;; ------------------------------------------------------
 ;;    Language
 ;; ------------------------------------------------------
-;; (leaf fonts
-;;   :config
-;;   ;; (set-face-attribute 'default nil :family "HackGen" :height 120)
-;;   ;; (set-face-attribute 'default nil :family "HackGen Console" :height 120)
-;;   (set-face-attribute 'default nil :family "HackGen Console NF" :height 120)
-;;   )
-
-(leaf font-smart
+(leaf custom-font-monitor-switcher
+  :doc "Adjust font size to match resolution"
+  :preface
+  (defun my/apply-font-size-per-monitor (&optional frame)
+    (interactive)
+    (let* ((f (or frame (selected-frame)))
+           (monitor-attrs (frame-monitor-attributes f))
+           (geometry (assoc 'geometry monitor-attrs))
+           (width (nth 3 geometry))
+           (font-height (if (>= width 2880) 200 120)))
+      (unless (eq (face-attribute 'default :height f) font-height)
+        (when (member "HackGen Console NF" (font-family-list))
+          (set-face-attribute 'default f 
+                              :family "HackGen Console NF"
+                              :height font-height)))))
   :config
-  (setq frame-resize-pixelwise t
-        window-resize-pixelwise t)
-  (defvar my/default-font "HackGen Console NF")
-
-  (defun my/is-wsl ()
-    (and (eq system-type 'gnu/linux)
-         (string-match-p "Microsoft"
-                         (with-temp-buffer
-                           (call-process "uname" nil t nil "-r")
-                           (buffer-string)))))
-
-  (defun my/frame-dpi (&optional frame)
-    (let* ((attrs (frame-monitor-attributes frame))
-           (geom  (assoc 'geometry attrs))
-           (mm    (assoc 'mm-size attrs)))
-      (when (and geom mm)
-        (let ((px-width (nth 3 geom))
-              (mm-width (nth 1 mm)))
-          (/ px-width (/ mm-width 25.4))))))
-
-  (defun my/set-font-smart (&optional frame)
-    (let ((frame (or frame (selected-frame))))
-      (set-face-attribute
-       'default frame
-       :family my/default-font
-       :weight 'regular)
-
-      (cond
-       ;; wsl2
-       ((my/is-wsl)
-        (let ((w (frame-pixel-width frame))
-              (h (frame-pixel-height frame)))
-          (set-face-attribute
-           'default frame :height
-           (cond
-            ;; モニタA: 2880x1800
-            ((and (>= w 2800) (>= h 1700)) 160)
-            ;; モニタB: 1920x1080
-            ((and (>= w 1900) (>= h 1000)) 130)
-            ;; fallback
-            (t 140)))))
-
-       ;; windows/linux
-       (t
-        (let ((dpi (my/frame-dpi frame)))
-          (when dpi
-            (set-face-attribute
-             'default frame :height
-             (cond
-              ((< dpi 110) 100)
-              ((< dpi 140) 120)
-              (t            140)))))))))
-
-
-  (add-hook 'after-make-frame-functions #'my/set-font-smart)
-  (add-hook 'window-size-change-functions
-            (lambda (_frame)
-              (my/set-font-smart))))
+  (add-hook 'window-setup-hook #'my/apply-font-size-per-monitor)
+  (add-hook 'after-make-frame-functions #'my/apply-font-size-per-monitor)
+  (add-hook 'window-configuration-change-hook #'my/apply-font-size-per-monitor)
+  (add-hook 'focus-in-hook #'my/apply-font-size-per-monitor)
+  )
 
 (leaf windows-ime
   :when (eq system-type 'windows-nt)
