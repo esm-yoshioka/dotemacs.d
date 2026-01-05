@@ -667,7 +667,7 @@
     (let* ((target-path (expand-file-name "~/.emacs.d/cheatsheet.md"))
            (current-path (buffer-file-name))
            (buffer (find-buffer-visiting target-path)))
-      (unless (and current-path 
+      (unless (and current-path
                    (string= (expand-file-name current-path) target-path))
         (if buffer
             (switch-to-buffer-other-window buffer)
