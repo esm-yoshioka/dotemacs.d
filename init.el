@@ -5,9 +5,14 @@
 ;;
 
 ;; ------------------------------------------------------
+;; Package system bootstrap
+;; ------------------------------------------------------
+(require 'package)
+(package-initialize)
+
+;; ------------------------------------------------------
 ;;    leaf
 ;; ------------------------------------------------------
-(package-initialize)
 (unless (package-installed-p 'leaf)
   (package-refresh-contents)
   (package-install 'leaf)
