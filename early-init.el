@@ -70,9 +70,6 @@
 ;; ------------------------------------------------------
 ;;    Directory Initial Settings
 ;; ------------------------------------------------------
-(setq default-directory "~/")
-(setq command-line-default-directory "~/")
-
 ;; local-const
 (defconst my:d:vars
   (expand-file-name "vars/" user-emacs-directory))
