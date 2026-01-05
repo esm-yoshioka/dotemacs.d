@@ -173,29 +173,22 @@
   )
 
 (leaf recentf
-  :doc "keep track of recently opened files"
-  :preface
-  (defmacro with-suppressed-message (&rest body)
-    "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
-    (declare
-     (indent 0))
-    (let ((message-log-max nil))
-      `(with-temp-message (or (current-message) "") ,@body)))
+  :doc "Keep track of recently opened files"
   :custom
   `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recentf-exclude . '("recentf"))
-    )
+    (recentf-exclude . '("recentf" "\\.elc$")))
   :config
-  (run-with-idle-timer 60 t '(lambda () ; 60s
-                               (with-suppressed-message (recentf-save-list))))
-  (recentf-mode)
-  )
-
-(leaf recentf-ext
-  :doc "Recentf extensions"
-  :ensure t
+  ;; Save recentf list periodically without polluting *Messages*
+  (run-with-idle-timer
+   60 t
+   (lambda ()
+     (let ((message-log-max nil))
+       (with-temp-message (or (current-message) "")
+         (recentf-save-list)))))
+  :hook
+  (after-init-hook . recentf-mode)
   )
 
 (leaf saveplace
