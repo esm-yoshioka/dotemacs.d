@@ -291,19 +291,19 @@
 (leaf view
   :doc "Open new file or non-specified file in view-mode"
   :hook
-  (find-file-hook . exclude-view-list-mode)
+  (find-file-hook . my/exclude-view-list-mode)
   :config
-  (defconst exclude-view-list
+  (defconst my:exclude-view-list
     '("COMMIT" "MERGE" "TAG" "PULLREQ" "REBASE"))
 
-  (defun exclude-view-list-mode ()
+  (defun my/exclude-view-list-mode ()
     (let* ((filename (buffer-file-name))
            (basename (and filename (file-name-nondirectory filename)))
            (exclude-list-related-file-p
             (and basename
                  (cl-some (lambda (keyword)
                             (string-match-p (regexp-quote keyword) basename))
-                          exclude-view-list)))
+                          my:exclude-view-list)))
            (new-file-p (and filename (not (file-exists-p filename)))))
       (unless (or exclude-list-related-file-p new-file-p)
         (view-mode 1))))
@@ -660,7 +660,7 @@
 (leaf open-cheat
   :doc "open my-cheatsheet other windows"
   :preface
-  (defun open-cheat ()
+  (defun my/open-cheat ()
     (interactive)
     (let* ((target-path (expand-file-name "~/.emacs.d/cheatsheet.md"))
            (current-path (buffer-file-name))
@@ -689,7 +689,7 @@
   ("M-<down>" . enlarge-window)
   ("M-<left>" . shrink-window-horizontally)
   ("M-<right>" . enlarge-window-horizontally)
-  ("C-<f1>" . open-cheat)
+  ("C-<f1>" . my/open-cheat)
   )
 
 
