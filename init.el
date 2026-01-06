@@ -98,11 +98,6 @@
   :custom (auto-revert-interval . 1)
   )
 
-(leaf image
-  :doc "always display picture"
-  :global-minor-mode auto-image-file-mode
-  )
-
 (leaf winner
   :doc "Restore old window configurations"
   :global-minor-mode winner-mode
