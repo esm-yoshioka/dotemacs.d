@@ -157,6 +157,21 @@
   (global-anzu-mode)
   )
 
+(leaf diff-hl
+  :doc "Highlight uncommitted changes using VC"
+  :ensure t
+  :global-minor-mode global-diff-hl-mode
+  :bind (("M-g p" . diff-hl-previous-hunk)
+         ("M-g n" . diff-hl-next-hunk)
+         ("M-g r" . diff-hl-revert-hunk)
+         ("M-g s" . diff-hl-show-hunk)
+         )
+  :config
+  (with-eval-after-load 'magit
+    (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+  )
+
 
 ;; ------------------------------------------------------
 ;;    File
@@ -578,21 +593,6 @@
         ((eq system-type 'gnu/linux)
          (executable-find "git")))
   :ensure t
-  )
-
-(leaf git-gutter
-  :doc "Port of Sublime Text plugin GitGutter."
-  :ensure t
-  :global-minor-mode global-git-gutter-mode
-  :bind
-  ("C-x v p" . git-gutter:previous-hunk)
-  ("C-x v n" . git-gutter:next-hunk)
-  ("C-x v r" . git-gutter:revert-hunk)
-  ("C-x v SPC" . git-gutter:popup-hunk)
-  :custom
-  ((git-gutter:added-sign . "++")
-   (git-gutter:deleted-sign . "--")
-   (git-gutter:modified-sign . "=="))
   )
 
 
