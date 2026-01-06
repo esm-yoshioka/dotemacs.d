@@ -157,21 +157,6 @@
   (global-anzu-mode)
   )
 
-(leaf diff-hl
-  :doc "Highlight uncommitted changes using VC"
-  :ensure t
-  :global-minor-mode global-diff-hl-mode
-  :bind (("M-g p" . diff-hl-previous-hunk)
-         ("M-g n" . diff-hl-next-hunk)
-         ("M-g r" . diff-hl-revert-hunk)
-         ("M-g s" . diff-hl-show-hunk)
-         )
-  :config
-  (with-eval-after-load 'magit
-    (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
-  )
-
 
 ;; ------------------------------------------------------
 ;;    File
@@ -593,6 +578,21 @@
         ((eq system-type 'gnu/linux)
          (executable-find "git")))
   :ensure t
+  )
+
+(leaf diff-hl
+  :doc "Highlight uncommitted changes using VC"
+  :ensure t
+  :global-minor-mode global-diff-hl-mode
+  :bind (("M-g p" . diff-hl-previous-hunk)
+         ("M-g n" . diff-hl-next-hunk)
+         ("M-g r" . diff-hl-revert-hunk)
+         ("M-g s" . diff-hl-show-hunk)
+         )
+  :config
+  (with-eval-after-load 'magit
+    (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
   )
 
 
