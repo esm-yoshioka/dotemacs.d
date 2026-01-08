@@ -120,11 +120,10 @@
 
 (leaf tab-bar
   :doc "frame-local tabs with named persistent window configurations"
+  :global-minor-mode tab-bar-mode
   :custom-face
   (tab-bar-tab . '((t (:foreground "chocolate"))))
   (tab-bar-tab-inactive . '((t (:foreground "DarkGrey"))))
-  :config
-  (tab-bar-mode t)
   )
 
 (leaf uniquify
@@ -149,12 +148,11 @@
   :after migemo
   :bind
   ("M-%" . anzu-query-replace)
+  :global-minor-mode global-anzu-mode
   :custom
   (anzu-use-migemo . t)
   (anzu-minimum-input-length . 3)       ; count target
   (anzu-replace-to-string-separator . " => ")
-  :config
-  (global-anzu-mode)
   )
 
 
@@ -188,9 +186,8 @@
 
 (leaf saveplace
   :doc "automatically save place in files"
+  :global-minor-mode save-place-mode
   :custom `((save-place-file . ,(expand-file-name "save-places" my:d:vars)))
-  :config
-  (save-place-mode 1)
   )
 
 
