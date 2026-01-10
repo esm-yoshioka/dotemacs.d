@@ -510,9 +510,9 @@
   :doc "Completion At Point Extensions"
   :ensure t
   :config
-  (add-to-list 'completion-at-point-functions 'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions 'cape-file)
-  (add-to-list 'completion-at-point-functions 'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions 'cape-dabbrev) ; current buffer
+  (add-to-list 'completion-at-point-functions 'cape-keyword) ; programming keyword
+  (add-to-list 'completion-at-point-functions 'cape-file)    ; file name
   )
 
 
@@ -594,6 +594,27 @@
 
 
 ;; ------------------------------------------------------
+;;    SQL
+;; ------------------------------------------------------
+(leaf sql-mode
+  :custom
+  (sql-set-product . 'postgres)
+  )
+
+(leaf sql-indent
+  :doc "Support for indenting code in SQL files."
+  :ensure t
+  :setq
+  (sql-indent-offset . 2)
+  )
+
+(leaf sqlup-mode
+  :ensure t
+  :hook (sql-mode-hook . sqlup-mode)
+  )
+
+
+;; ------------------------------------------------------
 ;;    Program
 ;; ------------------------------------------------------
 (leaf csv-mode
@@ -613,18 +634,6 @@
   :ensure t
   :mode
   ("\\.md\\'" . gfm-mode)
-  )
-
-(leaf sql-mode
-  :custom
-  (sql-product . 'postgres)
-  )
-
-(leaf sql-indent
-  :doc "Support for indenting code in SQL files."
-  :ensure t
-  :setq
-  (sql-indent-offset . 2)
   )
 
 (leaf indent-bars
