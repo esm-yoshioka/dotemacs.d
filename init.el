@@ -639,19 +639,14 @@
 (leaf indent-bars
   :doc "Highlight indentation with bars"
   :ensure t
-  :hook
-  prog-mode-hook
-  web-mode-hook
-  yaml-mode-hook
+  :hook ((prog-mode-hook . indent-bars-mode)
+         (yaml-mode-hook . indent-bars-mode))
   )
 
 (leaf rainbow-delimiters
   :doc "Highlight brackets according to their depth."
   :ensure t
-  :hook
-  prog-mode-hook
-  web-mode-hook
-  markdown-mode-hook
+  :hook ((prog-mode-hook . rainbow-delimiters-mode))
   )
 
 
