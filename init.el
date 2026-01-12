@@ -599,18 +599,26 @@
 (leaf sql-mode
   :custom
   (sql-set-product . 'postgres)
+  (sql-connection-alist .
+                        '(("local-db"
+                           (sql-product 'postgres)
+                           (sql-server "localhost")
+                           (sql-port 5432))))
   )
 
 (leaf sql-indent
   :doc "Support for indenting code in SQL files."
   :ensure t
-  :setq
+  :hook (sql-mode-hook . sqlind-minor-mode)
+  :custom
   (sql-indent-offset . 2)
+  (sql-indent-maybe-tab . t)
   )
 
 (leaf sqlup-mode
   :ensure t
-  :hook (sql-mode-hook . sqlup-mode)
+  :hook
+  (sql-mode-hook . sqlup-mode)
   )
 
 
