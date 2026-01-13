@@ -250,12 +250,12 @@
   (nerd-icons-completion-mode)
   )
 
-(leaf nerd-icons-dired
-  :doc "Shows icons for each file in dired mode"
-  :ensure t
-  :after nerd-icons
-  :hook ((dired-mode-hook . nerd-icons-dired-mode))
-  )
+;; (leaf nerd-icons-dired
+;;   :doc "Shows icons for each file in dired mode"
+;;   :ensure t
+;;   :after nerd-icons
+;;   :hook ((dired-mode-hook . nerd-icons-dired-mode))
+;;   )
 
 (leaf nerd-icons-corfu
   :doc "Icons for Corfu via nerd-icons"
@@ -309,6 +309,46 @@
          ("n" . scroll-up)
          ("p" . scroll-down)
          )
+  )
+
+
+;; ------------------------------------------------------
+;;    dirvish
+;; ------------------------------------------------------
+(leaf dirvish
+  :doc "A modern file manager based on dired mode."
+  :ensure t
+  :init
+  (dirvish-override-dired-mode)
+  :bind (
+         ("<f5>" . dirvish-side)
+         ("C-x d" . dirvish)
+         (:dirvish-mode-map
+          ("TAB" . dirvish-subtree-toggle)
+          ("a" . dirvish-quick-access)
+          ("h" . dired-up-directory)
+          ("l" . dired-find-file)
+          )
+         )
+  :custom
+  (dirvish-attributes . '(
+                          vc-state      ; Gitのマーク(M, Uなど)を優先表示
+                          nerd-icons    ; アイコン表示
+                          file-time     ; 更新日
+                          file-size     ; ファイルサイズ
+                          file-modes    ; 権限・所有者
+                          ))
+  (dirvish-side-attributes . '(
+                               vc-state
+                               nerd-icons    ; アイコン表示
+                               file-time     ; 更新日
+                               ))
+  (dirvish-side-width . 45)
+  :config
+  (setq dirvish-quick-access-entries
+        '(("e" "~/.emacs.d" "Emacs")
+          ("g" "~/git" "Git Directory")
+          ("w" "~/work" "Work")))
   )
 
 
