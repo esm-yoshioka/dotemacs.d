@@ -535,7 +535,7 @@
   :ensure t
   :bind
   ("<f2>" . vterm-toggle)
-  (vterm-mode-map
+  (:vterm-mode-map
    ("C-<f2>" . my/vterm-new-buffer-in-current-window)
    ("C-." . vterm-toggle-forward)
    ("C-," . vterm-toggle-backward)
