@@ -321,7 +321,7 @@
   :init
   (dirvish-override-dired-mode)
   :bind (
-         ("<f5>" . dirvish-side)
+         ("C-c d" . dirvish-side)
          ("C-x d" . dirvish)
          (:dirvish-mode-map
           ("TAB" . dirvish-subtree-toggle)
@@ -332,14 +332,14 @@
          )
   :custom
   (dirvish-attributes . '(
-                          vc-state      ; Gitのマーク(M, Uなど)を優先表示
+                          ;; vc-state      ; Gitのマーク(M, Uなど)を優先表示
                           nerd-icons    ; アイコン表示
                           file-time     ; 更新日
                           file-size     ; ファイルサイズ
                           file-modes    ; 権限・所有者
                           ))
   (dirvish-side-attributes . '(
-                               vc-state
+                               ;; vc-state
                                nerd-icons    ; アイコン表示
                                file-time     ; 更新日
                                ))
@@ -349,6 +349,8 @@
         '(("e" "~/.emacs.d" "Emacs")
           ("g" "~/git" "Git Directory")
           ("w" "~/work" "Work")))
+  (dirvish-peek-mode)
+  (dirvish-side-follow-mode)
   )
 
 
