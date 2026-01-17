@@ -333,17 +333,21 @@
   :custom
   (dirvish-attributes . '(
                           ;; vc-state      ; Gitのマーク(M, Uなど)を優先表示
-                          nerd-icons    ; アイコン表示
-                          file-time     ; 更新日
-                          file-size     ; ファイルサイズ
-                          file-modes    ; 権限・所有者
+                          nerd-icons
+                          file-time
+                          file-size
+                          file-modes
                           ))
   (dirvish-side-attributes . '(
                                ;; vc-state
-                               nerd-icons    ; アイコン表示
-                               file-time     ; 更新日
+                               nerd-icons
+                               file-time
                                ))
   (dirvish-side-width . 45)
+  (dired-recursive-copies . 'always)
+  (dired-recursive-deletes . 'always)
+  (dired-dwim-target . t)
+  (ls-lisp-dirs-first . t)
   :config
   (setq dirvish-quick-access-entries
         '(("e" "~/.emacs.d" "Emacs")

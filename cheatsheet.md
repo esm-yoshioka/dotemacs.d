@@ -130,6 +130,7 @@
 - r : カーソルから上を検索（後方検索） 
 
 ### dired（dirvish）
+- C-x C-d : diredを開く
 - C-x d : dirvishを開く
 - C-c d : dirvish-sideを開く
 - n : 次のディレクトリへ移動
