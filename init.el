@@ -276,6 +276,15 @@
   (transient-mark-mode . t)
   )
 
+(leaf ansi-color
+  :preface
+  (defun my/ansi-colorize-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region (point-min) (point-max))))
+  :hook
+  (compilation-filter-hook . my/ansi-colorize-buffer)
+  )
+
 
 ;; ------------------------------------------------------
 ;;    View
