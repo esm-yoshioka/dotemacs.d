@@ -250,13 +250,6 @@
   (nerd-icons-completion-mode)
   )
 
-;; (leaf nerd-icons-dired
-;;   :doc "Shows icons for each file in dired mode"
-;;   :ensure t
-;;   :after nerd-icons
-;;   :hook ((dired-mode-hook . nerd-icons-dired-mode))
-;;   )
-
 (leaf nerd-icons-corfu
   :doc "Icons for Corfu via nerd-icons"
   :ensure t
@@ -274,15 +267,6 @@
   (global-hl-line-mode t)
   :custom
   (transient-mark-mode . t)
-  )
-
-(leaf ansi-color
-  :preface
-  (defun my/ansi-colorize-buffer ()
-    (let ((inhibit-read-only t))
-      (ansi-color-apply-on-region (point-min) (point-max))))
-  :hook
-  (compilation-filter-hook . my/ansi-colorize-buffer)
   )
 
 
@@ -729,6 +713,16 @@
         (if buffer
             (switch-to-buffer-other-window buffer)
           (find-file-read-only-other-window target-path)))))
+  )
+
+(leaf ansi-color
+  :doc "display the compilation output colors"
+  :preface
+  (defun my/ansi-colorize-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region (point-min) (point-max))))
+  :hook
+  (compilation-filter-hook . my/ansi-colorize-buffer)
   )
 
 
