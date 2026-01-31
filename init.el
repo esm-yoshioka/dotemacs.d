@@ -354,24 +354,6 @@
 ;; ------------------------------------------------------
 ;;    Japanese Search
 ;; ------------------------------------------------------
-(leaf migemo-linux
-  :when (and
-         (eq system-type 'gnu/linux)
-         (executable-find "cmigemo"))
-  :custom
-  (migemo-command . "cmigemo")
-  (migemo-dictionary . "/usr/share/cmigemo/utf-8/migemo-dict")
-  )
-
-(leaf migemo-win
-  :when (and
-         (eq system-type 'windows-nt)
-         (file-exists-p "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
-  :custom
-  (migemo-command . "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
-  (migemo-dictionary . "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict")
-  )
-
 (leaf migemo
   :doc "Japanese incremental search through dynamic pattern expansion"
   :ensure t
@@ -382,7 +364,16 @@
   (migemo-regex-dictionary . nil)
   (migemo-coding-system . 'utf-8-unix)
   :config
-  (migemo-init)
+  (cond
+   ((eq system-type 'windows-nt)
+    (setq migemo-command "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
+    (setq migemo-dictionary "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
+   ((eq system-type 'gnu/linux)
+    (setq migemo-command "cmigemo")
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
+  (if (and migemo-command (file-exists-p (or migemo-command "")))
+      (migemo-init)
+    (message "Warning: migemo-command not found at %s" migemo-command))
   )
 
 
