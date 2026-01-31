@@ -343,9 +343,15 @@
   (ls-lisp-dirs-first . t)
   :config
   (setq dirvish-quick-access-entries
-        '(("e" "~/.emacs.d" "Emacs")
-          ("g" "~/git" "Git Directory")
-          ("w" "~/work" "Work")))
+        (cond
+         ((eq system-type 'windows-nt)
+          '(("e" "~/.emacs.d" "Emacs")
+            ("m" "G:/マイドライブ/memo" "Memo")))
+         ((eq system-type 'gnu/linux)
+          '(("e" "~/.emacs.d" "Emacs")
+            ("g" "~/git" "Git")
+            ("w" "~/work" "Work")))
+         (t '(("h" "~" "Home")))))
   (dirvish-peek-mode)
   (dirvish-side-follow-mode)
   )
