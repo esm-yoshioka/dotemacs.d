@@ -33,28 +33,6 @@
 ;; ------------------------------------------------------
 ;;    Language
 ;; ------------------------------------------------------
-(leaf custom-font-monitor-switcher
-  :doc "Adjust font size to match resolution"
-  :preface
-  (defun my/apply-font-size-per-monitor (&optional frame)
-    (interactive)
-    (let* ((f (or frame (selected-frame)))
-           (monitor-attrs (frame-monitor-attributes f))
-           (geometry (assoc 'geometry monitor-attrs))
-           (width (nth 3 geometry))
-           (font-height (if (>= width 2880) 200 120)))
-      (unless (eq (face-attribute 'default :height f) font-height)
-        (when (member "HackGen Console NF" (font-family-list))
-          (set-face-attribute 'default f 
-                              :family "HackGen Console NF"
-                              :height font-height)))))
-  :config
-  (add-hook 'window-setup-hook #'my/apply-font-size-per-monitor)
-  (add-hook 'after-make-frame-functions #'my/apply-font-size-per-monitor)
-  (add-hook 'window-configuration-change-hook #'my/apply-font-size-per-monitor)
-  (add-hook 'focus-in-hook #'my/apply-font-size-per-monitor)
-  )
-
 (leaf windows-ime
   :when (eq system-type 'windows-nt)
   :config
@@ -194,6 +172,28 @@
 ;; ------------------------------------------------------
 ;;    User Interface
 ;; ------------------------------------------------------
+(leaf custom-font-monitor-switcher
+  :doc "Adjust font size to match resolution"
+  :preface
+  (defun my/apply-font-size-per-monitor (&optional frame)
+    (interactive)
+    (let* ((f (or frame (selected-frame)))
+           (monitor-attrs (frame-monitor-attributes f))
+           (geometry (assoc 'geometry monitor-attrs))
+           (width (nth 3 geometry))
+           (font-height (if (>= width 2880) 200 120)))
+      (unless (eq (face-attribute 'default :height f) font-height)
+        (when (member "HackGen Console NF" (font-family-list))
+          (set-face-attribute 'default f
+                              :family "HackGen Console NF"
+                              :height font-height)))))
+  :config
+  (add-hook 'window-setup-hook #'my/apply-font-size-per-monitor)
+  (add-hook 'after-make-frame-functions #'my/apply-font-size-per-monitor)
+  (add-hook 'window-configuration-change-hook #'my/apply-font-size-per-monitor)
+  (add-hook 'focus-in-hook #'my/apply-font-size-per-monitor)
+  )
+
 (leaf style
   :custom-face
   (show-paren-match . '((t (:foreground "DeepSkyBlue" :background "DarkSlateGray" :weight bold))))
@@ -351,7 +351,7 @@
           '(("e" "~/.emacs.d" "Emacs")
             ("g" "~/git" "Git")
             ("w" "~/work" "Work")))
-         (t '(("h" "~" "Home")))))
+         ))
   (dirvish-peek-mode)
   (dirvish-side-follow-mode)
   )
