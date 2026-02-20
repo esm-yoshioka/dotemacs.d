@@ -702,7 +702,7 @@
   :preface
   (defun my/open-cheat ()
     (interactive)
-    (let* ((target-path (expand-file-name "~/.emacs.d/cheatsheet.md"))
+    (let* ((target-path (expand-file-name "~/.emacs.d/cheatsheet.org"))
            (current-path (buffer-file-name))
            (buffer (find-buffer-visiting target-path)))
       (unless (and current-path

@@ -1,15 +1,13 @@
-# Emacs Cheat Sheet
-
-## Basic
-
-### emacs
+* Emacs Cheat Sheet
+** Basic
+*** emacs
 - C-x C-c : emacsの終了
 - C-x C-z : emacsを最小化
 - C-g : 実行中の処理をキャンセル
 - C-"F1" : チートシートを開く
 - "F1" : ヘルプ
 
-### Move
+*** Move
 - C-f : 1文字後（次の文字）へ移動
 - C-b : 1文字前（前の文字）へ移動
 - C-n : 次の行（１つ下）へ移動
@@ -23,7 +21,7 @@
 - M-< (Shift + ,) : バッファの最初の行へ移動
 - M-> (Shift + .) : バッファの最後の行へ移動
 
-### Tab
+*** Tab
 - C-x t-2 : タブの新規作成
 - C-x t-1 : 他のタブを消す
 - C-x t-0 : 現在のタブを閉じる
@@ -31,7 +29,7 @@
 - C-x t-b : バッファを新しいタブで開く
 - C-x t C-t : ファイルを新しいタブで開く
 
-### Windows
+*** Windows
 - C-x 2 : ウィンドウを上下2つに分割
 - C-x 3 : ウィンドウを左右2つに分割
 - C-x 1 : 他のウィンドウを消す
@@ -42,7 +40,7 @@
 - M-S-"down" : ウィンドウサイズ（縦）を広げる
 - M-S-"up" : ウィンドウサイズを均等に戻す
 
-### Buffer
+*** Buffer
 - C-x k : バッファを消す
 - C-x b : バッファを切り替える
 - C-x b : ミニバッファリストを開く
@@ -51,20 +49,20 @@
 - C-. : 次のバッファを開く
 - C-, : 前のバッファを開く
 
-### File
+*** File
 - C-x C-f : ファイルを開く
   - C-l : 1つ上のディレクトリに移動する
 - C-x C-s : ファイルを保存する（上書き保存）
 - C-x C-w : ファイルを指定ファイルに保存する（別名保存）
 - C-x C-o : 最近使ったファイルの一覧を開く
 
-### Undo/Redo
+*** Undo/Redo
 - C-/ : undo
 - C-: : redo
 - C-; : vundo
   - f/b/n/p : 履歴を移動
 
-### Cut & Paste
+*** Cut & Paste
 - C-"SPC" : カーソル位置からmarkする
 - C-x "SPC" : カーソル位置から矩形でmarkする
 - C-x h : バッファ全体をmarkする
@@ -76,7 +74,7 @@
 - C-d : カーソル位置の１文字を削除
 - C-h : カーソル位置の１文字前を削除（BackSpace）
 
-### Search / Replace
+*** Search / Replace
 - C-s : カーソルから下を検索（前方検索）
 - C-r : カーソルから上を検索（後方検索）
 - C-c s : カレントバッファから全検索
@@ -91,12 +89,12 @@
 - C-c f : ファイル名検索（find）
   - C-u C-c f : 検索するルートディレクトリを指定してfind
 
-### Display
+*** Display
 - C-l : カーソルのある行を画面中央に表示
 - M-, : 表示している文字サイズを小さくする
 - M-. : 表示している文字サイズを大きくする
 
-### Command
+*** Command
 - C-u [num] [command] : [num]回分、[command]を繰り返す
 - C-x C-q : バッファのReadOnlyのOn/Off切り替え
 - "F3" : マクロの記録開始
@@ -110,14 +108,11 @@
   - toggle-truncate-lines : 長い行の折り返し表示を切り替える
   - untabify : Region内のTABを空白に置き換える
   - describe-key : 入力したキーバインドのコマンド内容を表示
-<!---
-    - rg :: ripgrep
-    - sgml-pretty-print :: XMLファイルの整形
--->
+    # - rg :: ripgrep
+    # - sgml-pretty-print :: XMLファイルの整形
 
-## mode
-
-### view
+** mode
+*** view
 - l : 1文字後（次の文字）へ移動
 - h : 1文字前（前の文字）へ移動
 - a : 行頭へ移動
@@ -129,7 +124,7 @@
 - s : カーソルから下を検索（前方検索）
 - r : カーソルから上を検索（後方検索） 
 
-### dired（dirvish）
+*** dired（dirvish）
 - C-x C-d : diredを開く
 - C-x d : dirvishを開く
 - C-c d : dirvish-sideを開く
@@ -154,7 +149,7 @@
   - C-c C-c : 変更結果を反映
   - C-c "ESC" : 変更結果を破棄
 
-### magit
+*** magit
 - C-x g : magit バッファを開く
 - n : 次の行（１つ下）へ移動
 - p : 前の行（１つ上）へ移動
@@ -179,20 +174,20 @@
 - M-g r : 変更点の取り消し
 - M-g s : 変更内容を表示
 
-### vterm
+*** vterm
 - "F2" : vtermを開く / 閉じる
   - C-"F2" : 新しくvtermバッファを作成する
 - C-. : 次のvtermバッファを開く
 - C-, : 前のvtermバッファを開く
 - C-c C-t : vterm-copy-mode
 
-### SQL
+*** SQL
 - M-x sql-postgres : SQLモードを起動
 - C-c C-b : バッファ内すべてのクエリを実行
 - C-c C-c : カーソル位置の単一クエリを実行
 - C-c C-r : リージョン内の複数クエリを実行
 
-### package list
+*** package list
 - i : インストール対象としてマーク
 - d : 削除対象としてマーク
 - u : マークを解除
@@ -201,7 +196,7 @@
 - r : 一覧の更新
 - q : package listを閉じる
 
-### csv
+*** csv
 - C-c C-a : テーブル形式で表示（整形）
 - C-c C-u : 元のCSVレイアウトに戻す
 - C-c C-k : 指定した列を切り取り（数字で列指定）
