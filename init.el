@@ -306,6 +306,21 @@
 
 
 ;; ------------------------------------------------------
+;;    Org
+;; ------------------------------------------------------
+(leaf org
+  :doc "Outline-based notes management and organizer"
+  :hook
+  (org-mode-hook . visual-line-mode)
+  :mode
+  ("\\.org\\'" . org-mode)
+  :custom
+  (org-startup-indented . t)
+  (org-ellipsis . " ▼")
+  )
+
+
+;; ------------------------------------------------------
 ;;    dirvish
 ;; ------------------------------------------------------
 (leaf dirvish
