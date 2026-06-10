@@ -573,6 +573,12 @@
 (leaf vterm
   :when (eq system-type 'gnu/linux)
   :ensure t
+  :bind
+  (:vterm-mode-map
+   ("C-<f2>" . my/vterm-new-buffer-in-current-window)
+   ("C-." . vterm-toggle-forward)
+   ("C-," . vterm-toggle-backward)
+   )
   :custom
   (vterm-max-scrollback . 10000)
   (vterm-buffer-name-string . "vterm: %s")
@@ -586,13 +592,14 @@
   :ensure t
   :bind
   ("<f2>" . vterm-toggle)
-  (:vterm-mode-map
-   ("C-<f2>" . my/vterm-new-buffer-in-current-window)
-   ("C-." . vterm-toggle-forward)
-   ("C-," . vterm-toggle-backward)
-   )
   :custom
   (vterm-toggle-scope . 'project)
+  :init
+  ;; Above display config affects all vterm command, not only vterm-toggle
+  (defun my/vterm-new-buffer-in-current-window()
+    (interactive)
+    (let ((display-buffer-alist nil))
+      (vterm)))
   :config
   ;; Show vterm buffer in the window located at bottom
   (add-to-list 'display-buffer-alist
@@ -604,11 +611,6 @@
                  (direction . bottom)
                  (reusable-frames . visible)
                  (window-height . 0.4)))
-  ;; Above display config affects all vterm command, not only vterm-toggle
-  (defun my/vterm-new-buffer-in-current-window()
-    (interactive)
-    (let ((display-buffer-alist nil))
-            (vterm)))
   )
 
 
