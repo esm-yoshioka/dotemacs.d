@@ -121,7 +121,8 @@
 ;; ------------------------------------------------------
 (setq frame-title-format (format "emacs@%s : %%f" (system-name)))
 
-(add-to-list 'default-frame-alist '(alpha-background . 80))        ;issue Not working on Windows
+(when (eq system-type 'gnu/linux)
+  (add-to-list 'default-frame-alist '(alpha-background . 80)))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(cursor-type . bar))
 
