@@ -194,8 +194,7 @@
   :config
   (add-hook 'window-setup-hook #'my/apply-font-size-per-monitor)
   (add-hook 'after-make-frame-functions #'my/apply-font-size-per-monitor)
-  (add-hook 'window-configuration-change-hook #'my/apply-font-size-per-monitor)
-  (add-hook 'focus-in-hook #'my/apply-font-size-per-monitor)
+  (add-hook 'move-frame-functions #'my/apply-font-size-per-monitor)
   )
 
 (leaf style
