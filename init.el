@@ -201,11 +201,12 @@
 (leaf style
   :custom-face
   (show-paren-match . '((t (:foreground "DeepSkyBlue" :background "DarkSlateGray" :weight bold))))
+  :hook ((prog-mode-hook . display-line-numbers-mode)
+         (yaml-mode-hook . display-line-numbers-mode))
   :config
   (line-number-mode t)
   (column-number-mode t)
   (size-indication-mode t)              ; file size
-  (global-display-line-numbers-mode t)
   (setq show-paren-style 'expression)
 
   :custom
