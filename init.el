@@ -416,16 +416,13 @@
   (vertico-mode)
   )
 
-(leaf extensions/vertico-directory
+(leaf vertico-directory
+  :doc "Vertico extension for directory navigation"
   :ensure nil
-  :config
-  (with-eval-after-load 'vertico
-    (unless (fboundp 'vertico-directory-up)
-      (autoload 'vertico-directory-up "extensions/vertico-directory" nil t))
-    (bind-keys :package extensions/vertico-directory
-               :map vertico-map
-               ("C-l" . vertico-directory-up))
-    )
+  :after vertico
+  :bind (:vertico-map
+         ("C-l" . vertico-directory-up))
+  :hook (rfn-eshadow-update-overlay-hook . vertico-directory-tidy)
   )
 
 (leaf marginalia
