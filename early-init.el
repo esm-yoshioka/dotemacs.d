@@ -25,6 +25,18 @@
             (setq gc-cons-threshold (* 16 1024 1024)
                   gc-cons-percentage 0.2)))
 
+;; native-comp の警告ポップアップを抑制(ログには残る)
+(setq native-comp-async-report-warnings-errors 'silent)
+
+;; プロセスからの読み込みバッファを拡大(ripgrep 等の高速化)
+(setq read-process-output-max (* 1024 1024))  ; 1MB
+
+;; 起動時の暗黙のフレームリサイズ計算を抑制
+(setq frame-inhibit-implied-resize t)
+
+;; GC のたびのフォントキャッシュ圧縮を抑制(アイコン多用時の引っかかり軽減)
+(setq inhibit-compacting-font-caches t)
+
 
 ;; ------------------------------------------------------
 ;;    Package Management
