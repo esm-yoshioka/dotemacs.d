@@ -76,6 +76,14 @@
   :custom (auto-revert-interval . 1)
   )
 
+(leaf which-key
+  :doc "Display available keybindings in popup"
+  :ensure nil
+  :global-minor-mode which-key-mode
+  :custom
+  (which-key-idle-delay . 1.0)
+  )
+
 (leaf winner
   :doc "Restore old window configurations"
   :global-minor-mode winner-mode
