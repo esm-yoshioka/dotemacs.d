@@ -149,7 +149,11 @@
   `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recentf-exclude . '("recentf" "\\.elc$")))
+    (recentf-exclude . '("recentf"
+                         "\\.elc$"
+                         "/backup/"
+                         "/vars/"
+                         "custom\\.el$")))
   :config
   ;; Save recentf list periodically without polluting *Messages*
   (run-with-idle-timer
