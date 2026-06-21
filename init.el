@@ -90,6 +90,11 @@
   :global-minor-mode delete-selection-mode
   )
 
+(leaf so-long
+  :doc "Mitigate performance problems with files of long lines"
+  :global-minor-mode global-so-long-mode
+  )
+
 (leaf winner
   :doc "Restore old window configurations"
   :global-minor-mode winner-mode
