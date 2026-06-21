@@ -85,6 +85,11 @@
   (which-key-idle-delay . 1.0)
   )
 
+(leaf delsel
+  :doc "delete selection if you insert"
+  :global-minor-mode delete-selection-mode
+  )
+
 (leaf winner
   :doc "Restore old window configurations"
   :global-minor-mode winner-mode
