@@ -31,6 +31,12 @@
 
 
 ;; ------------------------------------------------------
+;;    Local config
+;; ------------------------------------------------------
+(load (expand-file-name "local-config.el" user-emacs-directory) t)
+
+
+;; ------------------------------------------------------
 ;;    Language
 ;; ------------------------------------------------------
 (leaf windows-ime
@@ -677,13 +683,32 @@
 ;;    SQL
 ;; ------------------------------------------------------
 (leaf sql-mode
+  :bind ("C-c q" . sql-connect)
+  :preface
+  (defun my/pgpass-file ()
+    (let ((f (if (eq system-type 'windows-nt)
+                 (expand-file-name "postgresql/pgpass.conf" (getenv "APPDATA"))
+               (expand-file-name "~/.pgpass"))))
+      (and (file-exists-p f) f)))
   :custom
-  (sql-set-product . 'postgres)
-  (sql-connection-alist .
-                        '(("local-db"
-                           (sql-product 'postgres)
-                           (sql-server "localhost")
-                           (sql-port 5432))))
+  (sql-product . 'postgres)
+  :config
+  ;; .pgpass の有無でパスワード入力要否を自動切替
+  (setq sql-postgres-login-params
+        (if (my/pgpass-file)
+            '(user database server port)
+          '(user database server port password)))
+  ;; DB名リスト(local-config.el)から接続定義を生成
+  (setq sql-connection-alist
+        (mapcar
+         (lambda (db)
+           `(,db
+             (sql-product 'postgres)
+             (sql-server "localhost")
+             (sql-port 5432)
+             (sql-database ,db)
+             (sql-user ,(or (bound-and-true-p my/pg-user) "postgres"))))
+         (and (boundp 'my/pg-databases) my/pg-databases)))
   )
 
 (leaf sql-indent
