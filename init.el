@@ -449,7 +449,6 @@
   :ensure t
   :custom
   (completion-styles . '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion))))
   )
 
 (leaf orderless-migemo
@@ -473,7 +472,7 @@
   :custom
   (completion-category-overrides .
         '((command (styles orderless-default-style))           ; M-x
-          (file (styles orderless-migemo-style))               ; find-file
+          (file (styles orderless-migemo-style partial-completion)) ; find-file(migemo+パス省略展開)
           (buffer (styles orderless-migemo-style))
           (symbol (styles orderless-default-style))
           (consult-location (styles orderless-migemo-style))   ; consult-line etc
