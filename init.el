@@ -599,6 +599,22 @@
   (add-to-list 'completion-at-point-functions 'cape-file)    ; file name
   )
 
+(leaf embark
+  :doc "Emacs Mini-Buffer Actions Rooted in Keymaps"
+  :ensure t
+  :bind
+  ("C-o" . embark-act)
+  :custom
+  (prefix-help-command . #'embark-prefix-help-command)
+  )
+
+(leaf embark-consult
+  :doc "Consult integration for Embark"
+  :ensure t
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode)
+  )
+
 
 ;; ------------------------------------------------------
 ;;    Terminal
