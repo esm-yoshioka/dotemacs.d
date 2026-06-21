@@ -149,7 +149,10 @@
 (leaf savehist
   :doc "Save minibuffer history"
   :global-minor-mode savehist-mode
-  :custom `((savehist-file . ,(expand-file-name "history" my:d:vars)))
+  :custom
+  `((savehist-file . ,(expand-file-name "history" my:d:vars))
+    (savehist-additional-variables . '(search-ring regexp-search-ring kill-ring))
+    (history-delete-duplicates . t))
   )
 
 (leaf recentf
