@@ -37,6 +37,9 @@
 ;; GC のたびのフォントキャッシュ圧縮を抑制(アイコン多用時の引っかかり軽減)
 (setq inhibit-compacting-font-caches t)
 
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
 
 ;; ------------------------------------------------------
 ;;    Package Management
