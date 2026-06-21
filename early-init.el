@@ -115,6 +115,8 @@
 ;; lock file
 (setq create-lockfiles nil)
 
+(setq vc-handled-backends '(Git))
+
 
 ;; ------------------------------------------------------
 ;;    UI Initial Settings
