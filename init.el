@@ -218,11 +218,11 @@
   (line-number-mode t)
   (column-number-mode t)
   (size-indication-mode t)              ; file size
-  (setq show-paren-style 'expression)
 
   :custom
-  (show-paren-mode . t)                  ; hightlight matching paren
-  (display-line-numbers-width-start . t) ; display line-number
+  (show-paren-mode . t)                   ; hightlight matching paren
+  (show-paren-style . 'expression)        ; highlight whole expression
+  (display-line-numbers-width-start . t)  ; display line-number
   )
 
 (leaf doom-themes
