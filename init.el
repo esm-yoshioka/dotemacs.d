@@ -73,7 +73,8 @@
 (leaf autorevert
   :doc "revert buffers when files on disk change"
   :global-minor-mode global-auto-revert-mode
-  :custom (auto-revert-interval . 1)
+  :custom ((auto-revert-avoid-polling . t)
+           (auto-revert-interval . 5))
   )
 
 (leaf which-key
