@@ -6,9 +6,10 @@
 *.elc
 custom.el
 auto-save-list
-vars
-tramp
-eln-cache
+/vars/
+/tramp/
+/eln-cache/
 /elpa/
 /transient/
 /cmigemo-default-win64/
+local-config.el
