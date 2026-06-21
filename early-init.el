@@ -126,9 +126,10 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(cursor-type . bar))
 
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+
 (tooltip-mode -1)
 (blink-cursor-mode 0)
 
