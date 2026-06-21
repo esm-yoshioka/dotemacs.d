@@ -95,6 +95,11 @@
   :global-minor-mode global-so-long-mode
   )
 
+(leaf elec-pair
+  :doc "Automatic parenthesis pairing"
+  :global-minor-mode electric-pair-mode
+  )
+
 (leaf winner
   :doc "Restore old window configurations"
   :global-minor-mode winner-mode
