@@ -698,7 +698,8 @@
 ;; ------------------------------------------------------
 ;;    SQL
 ;; ------------------------------------------------------
-(leaf sql-mode
+(leaf sql
+  :doc "Specialized comint.el for SQL interpreters"
   :bind ("C-c q" . sql-connect)
   :preface
   (defun my/pgpass-file ()
@@ -708,7 +709,7 @@
       (and (file-exists-p f) f)))
   :custom
   (sql-product . 'postgres)
-  :config
+  :init
   ;; .pgpass の有無でパスワード入力要否を自動切替
   (setq sql-postgres-login-params
         (if (my/pgpass-file)
