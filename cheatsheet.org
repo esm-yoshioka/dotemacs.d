@@ -95,6 +95,7 @@
 - M-. : 表示している文字サイズを大きくする
 
 *** Command
+- C-o : embarkを起動
 - C-u [num] [command] : [num]回分、[command]を繰り返す
 - C-x C-q : バッファのReadOnlyのOn/Off切り替え
 - "F3" : マクロの記録開始
@@ -183,6 +184,7 @@
 
 *** SQL
 - M-x sql-postgres : SQLモードを起動
+- C-c q : SQL-Connectを起動
 - C-c C-b : バッファ内すべてのクエリを実行
 - C-c C-c : カーソル位置の単一クエリを実行
 - C-c C-r : リージョン内の複数クエリを実行
