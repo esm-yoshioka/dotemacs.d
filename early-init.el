@@ -66,6 +66,11 @@
 
 (setq ring-bell-function 'ignore)
 
+;; Windows: プロセスパイプの高速化(magit 等の体感速度改善)
+(when (eq system-type 'windows-nt)
+  (setq w32-pipe-read-delay 0)
+  (setq w32-pipe-buffer-size (* 64 1024)))
+
 (setq kill-ring-max 200)
 (setq mark-ring-max 50)
 
@@ -140,7 +145,7 @@
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
-(setq line-spacing 0.25)
+(setq-default line-spacing 0.25)
 
 
 ;;; early-init.el ends here

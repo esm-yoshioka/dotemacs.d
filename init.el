@@ -46,22 +46,26 @@
     :doc "Emulator of IME patch for Windows"
     :ensure t
     :config
-    (tr-ime-advanced-install)
+    (condition-case err
+        (tr-ime-advanced-install)
+      (error (message "tr-ime install failed: %s" err)))
     )
 
-  (setq default-input-method "W32-IME")
-  (setq-default w32-ime-mode-line-state-indicator "[Aa]")
-  (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
-  (w32-ime-initialize)
-  ;; IME disable pattern
-  (w32-ime-wrap-function-to-control-ime 'universal-argument)
-  (w32-ime-wrap-function-to-control-ime 'read-string)
-  (w32-ime-wrap-function-to-control-ime 'read-char)
-  (w32-ime-wrap-function-to-control-ime 'read-from-minibuffer)
-  (w32-ime-wrap-function-to-control-ime 'y-or-n-p)
-  (w32-ime-wrap-function-to-control-ime 'yes-or-no-p)
-  (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
-  (w32-ime-wrap-function-to-control-ime 'register-read-with-preview)
+  ;; tr-ime のモジュール導入に成功した場合のみ IME 設定を行う
+  (when (fboundp 'w32-ime-initialize)
+    (setq default-input-method "W32-IME")
+    (setq-default w32-ime-mode-line-state-indicator "[Aa]")
+    (setq w32-ime-mode-line-state-indicator-list '("[Aa]" "[あ]" "[Aa]"))
+    (w32-ime-initialize)
+    ;; IME disable pattern
+    (w32-ime-wrap-function-to-control-ime 'universal-argument)
+    (w32-ime-wrap-function-to-control-ime 'read-string)
+    (w32-ime-wrap-function-to-control-ime 'read-char)
+    (w32-ime-wrap-function-to-control-ime 'read-from-minibuffer)
+    (w32-ime-wrap-function-to-control-ime 'y-or-n-p)
+    (w32-ime-wrap-function-to-control-ime 'yes-or-no-p)
+    (w32-ime-wrap-function-to-control-ime 'map-y-or-n-p)
+    (w32-ime-wrap-function-to-control-ime 'register-read-with-preview))
   )
 
 (leaf linux-ime
@@ -397,10 +401,10 @@
   (setq dirvish-quick-access-entries
         (cond
          ((eq system-type 'windows-nt)
-          '(("e" "~/.emacs.d" "Emacs")
+          `(("e" ,user-emacs-directory "Emacs")
             ("m" "G:/マイドライブ/memo" "Memo")))
          ((eq system-type 'gnu/linux)
-          '(("e" "~/.emacs.d" "Emacs")
+          `(("e" ,user-emacs-directory "Emacs")
             ("g" "~/git" "Git")
             ("w" "~/work" "Work")))
          ))
@@ -424,14 +428,17 @@
   :config
   (cond
    ((eq system-type 'windows-nt)
-    (setq migemo-command "D:/Home/.emacs.d/cmigemo-default-win64/cmigemo.exe")
-    (setq migemo-dictionary "D:/Home/.emacs.d/cmigemo-default-win64/dict/utf-8/migemo-dict"))
+    (setq migemo-command
+          (expand-file-name "cmigemo-default-win64/cmigemo.exe" user-emacs-directory))
+    (setq migemo-dictionary
+          (expand-file-name "cmigemo-default-win64/dict/utf-8/migemo-dict" user-emacs-directory)))
    ((eq system-type 'gnu/linux)
-    (setq migemo-command "cmigemo")
+    (setq migemo-command (executable-find "cmigemo"))
     (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
-  (if (and migemo-command (file-exists-p (or migemo-command "")))
+  (if (and migemo-command (file-exists-p migemo-dictionary))
       (migemo-init)
-    (message "Warning: migemo-command not found at %s" migemo-command))
+    (message "Warning: migemo not available (command=%s dict=%s)"
+             migemo-command migemo-dictionary))
   )
 
 
@@ -477,10 +484,11 @@
   :after migemo orderless
   :config
   (defun orderless-migemo (component)
-    (let ((pattern (migemo-get-pattern component)))
-      (condition-case nil
-          (progn (string-match-p pattern "") pattern)
-        (invalid-regexp nil))))
+    (when (bound-and-true-p migemo-process)
+      (let ((pattern (migemo-get-pattern component)))
+        (condition-case nil
+            (progn (string-match-p pattern "") pattern)
+          (invalid-regexp nil)))))
   (orderless-define-completion-style orderless-default-style
 	(orderless-matching-styles '(orderless-initialism
 								 orderless-literal
@@ -514,16 +522,20 @@
   ("C-c s" . consult-line)
   ("C-c m" . consult-line-multi)
   ("C-c j" . consult-mark)
-  ("C-c f" . consult-find)
   ("C-c r" . consult-ripgrep)
   ("M-y" . consult-yank-from-kill-ring)
+  :config
+  ;; consult-find は GNU find 前提のため Linux でのみ有効化
+  ;; (Windows の find.exe は非互換で動作しない)
+  (when (eq system-type 'gnu/linux)
+    (keymap-global-set "C-c f" #'consult-find))
   )
 
 (leaf consult-dir
   :doc "Insert paths into the minibuffer prompt"
   :ensure t
   :bind (("C-x C-d" . consult-dir)
-         (vertico-map
+         (:vertico-map
           ("C-x C-d" . consult-dir)))
   )
 
@@ -560,8 +572,8 @@
       (lambda (x)
         (consult--convert-regexp x type))
       consult--migemo-regexp)
-     (when-let (regexps
-                (seq-filter #'consult--valid-regexp-p consult--migemo-regexp))
+     (when-let* ((regexps
+                  (seq-filter #'consult--valid-regexp-p consult--migemo-regexp)))
        (apply-partially #'consult--highlight-regexps regexps ignore-case))))
 
   :setq ((consult--migemo-regexp . "")
@@ -670,8 +682,10 @@
   :doc "A Git porcelain inside Emacs."
   :if (cond
         ((eq system-type 'windows-nt)
-         (let ((git-path "C:/Program Files/Git/bin/git.exe"))
-           (when (file-executable-p git-path)
+         (let ((git-path (or (let ((p "C:/Program Files/Git/bin/git.exe"))
+                               (and (file-executable-p p) p))
+                             (executable-find "git"))))
+           (when git-path
              (setq magit-git-executable git-path)
              t)))
         ((eq system-type 'gnu/linux)
@@ -788,7 +802,7 @@
   :preface
   (defun my/open-cheat ()
     (interactive)
-    (let* ((target-path (expand-file-name "~/.emacs.d/cheatsheet.org"))
+    (let* ((target-path (expand-file-name "cheatsheet.org" user-emacs-directory))
            (current-path (buffer-file-name))
            (buffer (find-buffer-visiting target-path)))
       (unless (and current-path
