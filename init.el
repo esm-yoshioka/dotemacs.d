@@ -187,10 +187,10 @@
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
     (recentf-exclude . '("recentf"
-                         "\\.elc$"
+                         "\\.elc\\'"
                          "/backup/"
                          "/vars/"
-                         "custom\\.el$")))
+                         "custom\\.el\\'")))
   :config
   ;; Save recentf list periodically without polluting *Messages*
   (run-with-idle-timer
@@ -316,9 +316,7 @@
 ;; ------------------------------------------------------
 (leaf view
   :doc "Open new file or non-specified file in view-mode"
-  :hook
-  (find-file-hook . my/exclude-view-list-mode)
-  :config
+  :preface
   (defconst my:exclude-view-list
     '("COMMIT" "MERGE" "TAG" "PULLREQ" "REBASE"))
 
@@ -333,6 +331,8 @@
            (new-file-p (and filename (not (file-exists-p filename)))))
       (unless (or exclude-list-related-file-p new-file-p)
         (view-mode 1))))
+  :hook
+  (find-file-hook . my/exclude-view-list-mode)
   :bind (:view-mode-map
          ("h" . backward-char)
          ("l" . forward-char)
@@ -353,8 +353,6 @@
   :doc "Outline-based notes management and organizer"
   :hook
   (org-mode-hook . visual-line-mode)
-  :mode
-  ("\\.org\\'" . org-mode)
   :custom
   (org-startup-indented . t)
   (org-ellipsis . " ▼")
@@ -398,6 +396,10 @@
   (dired-dwim-target . t)
   (ls-lisp-dirs-first . t)
   :config
+  ;; Linux は実 ls を使うため ls-lisp-dirs-first が効かない
+  ;; GNU ls のオプションでディレクトリ優先ソートにする
+  (when (eq system-type 'gnu/linux)
+    (setq dired-listing-switches "-alh --group-directories-first"))
   (setq dirvish-quick-access-entries
         (cond
          ((eq system-type 'windows-nt)
@@ -524,7 +526,7 @@
   ("C-c j" . consult-mark)
   ("C-c r" . consult-ripgrep)
   ("M-y" . consult-yank-from-kill-ring)
-  :config
+  :init
   ;; consult-find は GNU find 前提のため Linux でのみ有効化
   ;; (Windows の find.exe は非互換で動作しない)
   (when (eq system-type 'gnu/linux)
@@ -565,16 +567,19 @@
 (leaf consult-ripgrep-migemo
   :preface
   (defun consult--migemo-regexp-compiler (input type ignore-case)
-    (setq consult--migemo-regexp (mapcar #'migemo-get-pattern
-                                         (consult--split-escaped input)))
-    (cons
-     (mapcar
-      (lambda (x)
-        (consult--convert-regexp x type))
-      consult--migemo-regexp)
-     (when-let* ((regexps
-                  (seq-filter #'consult--valid-regexp-p consult--migemo-regexp)))
-       (apply-partially #'consult--highlight-regexps regexps ignore-case))))
+    (if (not (bound-and-true-p migemo-process))
+        ;; migemo 未初期化時は consult 標準のコンパイラで動作
+        (consult--default-regexp-compiler input type ignore-case)
+      (setq consult--migemo-regexp (mapcar #'migemo-get-pattern
+                                           (consult--split-escaped input)))
+      (cons
+       (mapcar
+        (lambda (x)
+          (consult--convert-regexp x type))
+        consult--migemo-regexp)
+       (when-let* ((regexps
+                    (seq-filter #'consult--valid-regexp-p consult--migemo-regexp)))
+         (apply-partially #'consult--highlight-regexps regexps ignore-case)))))
 
   :setq ((consult--migemo-regexp . "")
          (consult--regexp-compiler function consult--migemo-regexp-compiler))
@@ -583,8 +588,8 @@
 (leaf corfu
   :doc "COmpletion in Region FUnction"
   :ensure t
-  :bind
-  ("S-SPC" . 'corfu-insert-separator)  ; M-SPCだとWSL上のemacsで效かないので変更
+  :bind (:corfu-map
+         ("S-SPC" . corfu-insert-separator))  ; M-SPCだとWSL上のemacsで效かないので変更
   :custom-face
   (corfu-default . '((t (:background "MidnightBlue"))))
   (corfu-current . '((t (:foreground "orange" :background "SlateBlue4"))))
@@ -770,7 +775,7 @@
   :doc "Major mode for editing YAML files"
   :ensure t
   :mode
-  ("\\.ya?ml$" . yaml-mode)
+  ("\\.ya?ml\\'" . yaml-mode)
   )
 
 (leaf markdown-mode

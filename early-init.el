@@ -46,8 +46,9 @@
 ;; ------------------------------------------------------
 (setq package-enable-at-startup nil)	; Disable automatic initialization
 (setq package-archives
-      '(("gnu"   . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")))
+      '(("gnu"    . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa"  . "https://melpa.org/packages/")))
 
 
 ;; ------------------------------------------------------
