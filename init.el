@@ -815,11 +815,14 @@
     (let* ((target-path (expand-file-name "cheatsheet.org" user-emacs-directory))
            (current-path (buffer-file-name))
            (buffer (find-buffer-visiting target-path)))
-      (unless (and current-path
-                   (string= (expand-file-name current-path) target-path))
-        (if buffer
-            (switch-to-buffer-other-window buffer)
-          (find-file-read-only-other-window target-path)))))
+      (cond
+       ((not (file-exists-p target-path))
+        (message "cheatsheet.org not found: %s" target-path))
+       ((and current-path
+             (string= (expand-file-name current-path) target-path))
+        nil)
+       (buffer (switch-to-buffer-other-window buffer))
+       (t (find-file-read-only-other-window target-path)))))
   )
 
 (leaf ansi-color
