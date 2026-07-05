@@ -165,6 +165,10 @@
   (anzu-use-migemo . t)
   (anzu-minimum-input-length . 3)       ; count target
   (anzu-replace-to-string-separator . " => ")
+  :config
+  ;; migemo が初期化できなかった環境では migemo 連携を無効化
+  (unless (bound-and-true-p migemo-process)
+    (setq anzu-use-migemo nil))
   )
 
 
@@ -186,11 +190,10 @@
   `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
-    (recentf-exclude . '("recentf"
-                         "\\.elc\\'"
-                         "/backup/"
-                         "/vars/"
-                         "custom\\.el\\'")))
+    (recentf-exclude . '("\\.elc\\'"
+                         "\\.emacs\\.d/backup/"
+                         "\\.emacs\\.d/vars/"
+                         "\\.emacs\\.d/custom\\.el\\'")))
   :config
   ;; Save recentf list periodically without polluting *Messages*
   (run-with-idle-timer
@@ -642,8 +645,6 @@
   :bind
   (:vterm-mode-map
    ("C-<f2>" . my/vterm-new-buffer-in-current-window)
-   ("C-." . vterm-toggle-forward)
-   ("C-," . vterm-toggle-backward)
    )
   :custom
   (vterm-max-scrollback . 10000)
@@ -657,7 +658,11 @@
   :when (eq system-type 'gnu/linux)
   :ensure t
   :bind
-  ("<f2>" . vterm-toggle)
+  (("<f2>" . vterm-toggle)
+   (:vterm-mode-map
+    :package vterm
+    ("C-." . vterm-toggle-forward)
+    ("C-," . vterm-toggle-backward)))
   :custom
   (vterm-toggle-scope . 'project)
   :init
