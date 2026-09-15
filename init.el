@@ -215,18 +215,12 @@
   `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
     (recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
+    (recentf-autosave-interval . 60)
+    (recentf-show-messages . nil)
     (recentf-exclude . '("\\.elc\\'"
                          "\\.emacs\\.d/backup/"
                          "\\.emacs\\.d/vars/"
                          "\\.emacs\\.d/custom\\.el\\'")))
-  :config
-  ;; Save recentf list periodically without polluting *Messages*
-  (run-with-idle-timer
-   60 t
-   (lambda ()
-     (let ((message-log-max nil))
-       (with-temp-message (or (current-message) "")
-         (recentf-save-list)))))
   :hook
   (after-init-hook . recentf-mode)
   )
