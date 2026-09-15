@@ -71,8 +71,30 @@
 (leaf linux-ime
   :when (eq system-type 'gnu/linux)
   :config
-  (leaf mozc :ensure t)
-  (leaf mozc-popup :ensure t)
+  (leaf mozc
+    :ensure t
+    :preface
+    (defun my/mozc-next-candidate ()
+      (interactive)
+      (mozc-handle-event 'down))
+
+    (defun my/mozc-prev-candidate ()
+      (interactive)
+      (mozc-handle-event 'up))
+    :bind (:mozc-mode-map
+           ("C-n" . my/mozc-next-candidate)
+           ("C-p" . my/mozc-prev-candidate))
+    )
+
+  (leaf mozc-popup
+    :doc "Candidate window of mozc by popup.el"
+    :ensure t
+    :after mozc
+    :require t
+    :custom
+    (mozc-candidate-style . 'popup)
+    )
+
   (setq default-input-method "japanese-mozc")
   )
 
