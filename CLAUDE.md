@@ -60,13 +60,46 @@ feature is guarded with `(eq system-type ...)`.
 There is no test suite. Validate config changes by launching Emacs against this directory:
 
 ```
-emacs --debug-init                    # interactive, full config, backtrace on error
-emacs -Q --batch -l early-init.el -l init.el   # headless load check (may need display for some pkgs)
-emacs --batch -f batch-byte-compile init.el    # byte-compile to surface warnings
+emacs --debug-init                              # interactive, full config, backtrace on error
+emacs -Q --batch -l early-init.el -l init.el    # headless load check (may need display for some pkgs)
 ```
 
 Prefer `--debug-init` for a real check, since much of the config depends on GUI frames,
 fonts (HackGen Console NF), and per-monitor font sizing.
+
+### Byte-compile check
+
+`init.el` cannot be byte-compiled on its own — `emacs --batch -f batch-byte-compile init.el`
+does not work. Two independent reasons:
+
+- `--batch` implies `-q`, so `package-activate-all` never runs and the `leaf` macro stays
+  undefined. Every `leaf` form is then compiled as a plain function call, which yields a flood
+  of bogus `reference to free variable <block name>` warnings and finally a hard error on the
+  dotted pairs in `:bind`.
+- `leaf`'s `:custom` evaluates a backquoted list **at macro-expansion time**, so `my:d:vars`
+  (a `defconst` in `early-init.el`) must already be bound. Compiling `init.el` without
+  `early-init.el` fails with `void-variable my:d:vars`.
+
+So load `early-init.el` and bootstrap `leaf` first. Also redirect the `.elc` output: a stale
+`init.elc` left in this directory would be loaded in preference to `init.el` on every
+subsequent startup, since `load-suffixes` puts `.elc` before `.el` and `load-prefer-newer`
+is nil.
+
+```
+emacs -Q --batch -l early-init.el \
+  --eval "(progn (require 'package) (package-initialize) \
+                 (require 'leaf-keywords) (leaf-keywords-init) \
+                 (setq byte-compile-dest-file-function \
+                       (lambda (f) (expand-file-name (concat (file-name-nondirectory f) \"c\") \
+                                                     temporary-file-directory))))" \
+  -f batch-byte-compile init.el
+```
+
+This currently reports ~45 warnings, all of the expected "package not loaded at compile time"
+kind (`assignment to free variable 'dashboard-*'`, `the function 'migemo-init' is not known to
+be defined`, functions defined in a `:preface` not being visible later, ...). None of them are
+actionable, so the value of this check is that macro expansion and compilation complete at
+all — treat a *new kind* of warning, or a hard error, as the signal.
 
 ## Setup (from README)
 
