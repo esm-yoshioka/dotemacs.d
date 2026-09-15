@@ -1,7 +1,7 @@
 ;;; init.el --- My init.el  -*- coding: utf-8 ; lexical-binding: t -*-
 ;; 
 ;;   Author : esm-yoshioka
-;;   Version: 30.2
+;;   Version: 31.1
 ;;
 
 ;; ------------------------------------------------------
