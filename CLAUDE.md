@@ -52,8 +52,12 @@ feature is guarded with `(eq system-type ...)`.
   `isearch-delete-char` in isearch) — `<f1>` is the help prefix instead. `C-t` = other-window,
   `C-<f1>` opens `cheatsheet.org`. See `cheatsheet.org` for the full user-facing keymap.
 - **view-mode**: files open read-only via `find-file-hook` except new files and VCS message
-  buffers (COMMIT/MERGE/TAG/PULLREQ/REBASE — see `my:exclude-view-list`). Adding a filename
-  that should stay editable means extending that list.
+  buffers. `my:exclude-view-list` holds **exact base names** (`COMMIT_EDITMSG`, `MERGE_MSG`,
+  `git-rebase-todo`, ...) matched with `member`, mirroring magit's
+  `git-commit-filename-regexp` / `git-rebase-filename-regexp`. Adding a filename that should
+  stay editable means extending that list. Do not go back to substring matching: since
+  `case-fold-search` is t, `"TAG"` also matches `voltage.log` and `"COMMIT"` matches
+  `committee.txt`.
 
 ## Testing changes
 

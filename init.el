@@ -346,16 +346,16 @@
   :doc "Open new file or non-specified file in view-mode"
   :preface
   (defconst my:exclude-view-list
-    '("COMMIT" "MERGE" "TAG" "PULLREQ" "REBASE"))
+    '("MSG" "COMMIT_EDITMSG" "MERGE_MSG" "SQUASH_MSG" "TAG_EDITMSG"
+      "NOTES_EDITMSG" "PULLREQ_EDITMSG" "MERGEREQ_EDITMSG"
+      "BRANCH_DESCRIPTION" "EDIT_DESCRIPTION"
+      "git-rebase-todo"))
 
   (defun my/exclude-view-list-mode ()
     (let* ((filename (buffer-file-name))
            (basename (and filename (file-name-nondirectory filename)))
            (exclude-list-related-file-p
-            (and basename
-                 (cl-some (lambda (keyword)
-                            (string-match-p (regexp-quote keyword) basename))
-                          my:exclude-view-list)))
+            (and basename (member basename my:exclude-view-list)))
            (new-file-p (and filename (not (file-exists-p filename)))))
       (unless (or exclude-list-related-file-p new-file-p)
         (view-mode 1))))
