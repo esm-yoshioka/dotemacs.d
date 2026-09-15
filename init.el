@@ -95,7 +95,10 @@
     (mozc-candidate-style . 'popup)
     )
 
-  (setq default-input-method "japanese-mozc")
+  (if (executable-find (or (bound-and-true-p mozc-helper-program-name)
+                           "mozc_emacs_helper"))
+      (setq default-input-method "japanese-mozc")
+    (message "Warning: mozc not available (mozc_emacs_helper not found)"))
   )
 
 
@@ -661,8 +664,17 @@
 ;; ------------------------------------------------------
 ;;    Terminal
 ;; ------------------------------------------------------
+(defconst my:vterm-available-p
+  (and (eq system-type 'gnu/linux)
+       (or (locate-library "vterm-module")
+           (and (executable-find "cmake") (executable-find "libtool")))
+       t))
+
+(when (and (eq system-type 'gnu/linux) (not my:vterm-available-p))
+  (message "Warning: vterm not available (vterm-module not built, cmake/libtool not found)"))
+
 (leaf vterm
-  :when (eq system-type 'gnu/linux)
+  :if my:vterm-available-p
   :ensure t
   :bind
   (:vterm-mode-map
@@ -677,7 +689,7 @@
   )
 
 (leaf vterm-toggle
-  :when (eq system-type 'gnu/linux)
+  :if my:vterm-available-p
   :ensure t
   :bind
   (("<f2>" . vterm-toggle)
