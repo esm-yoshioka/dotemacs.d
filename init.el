@@ -332,6 +332,12 @@
   (transient-mark-mode . t)
   )
 
+(leaf ansi-color
+  :doc "display the compilation output colors"
+  :hook
+  (compilation-filter-hook . ansi-color-compilation-filter)
+  )
+
 
 ;; ------------------------------------------------------
 ;;    View
@@ -852,16 +858,6 @@
         nil)
        (buffer (switch-to-buffer-other-window buffer))
        (t (find-file-read-only-other-window target-path)))))
-  )
-
-(leaf ansi-color
-  :doc "display the compilation output colors"
-  :preface
-  (defun my/ansi-colorize-buffer ()
-    (let ((inhibit-read-only t))
-      (ansi-color-apply-on-region (point-min) (point-max))))
-  :hook
-  (compilation-filter-hook . my/ansi-colorize-buffer)
   )
 
 
