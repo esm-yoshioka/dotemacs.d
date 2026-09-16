@@ -506,22 +506,23 @@
 (leaf orderless-migemo
   :doc "using migemo with orderless"
   :after migemo orderless
-  :config
+  :preface
   (defun orderless-migemo (component)
     (when (bound-and-true-p migemo-process)
       (let ((pattern (migemo-get-pattern component)))
         (condition-case nil
             (progn (string-match-p pattern "") pattern)
           (invalid-regexp nil)))))
+  :config
   (orderless-define-completion-style orderless-default-style
-	(orderless-matching-styles '(orderless-initialism
-								 orderless-literal
-								 orderless-regexp)))
+    (orderless-matching-styles '(orderless-initialism
+                                 orderless-literal
+                                 orderless-regexp)))
   (orderless-define-completion-style orderless-migemo-style
-	(orderless-matching-styles '(orderless-initialism
-								 orderless-literal
-								 orderless-regexp
-								 orderless-migemo)))
+    (orderless-matching-styles '(orderless-initialism
+                                 orderless-literal
+                                 orderless-regexp
+                                 orderless-migemo)))
   :custom
   (completion-category-overrides .
         '((command (styles orderless-default-style))           ; M-x
