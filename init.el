@@ -507,6 +507,9 @@
   :ensure t
   :custom
   (completion-styles . '(orderless basic))
+  ;; 既定のカテゴリ別スタイル(project-file/xref-location 等が substring のみ)を無効化し、
+  ;; completion-category-overrides に無いカテゴリも completion-styles で補完する
+  (completion-category-defaults . nil)
   )
 
 (leaf orderless-migemo
@@ -533,6 +536,7 @@
   (completion-category-overrides .
         '((command (styles orderless-default-style))           ; M-x
           (file (styles orderless-migemo-style partial-completion)) ; find-file(migemo+パス省略展開)
+          (project-file (styles orderless-migemo-style partial-completion)) ; C-x p f
           (buffer (styles orderless-migemo-style))
           (symbol (styles orderless-default-style))
           (consult-location (styles orderless-migemo-style))   ; consult-line etc
