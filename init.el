@@ -747,7 +747,7 @@
 (leaf diff-hl
   :doc "Highlight uncommitted changes using VC"
   :ensure t
-  :global-minor-mode global-diff-hl-mode
+  :global-minor-mode (global-diff-hl-mode diff-hl-flydiff-mode)
   :bind (("M-g p" . diff-hl-previous-hunk)
          ("M-g n" . diff-hl-next-hunk)
          ("M-g r" . diff-hl-revert-hunk)
