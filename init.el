@@ -380,7 +380,8 @@
 (leaf org
   :doc "Outline-based notes management and organizer"
   :hook
-  (org-mode-hook . visual-line-mode)
+  ((org-mode-hook . visual-line-mode)
+   (org-mode-hook . visual-wrap-prefix-mode))
   :custom
   (org-startup-indented . t)
   (org-ellipsis . " ▼")
