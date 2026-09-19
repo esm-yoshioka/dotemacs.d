@@ -505,10 +505,9 @@
 (leaf orderless
   :doc "fuzzy completion"
   :ensure t
+  :require t
   :custom
   (completion-styles . '(orderless basic))
-  ;; 既定のカテゴリ別スタイル(project-file/xref-location 等が substring のみ)を無効化し、
-  ;; completion-category-overrides に無いカテゴリも completion-styles で補完する
   (completion-category-defaults . nil)
   )
 
