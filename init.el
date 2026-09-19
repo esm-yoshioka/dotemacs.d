@@ -482,6 +482,8 @@
   (vertico-count . 20)                  ; max display num
   (vertico-cycle . t)
   (vertico-resize . t)
+  (enable-recursive-minibuffers . t)
+  :global-minor-mode minibuffer-depth-indicate-mode  ; 再帰の深さをプロンプトに表示
   :config
   (vertico-mode)
   )
