@@ -155,6 +155,12 @@
   (read-buffer-completion-ignore-case . t)
   )
 
+(leaf grep
+  :doc "run grep and display the results"
+  :custom
+  (grep-use-headings . t)
+  )
+
 (leaf tab-bar
   :doc "frame-local tabs with named persistent window configurations"
   :global-minor-mode tab-bar-mode
