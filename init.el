@@ -547,6 +547,8 @@
 (leaf consult
   :doc "Consulting completing-read"
   :ensure t
+  :custom
+  (consult-narrow-key . "<")
   :bind
   ("C-x C-b" . consult-buffer)
   ("C-x b" . bs-show)
