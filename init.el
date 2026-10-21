@@ -202,6 +202,14 @@
     (setq anzu-use-migemo nil))
   )
 
+;; SSH agent (keychain)
+(leaf keychain-environment
+  :when (eq system-type 'gnu/linux)
+  :ensure t
+  :require t
+  :config
+  (keychain-refresh-environment))
+
 
 ;; ------------------------------------------------------
 ;;    File
