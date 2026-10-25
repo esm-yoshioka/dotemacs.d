@@ -4,7 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal GNU Emacs (v30.2) configuration (`~/.emacs.d`, upstream `esm-yoshioka/dotemacs.d`).
+Personal GNU Emacs (v31.1) configuration (`~/.emacs.d`, upstream `esm-yoshioka/dotemacs.d`).
+The target version is recorded in the `Version:` header of both `init.el` and
+`early-init.el`; keep them in sync when moving to a new Emacs release. The config already
+relies on 30+/31 features (`grep-use-headings`, `visual-wrap-prefix-mode`,
+`recentf-autosave-interval`, built-in `which-key`).
 All comments and documentation are written in Japanese. Configuration must work across
 **two platforms** — `windows-nt` and `gnu/linux` (WSL) — so nearly every OS-specific
 feature is guarded with `(eq system-type ...)`.
@@ -18,8 +22,11 @@ feature is guarded with `(eq system-type ...)`.
   already-installed package (e.g. `vertico-directory`).
 - Guard anything platform- or executable-dependent. The codebase's style is to **degrade
   gracefully**: check `executable-find` / `file-exists-p` / `bound-and-true-p`, and
-  `(message "Warning: ...")` rather than error when an optional dependency (migemo/cmigemo,
-  tr-ime, git) is missing. Preserve this — a broken external tool must not break startup.
+  `(message "Warning: ...")` rather than error when an optional dependency is missing.
+  Existing examples: migemo/cmigemo (command + dictionary), tr-ime (`condition-case`),
+  mozc (`mozc_emacs_helper`), vterm (`my:vterm-available-p`, gating with `:if`), git
+  (magit `:if`), and the HackGen font (`font-family-list`). Preserve this — a broken
+  external tool must not break startup.
 - `migemo` (Japanese romaji→kanji incremental search) is a soft dependency threaded through
   `anzu`, `orderless`, and `consult` (ripgrep). Its integrations all check
   `(bound-and-true-p migemo-process)` before activating. Keep that guard on any new migemo use.
@@ -27,14 +34,19 @@ feature is guarded with `(eq system-type ...)`.
 ## Architecture / load order
 
 1. **`early-init.el`** — runs before the package system and GUI init. Sets
-   `user-emacs-directory`, GC tuning for startup, package archives, coding systems
-   (Japanese / utf-8-unix), frame defaults, and **all backup/auto-save/vars directory
-   paths**. Defines the key path constants `my:d:vars` (→ `vars/`) and `my:d:backup`
-   (→ `backup/`), which `init.el` references. Backup and auto-save files are redirected out
-   of the working tree into `backup/`.
-2. **`init.el`** — the main config: bootstraps `leaf`, loads the optional untracked
-   `local-config.el`, then configures everything (IME, completion stack, dirvish, magit,
-   sql, etc.) section by section.
+   `user-emacs-directory`, GC / process-output tuning for startup, package archives
+   (gnu, nongnu, melpa), coding systems (Japanese / utf-8-unix), **plain `setq` editing
+   defaults** (indentation, scrolling, kill/mark ring, `use-short-answers`, Windows pipe
+   tuning, ...) and frame defaults. Defines the key path constants `my:d:vars` (→ `vars/`)
+   and `my:d:backup` (→ `backup/`) and creates both directories. Backup and auto-save files
+   are redirected out of the working tree into `backup/`; lock files are disabled.
+   Built-in settings that are not tied to a package go here rather than into a `leaf` block.
+2. **`init.el`** — the main config: bootstraps `leaf` (+ `leaf-keywords`, `leaf-convert`),
+   loads the optional untracked `local-config.el`, then configures everything section by
+   section: Language (IME) → Operation → File → User Interface → View → Org → dirvish →
+   Japanese Search (migemo) → Completion → Terminal → Git → SQL → Program → Original →
+   Key Bind. Per-package state files (`savehist`, `recentf`, `saveplace`) are placed under
+   `my:d:vars` via backquoted `:custom`; new packages that persist state should do the same.
 3. **`custom.el`** — machine-written by Emacs Custom (`custom-file`). **Do not hand-edit**;
    it is gitignored.
 4. **`local-config.el`** — untracked, gitignored, loaded early by `init.el` with a missing-ok
@@ -50,7 +62,10 @@ feature is guarded with `(eq system-type ...)`.
   per-platform.
 - **Custom keybindings of note**: `C-h` is rebound to `delete-backward-char` globally (and
   `isearch-delete-char` in isearch) — `<f1>` is the help prefix instead. `C-t` = other-window,
-  `C-<f1>` opens `cheatsheet.org`. See `cheatsheet.org` for the full user-facing keymap.
+  `C-<f1>` opens `cheatsheet.org`, `C-o` = `embark-act`, `C-z` = `winner-undo`,
+  `C-x C-b` = `consult-buffer` / `C-x b` = `bs-show`. `M-.` / `M-,` are intentionally bound
+  to `text-scale-increase/decrease` (via `:bind*`), not xref. See `cheatsheet.org` for the
+  full user-facing keymap, and update it alongside any keybinding change.
 - **view-mode**: files open read-only via `find-file-hook` except new files and VCS message
   buffers. `my:exclude-view-list` holds **exact base names** (`COMMIT_EDITMSG`, `MERGE_MSG`,
   `git-rebase-todo`, ...) matched with `member`, mirroring magit's
@@ -99,16 +114,27 @@ emacs -Q --batch -l early-init.el \
   -f batch-byte-compile init.el
 ```
 
-This currently reports ~45 warnings, all of the expected "package not loaded at compile time"
+This currently (Emacs 31.1) reports ~43 warnings, all of the expected "package not loaded at compile time"
 kind (`assignment to free variable 'dashboard-*'`, `the function 'migemo-init' is not known to
 be defined`, functions defined in a `:preface` not being visible later, ...). None of them are
 actionable, so the value of this check is that macro expansion and compilation complete at
 all — treat a *new kind* of warning, or a hard error, as the signal.
 
-## Setup (from README)
+## Setup
+
+From README:
 
 - Fonts: `cd HackGen && ./fonts_cp.sh`
 - Icons: `M-x nerd-icons-install-fonts`
-- Linux extras used at runtime: `cmigemo` (+ dict at `/usr/share/cmigemo/utf-8/migemo-dict`),
-  `mozc`, `ripgrep`, `git`, `vterm` deps. Windows uses bundled `cmigemo-default-win64/`
-  (gitignored) and `tr-ime`.
+
+External tools used at runtime (not in README):
+
+- Linux: `cmigemo` (+ dict at `/usr/share/cmigemo/utf-8/migemo-dict`), `mozc_emacs_helper`,
+  `ripgrep`, `git`, `keychain` (SSH agent env via `keychain-environment`), and
+  `cmake` + `libtool` to build `vterm-module`.
+- Windows: bundled `cmigemo-default-win64/` (gitignored), `tr-ime`, and Git for Windows
+  (`C:/Program Files/Git/bin/git.exe` is preferred over `PATH`).
+
+Runtime-generated, gitignored entries in this directory: `elpa/`, `eln-cache/`, `vars/`,
+`transient/`, `tramp`, `custom.el`. `backup/` itself is not in `.gitignore`, but its
+contents are ignored by the `*~` pattern.
