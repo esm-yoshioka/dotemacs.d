@@ -12,7 +12,9 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
   `leaf NAME :doc "..." :ensure t ...` の形に合わせ、`init.el` の `;; ----` 見出しで区切られた該当セクションに置く。
 - `:ensure t` は ELPA/MELPA からインストール、`:ensure nil` は組み込み、またはインストール済みパッケージの拡張(例: `vertico-directory`)。
 - パッケージに紐づかない組み込みの設定(`setq` だけで済むもの)は `early-init.el` に書く。
-- 状態ファイルを保存するパッケージは、そのファイルを `my:d:vars`(`vars/`)の下に置く。`savehist` / `recentf` / `saveplace` と同様に、バッククォート付きの `:custom` で指定する。
+- 状態ファイルは `my:d:vars`(`vars/`)の下に置く。保存先は `init.el` 冒頭の `no-littering` が `vars/`(設定ファイルは `vars/etc/`)に振り分けるので、通常は個別の指定は不要。
+  no-littering が対応していないパッケージだけ、`:custom` で `` `((VAR . ,(expand-file-name "FILE" my:d:vars))) `` のように指定する。
+  no-littering は `auto-save-list-file-prefix` を書き換えるため、`:config` で `nil` に戻している(`early-init.el` の設定を維持するため)。
 - **外部依存がなくても起動を壊さない。** `executable-find` / `file-exists-p` / `bound-and-true-p` で確認し、なければエラーにせず `(message "Warning: ...")` を出す。
   既存の例: migemo、tr-ime(`condition-case`)、mozc、vterm(`my:vterm-available-p` + `:if`)、magit(`:if`)、HackGen フォント。
 - migemo は任意の依存で、anzu / orderless / consult(ripgrep)から使っている。連携部分は必ず
@@ -31,7 +33,7 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
 - `early-init.el` — パッケージ初期化と GUI の前に読まれる。パッケージアーカイブ、文字コード、編集の基本設定、フレームの既定値を設定する。
   パス定数 `my:d:vars` / `my:d:backup` もここで定義しており、バックアップと自動保存は `backup/` に出力する。
 - `init.el` — 本体。`leaf` の導入 → `local-config.el` の読み込み → 各セクションの順に並ぶ。
-- `custom.el` — Emacs Custom が自動生成する。**手で編集しない**(gitignore 対象)。
+- `vars/etc/custom.el` — Emacs Custom が自動生成する(`early-init.el` の `custom-file`)。**手で編集しない**(`vars/` ごと gitignore 対象)。
 - `local-config.el` — 未追跡・gitignore 対象で、なくても動く。端末ごとの値(`my/pg-user`、`my/pg-databases` など)を置き、`sql` ブロックがこれを使って `sql-connection-alist` を組み立てる。コミットしない。
 
 ## 動作確認
@@ -60,5 +62,5 @@ emacs -Q --batch -l early-init.el \
   -f batch-byte-compile init.el
 ```
 
-現状(31.1)で警告は約 43 件出るが、すべて「コンパイル時にパッケージが読み込まれていない」ことによる想定内の警告(`assignment to free variable`、`not known to be defined` など)で、対応は不要。
+現状(31.1)で警告は約 45 件出るが、すべて「コンパイル時にパッケージが読み込まれていない」ことによる想定内の警告(`assignment to free variable`、`not known to be defined` など)で、対応は不要。
 **新しい種類の警告やエラー**が出た場合だけ問題として扱う。

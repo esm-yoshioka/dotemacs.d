@@ -105,7 +105,8 @@
 ;; ------------------------------------------------------
 ;;    File Initial Settings
 ;; ------------------------------------------------------
-(setq custom-file (locate-user-emacs-file "custom.el"))
+;; no-littering の設定ファイル置き場(vars/etc/)に合わせる
+(setq custom-file (expand-file-name "etc/custom.el" my:d:vars))
 
 ;; backup file
 (setq backup-directory-alist `((".*" . ,my:d:backup)))

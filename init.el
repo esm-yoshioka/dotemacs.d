@@ -25,6 +25,19 @@
   (leaf-keywords-init)
   )
 
+(leaf no-littering
+  :doc "Keep ~/.emacs.d clean"
+  :ensure t
+  ;; 他のパッケージが保存先を決める前に読み込む
+  :pre-setq
+  `((no-littering-var-directory . ,my:d:vars)
+    (no-littering-etc-directory . ,(expand-file-name "etc/" my:d:vars)))
+  :require t
+  :config
+  ;; early-init.el の設定(セッション記録を作らない)を維持
+  (setq auto-save-list-file-prefix nil)
+  )
+
 
 ;; ------------------------------------------------------
 ;;    Local config
@@ -216,23 +229,21 @@
   :doc "Save minibuffer history"
   :global-minor-mode savehist-mode
   :custom
-  `((savehist-file . ,(expand-file-name "history" my:d:vars))
-    (savehist-additional-variables . '(search-ring regexp-search-ring kill-ring))
-    (history-delete-duplicates . t))
+  ((savehist-additional-variables . '(search-ring regexp-search-ring kill-ring))
+   (history-delete-duplicates . t))
   )
 
 (leaf recentf
   :doc "Keep track of recently opened files"
   :custom
-  `((recentf-save-file . ,(expand-file-name "recentf" my:d:vars))
-    (recentf-max-saved-items . 2000)
+  ;; recentf はパスを abbreviate-file-name で "~/..." にして照合するので、除外パターンも合わせる
+  `((recentf-max-saved-items . 2000)
     (recentf-auto-cleanup . 'never)
     (recentf-autosave-interval . 60)
     (recentf-show-messages . nil)
     (recentf-exclude . '("\\.elc\\'"
-                         "\\.emacs\\.d/backup/"
-                         "\\.emacs\\.d/vars/"
-                         "\\.emacs\\.d/custom\\.el\\'")))
+                         ,(regexp-quote (abbreviate-file-name my:d:backup))
+                         ,(regexp-quote (abbreviate-file-name my:d:vars)))))
   :hook
   (after-init-hook . recentf-mode)
   )
@@ -240,7 +251,6 @@
 (leaf saveplace
   :doc "automatically save place in files"
   :global-minor-mode save-place-mode
-  :custom `((save-place-file . ,(expand-file-name "save-places" my:d:vars)))
   )
 
 

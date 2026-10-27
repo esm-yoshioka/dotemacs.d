@@ -4,13 +4,8 @@
 /.emacs.desktop
 /.emacs.desktop.lock
 *.elc
-custom.el
-auto-save-list
-tramp
 local-config.el
 vars/
 eln-cache/
 elpa/
-transient/
 cmigemo-default-win64/
-org-persist/
