@@ -204,7 +204,9 @@
   :ensure t
   :require t
   :config
-  (keychain-refresh-environment))
+  (if (executable-find "keychain")
+      (keychain-refresh-environment)
+    (message "Warning: keychain not available (keychain not found)")))
 
 
 ;; ------------------------------------------------------
