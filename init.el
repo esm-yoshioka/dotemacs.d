@@ -25,10 +25,6 @@
   (leaf-keywords-init)
   )
 
-(leaf leaf-convert
-  :ensure t
-  )
-
 
 ;; ------------------------------------------------------
 ;;    Local config
