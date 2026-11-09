@@ -16,9 +16,10 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
   no-littering が対応していないパッケージだけ、`:custom` で `` `((VAR . ,(expand-file-name "FILE" my:d:vars))) `` のように指定する。
   no-littering は `auto-save-list-file-prefix` を書き換えるため、`:config` で `nil` に戻している(`early-init.el` の設定を維持するため)。
 - **外部依存がなくても起動を壊さない。** `executable-find` / `file-exists-p` / `bound-and-true-p` で確認し、なければエラーにせず `(message "Warning: ...")` を出す。
-  既存の例: migemo、tr-ime(`condition-case`)、mozc、vterm(`my:vterm-available-p` + `:if`)、magit(`:if`)、HackGen フォント。
-- migemo は任意の依存で、anzu / orderless / consult(ripgrep)から使っている。連携部分は必ず
-  `(bound-and-true-p migemo-process)` を確認してから使う。新しく migemo を使う箇所でもこの確認を外さない。
+  既存の例: migemo、mozc、keychain、vterm(`my:vterm-available-p` + `:if`)。tr-ime は `condition-case` で失敗を `message` する。
+  magit(`:if`)と HackGen フォント(`font-family-list` で確認)は、警告を出さずに読み込み・設定を飛ばしている。
+- migemo は任意の依存で、anzu / orderless / consult(ripgrep)から使っている。migemo を使う箇所(新規を含む)では
+  `(bound-and-true-p migemo-process)` を確認する。migemo を初期化できない環境でも動かすため。
 - キーバインドを変更したら `cheatsheet.org` も更新する。
 
 ## 意図的な設定(戻さないこと)
@@ -32,13 +33,14 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
 
 - `early-init.el` — パッケージ初期化と GUI の前に読まれる。パッケージアーカイブ、文字コード、編集の基本設定、フレームの既定値を設定する。
   パス定数 `my:d:vars` / `my:d:backup` もここで定義しており、バックアップと自動保存は `backup/` に出力する。
-- `init.el` — 本体。`leaf` の導入 → `local-config.el` の読み込み → 各セクションの順に並ぶ。
+- `init.el` — 本体。`leaf` の導入 → `no-littering` → `local-config.el` の読み込み → 各セクションの順に並ぶ。
 - `vars/etc/custom.el` — Emacs Custom が自動生成する(`early-init.el` の `custom-file`)。**手で編集しない**(`vars/` ごと gitignore 対象)。
 - `local-config.el` — 未追跡・gitignore 対象で、なくても動く。端末ごとの値(`my/pg-user`、`my/pg-databases` など)を置き、`sql` ブロックがこれを使って `sql-connection-alist` を組み立てる。コミットしない。
 
 ## 動作確認
 
-テストはない。次の方法で確認する。
+テストはない。init.el / early-init.el を変更したら、下の簡易読み込みと byte-compile を実行し、
+エラーと新しい種類の警告がないことを確かめてから完了を報告する。`--debug-init` は GUI が起動して終わらないため、ユーザーに依頼する。
 
 ```
 emacs --debug-init                              # 実際の確認はこちら(GUI・フォント依存が多いため)
