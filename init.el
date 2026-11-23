@@ -352,6 +352,13 @@
   (global-hl-line-mode t)
   :custom
   (transient-mark-mode . t)
+  ;; magit / diff では現在行の背景で差分の色が消えるため hl-line を無効にする
+  (global-hl-line-buffers
+   . '(not (or (lambda (b) (buffer-local-value 'cursor-face-highlight-mode b))
+               (lambda (b) (string-match-p "\\` " (buffer-name b)))
+               minibufferp
+               (derived-mode . magit-mode)
+               (derived-mode . diff-mode))))
   )
 
 (leaf ansi-color
@@ -765,6 +772,8 @@
         ((eq system-type 'gnu/linux)
          (executable-find "git")))
   :ensure t
+  :custom
+  (magit-diff-refine-hunk . 'all)
   )
 
 (leaf diff-hl
@@ -780,6 +789,57 @@
   (with-eval-after-load 'magit
     (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+  )
+
+(leaf ediff
+  :doc "Compare files side by side (used by magit `e`)"
+  :ensure nil
+  :custom
+  (ediff-window-setup-function . #'ediff-setup-windows-plain)  ; 操作パネルを別フレームにしない
+  (ediff-split-window-function . #'split-window-horizontally)  ; A/B を左右に並べる
+  :hook
+  (ediff-startup-hook . my:ediff-show-labels)
+  (ediff-cleanup-hook . my:ediff-remove-labels)
+  :config
+  (defun my:ediff-label (buf)
+    "BUF が何を表示しているかの説明を返す(magit 以外の ediff 用)。"
+    (let ((name (buffer-name buf)))
+      (cond
+       ((string-match "\\.~\\(.+\\)~\\'" name)
+        (format "リビジョン %s" (match-string 1 name)))
+       ((buffer-file-name buf)
+        (format "ファイル %s" (abbreviate-file-name (buffer-file-name buf))))
+       (t name))))
+
+  (defun my:ediff-show-labels ()
+    "ediff の各画面の上端に、表示内容(と magit のステージ用ならキー)を出す。"
+    (let* ((stage-p (and (buffer-live-p ediff-buffer-B)
+                         (buffer-live-p ediff-buffer-C)
+                         (string-suffix-p ".~{index}~" (buffer-name ediff-buffer-B))))
+           (labels
+            (if stage-p
+                '((A . "最新のコミット(HEAD)")
+                  (B . "ステージ済み(index)   [c b] 右の差分をステージ  [a b] ステージを取り消す")
+                  (C . "作業中のファイル   [b c] 変更を破棄(中央の内容に戻す)"))
+              (mapcar (lambda (k)
+                        (let ((buf (symbol-value (intern (format "ediff-buffer-%s" k)))))
+                          (cons k (and (buffer-live-p buf) (my:ediff-label buf)))))
+                      '(A B C)))))
+      (dolist (l labels)
+        (let ((buf (symbol-value (intern (format "ediff-buffer-%s" (car l))))))
+          (when (and (cdr l) (buffer-live-p buf))
+            (with-current-buffer buf
+              (setq-local header-line-format
+                          (propertize (format " %s: %s" (car l) (cdr l))
+                                      'face (intern (format "ediff-current-diff-%s" (car l)))))))))))
+
+  (defun my:ediff-remove-labels ()
+    (dolist (buf (list ediff-buffer-A ediff-buffer-B ediff-buffer-C))
+      (when (buffer-live-p buf)
+        (with-current-buffer buf
+          (kill-local-variable 'header-line-format)
+          (when (bound-and-true-p view-mode)
+            (setq buffer-read-only t))))))
   )
 
 
