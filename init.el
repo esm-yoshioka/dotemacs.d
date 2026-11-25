@@ -893,6 +893,20 @@
 
 
 ;; ------------------------------------------------------
+;;    Docker
+;; ------------------------------------------------------
+(when (and (eq system-type 'gnu/linux) (not (executable-find "docker")))
+  (message "Warning: docker not found (compose-list disabled)"))
+
+(leaf compose-list
+  :doc "docker compose の一覧から起動・停止・切り替え(自作, site-lisp/compose-list.el)"
+  :if (and (eq system-type 'gnu/linux) (executable-find "docker"))
+  :load-path* "site-lisp"
+  :bind ("C-c l" . my/compose-list)
+  )
+
+
+;; ------------------------------------------------------
 ;;    Program
 ;; ------------------------------------------------------
 (leaf csv-mode

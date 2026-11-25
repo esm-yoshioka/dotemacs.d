@@ -11,6 +11,8 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
 - パッケージはすべて **`leaf`** で宣言する(`use-package` は使わない)。新規追加は既存の
   `leaf NAME :doc "..." :ensure t ...` の形に合わせ、`init.el` の `;; ----` 見出しで区切られた該当セクションに置く。
 - `:ensure t` は ELPA/MELPA からインストール、`:ensure nil` は組み込み、またはインストール済みパッケージの拡張(例: `vertico-directory`)。
+- 自作の機能など、長くなるコードは `site-lisp/` に別ファイル(`lexical-binding: t`、末尾に `provide`)として置く。
+  `init.el` には `leaf NAME :load-path* "site-lisp" :bind (...)` だけを書き、初回のキー入力時に autoload で読み込む(例: `compose-list`)。
 - パッケージに紐づかない組み込みの設定(`setq` だけで済むもの)は `early-init.el` に書く。
 - 状態ファイルは `my:d:vars`(`vars/`)の下に置く。保存先は `init.el` 冒頭の `no-littering` が `vars/`(設定ファイルは `vars/etc/`)に振り分けるので、通常は個別の指定は不要。
   no-littering が対応していないパッケージだけ、`:custom` で `` `((VAR . ,(expand-file-name "FILE" my:d:vars))) `` のように指定する。
@@ -34,6 +36,7 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
 - `early-init.el` — パッケージ初期化と GUI の前に読まれる。パッケージアーカイブ、文字コード、編集の基本設定、フレームの既定値を設定する。
   パス定数 `my:d:vars` / `my:d:backup` もここで定義しており、バックアップと自動保存は `backup/` に出力する。
 - `init.el` — 本体。`leaf` の導入 → `no-littering` → `local-config.el` の読み込み → 各セクションの順に並ぶ。
+- `site-lisp/` — 自作の elisp。`init.el` の `leaf` から `:load-path*` で読み込む。
 - `vars/etc/custom.el` — Emacs Custom が自動生成する(`early-init.el` の `custom-file`)。**手で編集しない**(`vars/` ごと gitignore 対象)。
 - `local-config.el` — 未追跡・gitignore 対象で、なくても動く。端末ごとの値(`my/pg-user`、`my/pg-databases` など)を置き、`sql` ブロックがこれを使って `sql-connection-alist` を組み立てる。コミットしない。
 
@@ -61,7 +64,7 @@ emacs -Q --batch -l early-init.el \
                  (setq byte-compile-dest-file-function \
                        (lambda (f) (expand-file-name (concat (file-name-nondirectory f) \"c\") \
                                                      temporary-file-directory))))" \
-  -f batch-byte-compile init.el
+  -f batch-byte-compile init.el site-lisp/*.el
 ```
 
 現状(31.1)で警告は約 45 件出るが、すべて「コンパイル時にパッケージが読み込まれていない」ことによる想定内の警告(`assignment to free variable`、`not known to be defined` など)で、対応は不要。
