@@ -39,6 +39,7 @@ GNU Emacs 31.1 向けの個人設定(upstream: `esm-yoshioka/dotemacs.d`)。コ�
 - `site-lisp/` — 自作の elisp。`init.el` の `leaf` から `:load-path*` で読み込む。
 - `vars/etc/custom.el` — Emacs Custom が自動生成する(`early-init.el` の `custom-file`)。**手で編集しない**(`vars/` ごと gitignore 対象)。
 - `local-config.el` — 未追跡・gitignore 対象で、なくても動く。端末ごとの値(`my/pg-user`、`my/pg-databases` など)を置き、`sql` ブロックがこれを使って `sql-connection-alist` を組み立てる。コミットしない。
+  ひな形の `local-config.example.el` は追跡対象。`local-config.el` で上書きする変数を追加・変更したら、example も更新する。
 
 ## 動作確認
 
