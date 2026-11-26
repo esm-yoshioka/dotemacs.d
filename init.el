@@ -423,6 +423,18 @@
 (leaf dirvish
   :doc "A modern file manager based on dired mode."
   :ensure t
+  :preface
+  ;; よく使うフォルダ(dirvish で a)。端末ごとに違うので local-config.el で上書きする
+  (defvar my/dirvish-quick-access-entries
+    (cond
+     ((eq system-type 'windows-nt)
+      `(("e" ,user-emacs-directory "Emacs")
+        ("m" "G:/マイドライブ/memo" "Memo")))
+     ((eq system-type 'gnu/linux)
+      `(("e" ,user-emacs-directory "Emacs")
+        ("g" "~/git" "Git")
+        ("w" "~/work" "Work"))))
+    "`dirvish-quick-access-entries' に設定する (KEY PATH NAME) のリスト。")
   :init
   (dirvish-override-dired-mode)
   :bind (
@@ -458,16 +470,7 @@
   ;; GNU ls のオプションでディレクトリ優先ソートにする
   (when (eq system-type 'gnu/linux)
     (setq dired-listing-switches "-alh --group-directories-first"))
-  (setq dirvish-quick-access-entries
-        (cond
-         ((eq system-type 'windows-nt)
-          `(("e" ,user-emacs-directory "Emacs")
-            ("m" "G:/マイドライブ/memo" "Memo")))
-         ((eq system-type 'gnu/linux)
-          `(("e" ,user-emacs-directory "Emacs")
-            ("g" "~/git" "Git")
-            ("w" "~/work" "Work")))
-         ))
+  (setq dirvish-quick-access-entries my/dirvish-quick-access-entries)
   (dirvish-peek-mode)
   (dirvish-side-follow-mode)
   )
